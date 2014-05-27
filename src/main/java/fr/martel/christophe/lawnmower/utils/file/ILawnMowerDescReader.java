@@ -17,8 +17,6 @@
 
 package fr.martel.christophe.lawnmower.utils.file;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -30,6 +28,8 @@ public interface ILawnMowerDescReader {
     public ILawnMowerDescReader setDefaultResourcePath (String defaultResourcePath);
     
     public ILawnMowerDescReader setDescriptorPath (String descriptorPath);
+    
+    public ILawnMowerDescReader setCharset (String charset);
     
     public ILawnMowerDescReader read ();
     

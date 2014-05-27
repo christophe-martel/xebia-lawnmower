@@ -28,6 +28,11 @@ public interface ILawnMowerDesc {
     
     public Point getPosition ();
     
+    
+    public Character getInFrontOf ();
+    
+    public ILawnMowerDesc setInFrontOf (Character inFrontOf);
+    
     public ArrayList<Character> getMovements ();
     
 }

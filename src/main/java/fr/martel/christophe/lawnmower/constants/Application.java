@@ -23,7 +23,7 @@ import java.nio.charset.Charset;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-abstract class Application {
+abstract public class Application {
     
     final static public String RES_LAWNMOWER_DESC = "/lawnmower.desc";
     

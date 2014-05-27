@@ -37,6 +37,11 @@ public class LawnMowerDesc implements ILawnMowerDesc {
     @Accessors(chain = true)
     @Getter
     @Setter
+    private Character inFrontOf = 'N';
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter
     private ArrayList<Character> movements = new ArrayList<>();
     
     
