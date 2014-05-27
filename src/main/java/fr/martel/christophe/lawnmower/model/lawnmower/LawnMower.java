@@ -22,7 +22,6 @@ import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
 import fr.martel.christophe.lawnmower.process.commands.DefaultCommands;
 import fr.martel.christophe.lawnmower.process.commands.ICommands;
 import java.util.ArrayList;
-import lombok.AccessLevel;
 import lombok.experimental.Accessors;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,7 +56,7 @@ public class LawnMower
     @Accessors(chain = true)
     @Getter
     @Setter
-    private ICommands movementComputer = new DefaultCommands();
+    private ICommands commands = new DefaultCommands();
     
     @Override
     public IAutomaticLawnMower addMovement(Movement movement) {

@@ -17,7 +17,7 @@
 
 package fr.martel.christophe.lawnmower.utils.validator;
 
-import fr.martel.christophe.lawnmower.utils.LawnmowerException;
+import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
 
 /**
  *

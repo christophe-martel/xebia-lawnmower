@@ -34,6 +34,7 @@ public interface IAutomaticLawnMower
     
     public IAutomaticLawnMower addMovement(Movement movement);
     
-    public IAutomaticLawnMower setMovementComputer (ICommands movementComputer);
+    public IAutomaticLawnMower setCommands (ICommands movementComputer);
+    
     
 }

@@ -18,7 +18,7 @@
 package fr.martel.christophe.lawnmower.process.commands;
 
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
-import fr.martel.christophe.lawnmower.utils.LawnmowerException;
+import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
 
 /**
  *

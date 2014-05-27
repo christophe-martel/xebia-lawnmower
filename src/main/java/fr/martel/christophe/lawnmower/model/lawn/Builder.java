@@ -18,9 +18,8 @@
 package fr.martel.christophe.lawnmower.model.lawn;
 
 import fr.martel.christophe.lawnmower.process.validator.ILawnValidator;
-import fr.martel.christophe.lawnmower.utils.LawnmowerException;
+import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
 import java.util.ArrayList;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -31,7 +30,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Builder {
+public class Builder implements IBuilder {
     
     final static Logger logger = LoggerFactory.getLogger(Builder.class);
     
@@ -50,17 +49,20 @@ public class Builder {
     }
     
     
+    @Override
     public Builder newLawn () {
         lawn = new Lawn();
         return this;
     }
     
+    @Override
     public Builder setWidth (int width) {
         logger.debug("set width to {}", Integer.toString(width, 10));
         lawn.setWidth(width);
         return this;
     }
     
+    @Override
     public Builder setHeight (int height) {
         logger.debug("set height to {}", Integer.toString(height, 10));
         lawn.setHeight(height);
@@ -72,6 +74,7 @@ public class Builder {
      * @return 
      * @throws LawnmowerException
      */
+    @Override
     public Lawn getLawn () throws LawnmowerException {
         
         if (true != this.validateLawn()) {

@@ -2,7 +2,7 @@ package fr.martel.christophe.lawnmower.process.commands;
 
 import fr.martel.christophe.lawnmower.constants.Movement;
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
-import fr.martel.christophe.lawnmower.utils.LawnmowerException;
+import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
 import java.util.LinkedHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
