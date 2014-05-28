@@ -1,12 +1,3 @@
-package fr.martel.christophe.lawnmower.process.commands;
-
-import fr.martel.christophe.lawnmower.constants.Movement;
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
-import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
-import java.util.LinkedHashMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /*
  * Copyright (C) 2014 Christophe Martel <mail.christophe.martel@gmail.com>
  *
@@ -23,6 +14,18 @@ import org.slf4j.LoggerFactory;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package fr.martel.christophe.lawnmower.process.commands;
+
+import fr.martel.christophe.lawnmower.constants.Movement;
+import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
+import java.util.LinkedHashMap;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -32,24 +35,28 @@ public class Commands implements ICommands {
     
     final static Logger logger = LoggerFactory.getLogger(Commands.class);
     
-    final private LinkedHashMap<Movement, ICommand> commands = new LinkedHashMap<>();
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private LinkedHashMap<Movement, ICommand> commands = new LinkedHashMap<>();
     
     /**
      *
      * @param automaticLawnMower
      * @return
-     * @throws LawnmowerException
+     * @throws LawnMowerException
      */
     @Override
     public ICommands apply(
                 IAutomaticLawnMower automaticLawnMower
-            ) throws LawnmowerException {
-        logger.debug("Compute next position");
+            ) throws LawnMowerException {
+        logger.info("Compute next position");
         
         int sz = automaticLawnMower.getMovements().size();
         
         if (sz < 1) {
-            logger.debug("Any movement found");
+            logger.info("Any movement found");
             return this;
             
         }
@@ -66,10 +73,10 @@ public class Commands implements ICommands {
         return this;
     }
     
-    public Commands addCommand (Movement key, ICommand command) throws LawnmowerException {
+    public Commands addCommand (Movement key, ICommand command) throws LawnMowerException {
         if (true == this.commands.containsKey(key)) {
             logger.error("duplicate command !");
-            throw new LawnmowerException(String.format("duplicate command '%s'", key));
+            throw new LawnMowerException(String.format("duplicate command '%s'", key));
         }
         
         this.commands.put(key, command);
@@ -80,10 +87,10 @@ public class Commands implements ICommands {
     protected Commands executeCommand (
                 IAutomaticLawnMower automaticLawnMower,
                 Movement key
-            ) throws LawnmowerException {
+            ) throws LawnMowerException {
         if (true != this.commands.containsKey(key)) {
             logger.error("unknown command");
-            throw new LawnmowerException(String.format("unknown command '%s'", key));
+            throw new LawnMowerException(String.format("unknown command '%s'", key));
         }
         
         this.commands.get(key).apply(automaticLawnMower);

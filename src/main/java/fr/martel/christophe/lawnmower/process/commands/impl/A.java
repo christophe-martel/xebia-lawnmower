@@ -18,13 +18,9 @@
 package fr.martel.christophe.lawnmower.process.commands.impl;
 
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.process.commands.ACommand;
 
 import fr.martel.christophe.lawnmower.process.commands.ICommand;
-import fr.martel.christophe.lawnmower.utils.validator.DefaultPositionValidator;
-import fr.martel.christophe.lawnmower.utils.validator.IPositionValidator;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,15 +28,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class A implements ICommand {
+public class A extends ACommand  {
     
     final static Logger logger = LoggerFactory.getLogger(A.class);
-    
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private IPositionValidator positionValidator = new DefaultPositionValidator();
-    
     
     @Override
     public ICommand apply(IAutomaticLawnMower automaticLawnMower) {

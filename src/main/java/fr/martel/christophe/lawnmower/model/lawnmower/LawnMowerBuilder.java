@@ -18,10 +18,11 @@
 package fr.martel.christophe.lawnmower.model.lawnmower;
 
 import fr.martel.christophe.lawnmower.constants.CompassPoint;
+import fr.martel.christophe.lawnmower.constants.Movement;
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
 import fr.martel.christophe.lawnmower.process.commands.ICommands;
 import fr.martel.christophe.lawnmower.process.validator.ILawnMowerValidator;
-import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
+import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,77 +31,100 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * 
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Builder implements IBuilder {
+public class LawnMowerBuilder implements ILawnMowerBuilder {
     
     
-    final static Logger logger = LoggerFactory.getLogger(Builder.class);
+    final static Logger logger = LoggerFactory.getLogger(LawnMowerBuilder.class);
     
-    private IAutomaticLawnMower lawnMower = null;
+    private IAutomaticLawnMower lawnMower = new LawnMower();
     
     @Accessors(chain = true)
     @Getter
     @Setter
     private ArrayList<ILawnMowerValidator> validators = new ArrayList<>();
     
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private ICommands commands = null;
+    
     @Override
-    public Builder addValidator (ILawnMowerValidator validator) {
+    public LawnMowerBuilder addValidator (ILawnMowerValidator validator) {
         if (true != this.validators.contains(validator)) {
             this.validators.add(validator);
         }
         return this;
     }
     
-    
+    /**
+     *  create a new instance of ILawnMower initialized with validators and commands
+     * @return 
+     */
     @Override
-    public Builder newLawnMower () {
+    public LawnMowerBuilder newLawnMower () {
         lawnMower = new LawnMower();
+        
         return this;
     }
     
+    @Override
+    public ILawnMowerBuilder withDefaultCommands () {
+        lawnMower.setCommands(this.getCommands());
+        return this;
+    }
     
     @Override
-    public Builder setX (int x) {
+    public LawnMowerBuilder setX (int x) {
         logger.debug("set x to {}", Integer.toString(x, 10));
         lawnMower.setX(x);
         return this;
     }
     
     @Override
-    public Builder setY (int y) {
-        logger.debug("set height to {}", Integer.toString(y, 10));
+    public LawnMowerBuilder setY (int y) {
+        logger.debug("set y to {}", Integer.toString(y, 10));
         lawnMower.setY(y);
         return this;
     }
 
     @Override
-    public IBuilder setCommands(ICommands commands) {
-        logger.debug("add commands");
-        lawnMower.setCommands(commands);
-        return this;
-    }
-
-    @Override
-    public IBuilder setInFrontOf(CompassPoint inFrontOf) {
+    public ILawnMowerBuilder setInFrontOf(CompassPoint inFrontOf) {
         logger.debug("turn on {}", inFrontOf.getLabel());
         lawnMower.setInFrontOf(inFrontOf);
         return this;
     }
+
+    @Override
+    public ILawnMowerBuilder setMovements(ArrayList<Character> movements) {
+        logger.debug("add movements");
+        
+        Movement m = null;
+        for (Character movement : movements) {
+            m = Movement.getByName(movement);
+            logger.debug("add movement {{}}", m.getLabel());
+            lawnMower.addMovement(m);
+            
+        }
+        
+        return this;
+    }
+    
     
     
     /**
      * 
      * @return 
-     * @throws LawnmowerException
+     * @throws LawnMowerException
      */
     @Override
-    public IAutomaticLawnMower getLawnMower () throws LawnmowerException {
+    public IAutomaticLawnMower getLawnMower () throws LawnMowerException {
         
         if (true != this.validateLawnMower()) {
             logger.error("lawn is not valid");
-            throw new LawnmowerException("unvalid lawn");
+            throw new LawnMowerException("unvalid lawn");
         }
         
         
@@ -118,7 +142,5 @@ public class Builder implements IBuilder {
         
         return true;
     }
-    
-    
-    
+
 }

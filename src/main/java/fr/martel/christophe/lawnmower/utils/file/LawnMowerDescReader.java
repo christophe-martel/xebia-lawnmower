@@ -114,7 +114,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
                 
                 inputLine = inputLine.trim();
                 if (true == inputLine.isEmpty()) {
-                    logger.debug("Ignoring empty line #{}", lineCounter);
+                    logger.info("Ignoring empty line #{}", lineCounter);
                     continue;
                 }
                 
@@ -135,7 +135,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     }
     
     protected BufferedReader getReaderFromResource () throws IOException {
-        logger.debug("load resource file {} with charset {}", this.defaultResourcePath, this.charset);
+        logger.info("load resource file {} with charset {}", this.defaultResourcePath, this.charset);
         return new BufferedReader(
             new InputStreamReader(
                 this.getClass().getResourceAsStream(this.defaultResourcePath),
@@ -143,16 +143,16 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     }
     
     protected BufferedReader getReaderFromFile () throws IOException {
-        logger.debug("load local file {} with charset {}", this.descriptorPath, this.charset);
+        logger.info("load local file {} with charset {}", this.descriptorPath, this.charset);
         File f = new File(this.descriptorPath);
         
         if (true != f.exists()) {
-            logger.debug("file {} doesn't exist", this.descriptorPath);
+            logger.info("file {} doesn't exist", this.descriptorPath);
             return null;
         }
         
         if (true != f.isFile()) {
-            logger.debug("file {} isn't regular", this.descriptorPath);
+            logger.info("file {} isn't regular", this.descriptorPath);
             return null;
         }
         
@@ -163,7 +163,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     }
     
     protected LawnMowerDescReader parseLine (int lineCounter, String line) {
-        logger.debug("Parse line #{} with value:{}", lineCounter, line);
+        logger.info("Parse line #{} with value:{}", lineCounter, line);
         
         if (0 == lineCounter) {
             this.parseLawnDimension(line);

@@ -15,33 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fr.martel.christophe.lawnmower.utils.exception;
+package fr.martel.christophe.lawnmower.process.commands;
+
+import fr.martel.christophe.lawnmower.utils.validator.DefaultPositionValidator;
+import fr.martel.christophe.lawnmower.utils.validator.IPositionValidator;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class LawnmowerException extends Exception {
-
-    public LawnmowerException() {
-    }
-
-    public LawnmowerException(String message) {
-        super(message);
-    }
-
-    public LawnmowerException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public LawnmowerException(Throwable cause) {
-        super(cause);
-    }
-
-    public LawnmowerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
+public abstract class ACommand implements ICommand {
     
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private IPositionValidator positionValidator = new DefaultPositionValidator();
     
     
 }

@@ -41,7 +41,7 @@ public enum Movement {
      * @param name
      * @return NULL if not found
      */
-    static Movement getByName (String name) {
+    static public Movement getByName (String name) {
         for(Movement m : Movement.values()){
             if (m.name().equals(name)) {
                 return m;
@@ -57,7 +57,7 @@ public enum Movement {
      * @param c
      * @return NULL if not found
      */
-    static Movement getByName (char c) {
+    static public Movement getByName (char c) {
         return Movement.getByName(Character.toString(c));
     }
     

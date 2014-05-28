@@ -40,7 +40,7 @@ public enum CompassPoint {
      * @param name
      * @return NULL if not found
      */
-    static CompassPoint getByName (String name) {
+    static public CompassPoint getByName (String name) {
         for(CompassPoint cp : CompassPoint.values()){
             if (cp.name().equals(name)) {
                 return cp;
@@ -55,7 +55,7 @@ public enum CompassPoint {
      * @param c
      * @return NULL if not found
      */
-    static CompassPoint getByName (char c) {
+    static public CompassPoint getByName (char c) {
         return CompassPoint.getByName(Character.toString(c));
     }
 }

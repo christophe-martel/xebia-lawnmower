@@ -17,13 +17,18 @@
 
 package fr.martel.christophe.lawnmower.process.commands;
 
+import fr.martel.christophe.lawnmower.constants.Movement;
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
-import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
+import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
+import java.util.LinkedHashMap;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public interface ICommands {
-    public ICommands apply (IAutomaticLawnMower automaticLawnMower)  throws LawnmowerException;
+    
+    public ICommands setCommands (LinkedHashMap<Movement, ICommand> commands);
+    
+    public ICommands apply (IAutomaticLawnMower automaticLawnMower)  throws LawnMowerException;
 }

@@ -19,6 +19,7 @@ package fr.martel.christophe.lawnmower.process.commands.impl;
 
 import fr.martel.christophe.lawnmower.constants.CompassPoint;
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.process.commands.ACommand;
 import fr.martel.christophe.lawnmower.process.commands.ICommand;
 
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class D implements ICommand {
+public class D extends ACommand {
 
     final static Logger logger = LoggerFactory.getLogger(D.class);
     

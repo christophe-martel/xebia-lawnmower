@@ -15,28 +15,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fr.martel.christophe.lawnmower.model.lawn;
-
-import fr.martel.christophe.lawnmower.model.ILawn;
-import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
+package fr.martel.christophe.lawnmower.utils.exception;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface IBuilder {
+public class LawnMowerException extends Exception {
 
-    /**
-     *
-     * @return
-     * @throws LawnmowerException
-     */
-    ILawn getLawn() throws LawnmowerException;
+    public LawnMowerException() {
+    }
 
-    IBuilder newLawn();
+    public LawnMowerException(String message) {
+        super(message);
+    }
 
-    IBuilder setHeight(int height);
+    public LawnMowerException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    IBuilder setWidth(int width);
+    public LawnMowerException(Throwable cause) {
+        super(cause);
+    }
+
+    public LawnMowerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+    
+    
     
 }

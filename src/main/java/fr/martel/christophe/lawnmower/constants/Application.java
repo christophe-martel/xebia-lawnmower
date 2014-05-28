@@ -17,7 +17,6 @@
 
 package fr.martel.christophe.lawnmower.constants;
 
-import java.nio.charset.Charset;
 
 /**
  *
@@ -25,8 +24,11 @@ import java.nio.charset.Charset;
  */
 abstract public class Application {
     
-    final static public String RES_LAWNMOWER_DESC = "/lawnmower.desc";
+    final static public String RES_LAWNMOWER_DESC       = "/lawnmower.desc";
+    final static public String LAWNMOWER_FILE_CHARSET   = "UTF-8";
     
-    final static public String LAWNMOWER_FILE_CHARSET = "UTF-8";
+    final static public String BEAN_DESCRIPTOR_PARSER   = "description.parser";
+    final static public String BEAN_BUILDER_LAWN        = "builder.lawn";
+    final static public String BEAN_BUILDER_LAWN_MOWER  = "builder.lawn-mower";
     
 }

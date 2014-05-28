@@ -49,7 +49,7 @@ public class DefaultPositionValidator implements IPositionValidator {
     
     @Override
     public boolean isValid (int x, int y) {
-        return false;
+        return true;
     }
     
 }

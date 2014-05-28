@@ -17,7 +17,7 @@
 
 package fr.martel.christophe.lawnmower.utils.validator;
 
-import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
+import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * maximal limit "mawHeight" and "minHeight" are excluded from range.
+ * maximal limit "mawHeight" and "minHeight" are included in range.
  * "acceptingZero" change minimal limit between "0" (if FALSE) and "-1"
  * minimal limit is excluded from range.
  * 
@@ -54,13 +54,13 @@ public class PositionValidator implements IPositionValidator {
      * 
      * @param maxWidth
      * @return 
-     * @throws LawnmowerException 
+     * @throws LawnMowerException 
      */
     @Override
-    public PositionValidator setMaxWidth (int maxWidth) throws LawnmowerException {
+    public PositionValidator setMaxWidth (int maxWidth) throws LawnMowerException {
         if (maxWidth < 1) {
             logger.error("maxWidth '{}' must be greater than 0", maxWidth);
-            throw new LawnmowerException("unvalid maxWidth");
+            throw new LawnMowerException("unvalid maxWidth");
         }
         
         this.maxWidth = maxWidth;
@@ -71,13 +71,13 @@ public class PositionValidator implements IPositionValidator {
      * 
      * @param maxHeight
      * @return
-     * @throws LawnmowerException 
+     * @throws LawnMowerException 
      */
     @Override
-    public PositionValidator setMaxHeight (int maxHeight) throws LawnmowerException {
+    public PositionValidator setMaxHeight (int maxHeight) throws LawnMowerException {
         if (maxHeight < 1) {
             logger.error("maxHeight '{}' must be greater than 0", maxHeight);
-            throw new LawnmowerException("unvalid maxHeight");
+            throw new LawnMowerException("unvalid maxHeight");
         }
         
         
@@ -110,7 +110,7 @@ public class PositionValidator implements IPositionValidator {
             : 0;
         
         return (minLimit < i )
-                && (i < max);
+                && (i <= max);
     }
     
 }

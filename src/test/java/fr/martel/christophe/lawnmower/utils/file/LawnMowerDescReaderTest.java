@@ -77,7 +77,6 @@ public class LawnMowerDescReaderTest extends TestCase {
         assertEquals('E', r.getLawnMowers().get(1).getInFrontOf().charValue());
         assertEquals("AADAADADDA", this.join(r.getLawnMowers().get(1).getMovements()));
         
-        
     }
     
     

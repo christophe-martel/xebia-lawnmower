@@ -16,8 +16,23 @@
  */
 package fr.martel.christophe.lawnmower.application;
 
+import fr.martel.christophe.lawnmower.constants.Application;
+import fr.martel.christophe.lawnmower.constants.CompassPoint;
+import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawn;
+import fr.martel.christophe.lawnmower.model.lawn.ILawnBuilder;
+import fr.martel.christophe.lawnmower.model.lawnmower.ILawnMowerBuilder;
+import fr.martel.christophe.lawnmower.process.commands.impl.A;
+import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
+import fr.martel.christophe.lawnmower.utils.file.ILawnMowerDesc;
+import fr.martel.christophe.lawnmower.utils.file.ILawnMowerDescReader;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -25,51 +40,150 @@ import org.slf4j.LoggerFactory;
  */
 public class Main {
     
-    final static Logger logger = LoggerFactory.getLogger(Main.class);
+    final static private Logger logger = LoggerFactory.getLogger(Main.class);
+    
+    static private ApplicationContext context = null;
+    
+    private ILawnMowerDescReader reader = null;
+    
+    private ILawn lawn = null;
+    
+    private ArrayList<IAutomaticLawnMower> lawnMowers = new ArrayList<>();
     
     /**
      * @param args the command line arguments
      */
     public static void main (String[] args) {
-        (new Main())
-            .configure()
-            .init(args)
-            .run()
-            .finish();
+        try {
+            (new Main())
+                .configure()
+                .init(args)
+                .run()
+                .finish();
+        } catch (LawnMowerException lme) {
+            logger.error("Oups", lme);
+            
+        }
         
     }
     
     protected Main() {
-        logger.debug("start");
+        logger.info("start");
     }
     
     
     
     protected Main configure () {
-        logger.debug("configure");
+        logger.info("configure");
         
+        context = new ClassPathXmlApplicationContext(
+                "/configuration/spring.xml",
+                Main.class);
         
         return this;
     }
     
-    protected Main init (String[] args) {
-        logger.debug("init");
+    protected Main init (String[] args) throws LawnMowerException {
+        logger.info("init");
         
+        this
+            .initDescriptor(args)
+            .initLawn()
+            .initLawnMowers()
+        ;
         
         return this;
     }
+    
     
     protected Main run () {
-        logger.debug("run");
+        logger.info("run");
         
         return this;
     }
     
     protected Main finish () {
-        logger.debug("end");
+        logger.info("end");
+        
+        return this;
+    }
+    
+    protected Main initLawn () throws LawnMowerException {
+        logger.info("create lawn");
+        
+        ILawnBuilder builder = (ILawnBuilder) context
+            .getBean(Application.BEAN_BUILDER_LAWN);
+        
+        
+        this.lawn = builder
+            .newLawn()
+            .setHeight(this.reader.getLawn().getDimension().height)
+            .setWidth(this.reader.getLawn().getDimension().width)
+            .getLawn();
+        
         
         return this;
     }
     
     
+    protected Main initLawnMowers () throws LawnMowerException {
+        logger.info("create lawn mowers");
+        
+        ILawnMowerBuilder builder = (ILawnMowerBuilder) context
+            .getBean(Application.BEAN_BUILDER_LAWN_MOWER);
+        
+        for(ILawnMowerDesc desc : this.reader.getLawnMowers()) {
+            this.lawnMowers.add(
+                builder
+                    .newLawnMower()
+                    .withDefaultCommands()
+                    .setX(desc.getPosition().x)
+                    .setY(desc.getPosition().y)
+                    .setInFrontOf(CompassPoint.getByName(desc.getInFrontOf()))
+                    .setMovements(desc.getMovements())
+                    .getLawnMower());
+            
+        }
+        
+        return this;
+    }
+    
+    protected Main initDescriptor (String[] args) {
+        this.reader = (ILawnMowerDescReader) context
+            .getBean(Application.BEAN_DESCRIPTOR_PARSER);
+        
+        
+        File specific = this.getFileFromArguments(args);
+        if (null != specific) {
+            this.reader.setDescriptorPath(specific.getAbsolutePath());
+        }
+        
+        this.reader.read();
+        
+        return this;
+    }
+    
+    protected File getFileFromArguments (String[] args) {
+        
+        if (args.length < 1) {
+            logger.info("no arguments found");
+            return null;
+            
+        }
+        
+        logger.info("Found arguments {}", args[0]);
+        
+        File result = new File(args[0]);
+        if (true != result.exists()) {
+            logger.info("File {} doesn't exist", args[0]);
+            return null;
+        }
+        
+        if (true != result.isFile()) {
+            logger.info("File {} doesn't regular", args[0]);
+            return null;
+        }
+        
+        return result;
+    }
 }

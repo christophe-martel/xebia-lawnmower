@@ -17,7 +17,7 @@
 
 package fr.martel.christophe.lawnmower.utils.validator;
 
-import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
+import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 
 /**
  *
@@ -37,17 +37,17 @@ public interface IPositionValidator {
      *
      * @param maxHeight
      * @return
-     * @throws LawnmowerException
+     * @throws LawnMowerException
      */
-    IPositionValidator setMaxHeight (int maxHeight) throws LawnmowerException;
+    IPositionValidator setMaxHeight (int maxHeight) throws LawnMowerException;
 
     /**
      *
      * @param maxWidth
      * @return
-     * @throws LawnmowerException
+     * @throws LawnMowerException
      */
-    IPositionValidator setMaxWidth (int maxWidth) throws LawnmowerException;
+    IPositionValidator setMaxWidth (int maxWidth) throws LawnMowerException;
     
     
     /**

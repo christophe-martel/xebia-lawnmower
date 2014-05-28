@@ -18,7 +18,7 @@
 package fr.martel.christophe.lawnmower.model.lawn;
 
 import fr.martel.christophe.lawnmower.process.validator.ILawnValidator;
-import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
+import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,9 +30,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Builder implements IBuilder {
+public class LawnBuilder implements ILawnBuilder {
     
-    final static Logger logger = LoggerFactory.getLogger(Builder.class);
+    final static Logger logger = LoggerFactory.getLogger(LawnBuilder.class);
     
     private Lawn lawn = null;
     
@@ -41,7 +41,8 @@ public class Builder implements IBuilder {
     @Setter
     private ArrayList<ILawnValidator> validators = new ArrayList<>();
     
-    public Builder addValidator (ILawnValidator validator) {
+    @Override
+    public LawnBuilder addValidator (ILawnValidator validator) {
         if (true != this.validators.contains(validator)) {
             this.validators.add(validator);
         }
@@ -50,21 +51,21 @@ public class Builder implements IBuilder {
     
     
     @Override
-    public Builder newLawn () {
+    public LawnBuilder newLawn () {
         lawn = new Lawn();
         return this;
     }
     
     @Override
-    public Builder setWidth (int width) {
-        logger.debug("set width to {}", Integer.toString(width, 10));
+    public LawnBuilder setWidth (int width) {
+        logger.info("set width to {}", Integer.toString(width, 10));
         lawn.setWidth(width);
         return this;
     }
     
     @Override
-    public Builder setHeight (int height) {
-        logger.debug("set height to {}", Integer.toString(height, 10));
+    public LawnBuilder setHeight (int height) {
+        logger.info("set height to {}", Integer.toString(height, 10));
         lawn.setHeight(height);
         return this;
     }
@@ -72,14 +73,14 @@ public class Builder implements IBuilder {
     /**
      * 
      * @return 
-     * @throws LawnmowerException
+     * @throws LawnMowerException
      */
     @Override
-    public Lawn getLawn () throws LawnmowerException {
+    public Lawn getLawn () throws LawnMowerException {
         
         if (true != this.validateLawn()) {
             logger.error("lawn is not valid");
-            throw new LawnmowerException("unvalid lawn");
+            throw new LawnMowerException("unvalid lawn");
         }
         
         
@@ -87,7 +88,7 @@ public class Builder implements IBuilder {
     }
     
     protected boolean validateLawn () {
-        logger.debug("validate lawn");
+        logger.info("validate lawn");
         int sz = this.validators.size();
         for (int i = 0; i < sz; i++) {
             if (true != this.validators.get(i).isValid(this.lawn)) {

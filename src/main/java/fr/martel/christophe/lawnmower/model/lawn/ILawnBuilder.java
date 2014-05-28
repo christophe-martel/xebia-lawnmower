@@ -15,38 +15,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fr.martel.christophe.lawnmower.model.lawnmower;
+package fr.martel.christophe.lawnmower.model.lawn;
 
-import fr.martel.christophe.lawnmower.constants.CompassPoint;
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
-import fr.martel.christophe.lawnmower.process.commands.ICommands;
-import fr.martel.christophe.lawnmower.process.validator.ILawnMowerValidator;
-import fr.martel.christophe.lawnmower.utils.exception.LawnmowerException;
+import fr.martel.christophe.lawnmower.model.ILawn;
+import fr.martel.christophe.lawnmower.process.validator.ILawnValidator;
+import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
+import java.util.ArrayList;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface IBuilder {
+public interface ILawnBuilder {
 
-    IBuilder addValidator(ILawnMowerValidator validator);
-    
-    IBuilder setCommands (ICommands commands);
-    
     /**
      *
      * @return
-     * @throws LawnmowerException
+     * @throws LawnMowerException
      */
-    IAutomaticLawnMower getLawnMower() throws LawnmowerException;
+    ILawn getLawn() throws LawnMowerException;
+
+    ILawnBuilder newLawn();
+
+    ILawnBuilder setHeight(int height);
+
+    ILawnBuilder setWidth(int width);
     
-    IBuilder newLawnMower();
+    ILawnBuilder setValidators (ArrayList<ILawnValidator> validators);
     
-    IBuilder setX(int x);
-    
-    IBuilder setY(int y);
-    
-    IBuilder setInFrontOf(CompassPoint inFrontOf);
-    
+    ILawnBuilder addValidator (ILawnValidator validator);
     
 }
