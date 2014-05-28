@@ -17,19 +17,22 @@
 
 package fr.martel.christophe.lawnmower.process.commands;
 
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.utils.validator.DefaultPositionValidator;
 import fr.martel.christophe.lawnmower.utils.validator.IPositionValidator;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface ICommand {
+public abstract class AMovement implements IMovement {
     
-    public ICommand apply (IAutomaticLawnMower automaticLawnMower);
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private IPositionValidator positionValidator = new DefaultPositionValidator();
     
-    public ICommand setPositionValidator (IPositionValidator positionValidator);
-    
-    public IPositionValidator getPositionValidator ();
     
 }

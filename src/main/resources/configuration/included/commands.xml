@@ -32,7 +32,7 @@
     <bean   id="lawn-mower.commands"
             class="fr.martel.christophe.lawnmower.process.commands.Commands"
             scope="prototype" >
-        <property name="commands">
+        <property name="movements">
             <map>
                 <entry 
                     key="#{T(fr.martel.christophe.lawnmower.constants.Movement).A}"

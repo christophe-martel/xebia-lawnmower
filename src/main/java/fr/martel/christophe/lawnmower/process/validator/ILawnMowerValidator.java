@@ -17,7 +17,6 @@
 
 package fr.martel.christophe.lawnmower.process.validator;
 
-import fr.martel.christophe.lawnmower.model.ILawn;
 import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.utils.validator.IPositionValidator;
 
@@ -26,7 +25,6 @@ import fr.martel.christophe.lawnmower.utils.validator.IPositionValidator;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public interface ILawnMowerValidator {
-    
     
     public ILawnMowerValidator setPositionValidator (IPositionValidator positionValidator);
     

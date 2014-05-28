@@ -20,6 +20,9 @@ package fr.martel.christophe.lawnmower.process.commands;
 import fr.martel.christophe.lawnmower.constants.Movement;
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
 import java.util.LinkedHashMap;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,15 +34,15 @@ public class DefaultCommands implements ICommands {
     
     final static Logger logger = LoggerFactory.getLogger(DefaultCommands.class);
     
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private LinkedHashMap<Movement, IMovement> movements = new LinkedHashMap<>();
+    
+    
     @Override
     public ICommands apply(IAutomaticLawnMower automaticLawnMower) {
         logger.info("Call to defaut movement computer ...");
-        return this;
-    }
-
-    @Override
-    public ICommands setCommands(LinkedHashMap<Movement, ICommand> commands) {
-        logger.info("Call to defaut setCommands ...");
         return this;
     }
     

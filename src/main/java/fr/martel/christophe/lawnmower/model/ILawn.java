@@ -22,16 +22,9 @@ package fr.martel.christophe.lawnmower.model;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public interface ILawn {
-    /**
-     * 
-     * @return 
-     */
+    
     public int getWidth ();
     
-    /**
-     * 
-     * @return 
-     */
     public int getHeight ();
     
 }

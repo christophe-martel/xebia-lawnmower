@@ -22,6 +22,7 @@ import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
 import fr.martel.christophe.lawnmower.model.ILawn;
 import fr.martel.christophe.lawnmower.model.lawn.ILawnBuilder;
 import fr.martel.christophe.lawnmower.model.lawnmower.ILawnMowerBuilder;
+import fr.martel.christophe.lawnmower.process.Shearer;
 import fr.martel.christophe.lawnmower.process.commands.impl.A;
 import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 import fr.martel.christophe.lawnmower.utils.file.ILawnMowerDesc;
@@ -49,6 +50,9 @@ public class Main {
     private ILawn lawn = null;
     
     private ArrayList<IAutomaticLawnMower> lawnMowers = new ArrayList<>();
+    
+    
+    
     
     /**
      * @param args the command line arguments
@@ -96,8 +100,12 @@ public class Main {
     }
     
     
-    protected Main run () {
+    protected Main run () throws LawnMowerException {
         logger.info("run");
+        
+        (new Shearer()).run(this.lawn, this.lawnMowers);
+        
+        
         
         return this;
     }

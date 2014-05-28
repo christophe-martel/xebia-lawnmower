@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package fr.martel.christophe.lawnmower.model;
 
 import fr.martel.christophe.lawnmower.constants.Movement;
@@ -30,11 +29,11 @@ public interface IAutomaticLawnMower
     
     public ArrayList<Movement> getMovements();
     
+    public ICommands getCommands();
+    
+    public IAutomaticLawnMower setCommands(ICommands movementComputer);
+    
     public IAutomaticLawnMower setMovements(ArrayList<Movement> movements);
     
-    public IAutomaticLawnMower addMovement(Movement movement);
-    
-    public IAutomaticLawnMower setCommands (ICommands movementComputer);
-    
-    
+
 }

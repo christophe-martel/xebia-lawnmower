@@ -19,8 +19,9 @@ package fr.martel.christophe.lawnmower.process.commands.impl;
 
 import fr.martel.christophe.lawnmower.constants.CompassPoint;
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
-import fr.martel.christophe.lawnmower.process.commands.ACommand;
-import fr.martel.christophe.lawnmower.process.commands.ICommand;
+import fr.martel.christophe.lawnmower.process.commands.AMovement;
+import fr.martel.christophe.lawnmower.process.commands.IMovement;
+import static fr.martel.christophe.lawnmower.process.commands.impl.A.logger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,12 +29,16 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class G extends ACommand {
+public class G extends AMovement {
     
     final static Logger logger = LoggerFactory.getLogger(G.class);
     
     @Override
-    public ICommand apply(IAutomaticLawnMower automaticLawnMower) {
+    public IMovement apply(IAutomaticLawnMower automaticLawnMower) {
+        logger.debug("receive movement G");
+        logger.debug("in front of: {}", automaticLawnMower.getInFrontOf().name());
+        logger.debug("current position {}.{}", automaticLawnMower.getX(), automaticLawnMower.getY());
+        
         
         switch (automaticLawnMower.getInFrontOf()) {
             case N : {

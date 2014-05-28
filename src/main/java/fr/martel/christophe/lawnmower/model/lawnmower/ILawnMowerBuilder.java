@@ -19,6 +19,7 @@ package fr.martel.christophe.lawnmower.model.lawnmower;
 
 import fr.martel.christophe.lawnmower.constants.CompassPoint;
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawn;
 import fr.martel.christophe.lawnmower.process.commands.ICommands;
 import fr.martel.christophe.lawnmower.process.validator.ILawnMowerValidator;
 import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
@@ -29,21 +30,10 @@ import java.util.ArrayList;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public interface ILawnMowerBuilder {
-
-    public ILawnMowerBuilder addValidator(ILawnMowerValidator validator);
-    
-    public ILawnMowerBuilder setCommands (ICommands commands);
     
     public ILawnMowerBuilder setValidators (ArrayList<ILawnMowerValidator> validators);
     
-    
-    /**
-     *
-     * @return
-     * @throws LawnMowerException
-     */
-    public IAutomaticLawnMower getLawnMower() throws LawnMowerException;
-    
+    public ILawnMowerBuilder setCommands (ICommands commands);
     
     /**
      *  create a new instance of ILawnMower initialized with validators and commands
@@ -60,5 +50,12 @@ public interface ILawnMowerBuilder {
     public ILawnMowerBuilder setInFrontOf(CompassPoint inFrontOf);
     
     public ILawnMowerBuilder setMovements(ArrayList<Character> movements);
+    
+    /**
+     *
+     * @return
+     * @throws LawnMowerException
+     */
+    public IAutomaticLawnMower getLawnMower() throws LawnMowerException;
     
 }

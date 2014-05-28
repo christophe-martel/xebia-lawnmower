@@ -39,7 +39,7 @@ public class Commands implements ICommands {
     @Accessors(chain = true)
     @Getter
     @Setter
-    private LinkedHashMap<Movement, ICommand> commands = new LinkedHashMap<>();
+    private LinkedHashMap<Movement, IMovement> movements = new LinkedHashMap<>();
     
     /**
      *
@@ -73,27 +73,16 @@ public class Commands implements ICommands {
         return this;
     }
     
-    public Commands addCommand (Movement key, ICommand command) throws LawnMowerException {
-        if (true == this.commands.containsKey(key)) {
-            logger.error("duplicate command !");
-            throw new LawnMowerException(String.format("duplicate command '%s'", key));
-        }
-        
-        this.commands.put(key, command);
-        
-        return this;
-    }
-    
     protected Commands executeCommand (
                 IAutomaticLawnMower automaticLawnMower,
                 Movement key
             ) throws LawnMowerException {
-        if (true != this.commands.containsKey(key)) {
+        if (true != this.movements.containsKey(key)) {
             logger.error("unknown command");
             throw new LawnMowerException(String.format("unknown command '%s'", key));
         }
         
-        this.commands.get(key).apply(automaticLawnMower);
+        this.movements.get(key).apply(automaticLawnMower);
         
         return this;
     }

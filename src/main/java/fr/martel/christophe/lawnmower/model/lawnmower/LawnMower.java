@@ -19,9 +19,11 @@ package fr.martel.christophe.lawnmower.model.lawnmower;
 import fr.martel.christophe.lawnmower.constants.CompassPoint;
 import fr.martel.christophe.lawnmower.constants.Movement;
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawn;
 import fr.martel.christophe.lawnmower.process.commands.DefaultCommands;
 import fr.martel.christophe.lawnmower.process.commands.ICommands;
 import java.util.ArrayList;
+import lombok.AccessLevel;
 import lombok.experimental.Accessors;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +34,12 @@ import lombok.Setter;
  */
 public class LawnMower
         implements IAutomaticLawnMower {
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private ILawn lawn = null;
+    
     
     @Accessors(chain = true)
     @Getter
@@ -58,10 +66,6 @@ public class LawnMower
     @Setter
     private ICommands commands = new DefaultCommands();
     
-    @Override
-    public IAutomaticLawnMower addMovement(Movement movement) {
-        this.movements.add(movement);
-        return this;
-    }
+    
     
 }

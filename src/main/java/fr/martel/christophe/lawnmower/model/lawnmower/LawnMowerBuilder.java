@@ -20,6 +20,7 @@ package fr.martel.christophe.lawnmower.model.lawnmower;
 import fr.martel.christophe.lawnmower.constants.CompassPoint;
 import fr.martel.christophe.lawnmower.constants.Movement;
 import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawn;
 import fr.martel.christophe.lawnmower.process.commands.ICommands;
 import fr.martel.christophe.lawnmower.process.validator.ILawnMowerValidator;
 import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
@@ -50,14 +51,6 @@ public class LawnMowerBuilder implements ILawnMowerBuilder {
     @Getter
     @Setter
     private ICommands commands = null;
-    
-    @Override
-    public LawnMowerBuilder addValidator (ILawnMowerValidator validator) {
-        if (true != this.validators.contains(validator)) {
-            this.validators.add(validator);
-        }
-        return this;
-    }
     
     /**
      *  create a new instance of ILawnMower initialized with validators and commands
@@ -102,10 +95,11 @@ public class LawnMowerBuilder implements ILawnMowerBuilder {
         logger.debug("add movements");
         
         Movement m = null;
+        
         for (Character movement : movements) {
             m = Movement.getByName(movement);
             logger.debug("add movement {{}}", m.getLabel());
-            lawnMower.addMovement(m);
+            lawnMower.getMovements().add(m);
             
         }
         

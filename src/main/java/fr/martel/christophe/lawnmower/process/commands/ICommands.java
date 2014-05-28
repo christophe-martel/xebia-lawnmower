@@ -28,7 +28,9 @@ import java.util.LinkedHashMap;
  */
 public interface ICommands {
     
-    public ICommands setCommands (LinkedHashMap<Movement, ICommand> commands);
+    public ICommands setMovements (LinkedHashMap<Movement, IMovement> commands);
+    
+    public LinkedHashMap<Movement, IMovement> getMovements ();
     
     public ICommands apply (IAutomaticLawnMower automaticLawnMower)  throws LawnMowerException;
 }

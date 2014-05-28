@@ -28,7 +28,7 @@ import lombok.Setter;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>tophe Martel <mail.christophe.martel@gmail.com>
  */
 public class Lawn
-        implements ILawn{
+        implements ILawn {
     @Accessors(chain = true)
     @Getter
     @Setter(AccessLevel.PACKAGE)
