@@ -17,7 +17,7 @@
 package fr.martel.christophe.lawnmower.process.commands;
 
 import fr.martel.christophe.lawnmower.constants.Movement;
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 import java.util.LinkedHashMap;
 import lombok.Getter;
@@ -43,17 +43,17 @@ public class Commands implements ICommands {
     
     /**
      *
-     * @param automaticLawnMower
+     * @param lawnMower
      * @return
      * @throws LawnMowerException
      */
     @Override
     public ICommands apply(
-                IAutomaticLawnMower automaticLawnMower
+                ILawnMower lawnMower
             ) throws LawnMowerException {
         logger.info("Compute next position");
         
-        int sz = automaticLawnMower.getMovements().size();
+        int sz = lawnMower.getMovements().size();
         
         if (sz < 1) {
             logger.info("Any movement found");
@@ -63,8 +63,8 @@ public class Commands implements ICommands {
         
         for (int i = 0; i < sz; i++) {
             this.executeCommand(
-                automaticLawnMower,
-                automaticLawnMower.getMovements().get(i));
+                lawnMower,
+                lawnMower.getMovements().get(i));
             
             
         }
@@ -74,7 +74,7 @@ public class Commands implements ICommands {
     }
     
     protected Commands executeCommand (
-                IAutomaticLawnMower automaticLawnMower,
+                ILawnMower lawnMower,
                 Movement key
             ) throws LawnMowerException {
         if (true != this.movements.containsKey(key)) {
@@ -82,7 +82,7 @@ public class Commands implements ICommands {
             throw new LawnMowerException(String.format("unknown command '%s'", key));
         }
         
-        this.movements.get(key).apply(automaticLawnMower);
+        this.movements.get(key).apply(lawnMower);
         
         return this;
     }

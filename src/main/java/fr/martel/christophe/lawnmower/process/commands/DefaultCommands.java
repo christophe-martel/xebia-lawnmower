@@ -18,7 +18,7 @@
 package fr.martel.christophe.lawnmower.process.commands;
 
 import fr.martel.christophe.lawnmower.constants.Movement;
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawnMower;
 import java.util.LinkedHashMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,7 +41,7 @@ public class DefaultCommands implements ICommands {
     
     
     @Override
-    public ICommands apply(IAutomaticLawnMower automaticLawnMower) {
+    public ICommands apply(ILawnMower lawnMower) {
         logger.info("Call to defaut movement computer ...");
         return this;
     }

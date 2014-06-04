@@ -28,7 +28,8 @@ abstract public class Application {
     final static public String LAWNMOWER_FILE_CHARSET   = "UTF-8";
     
     final static public String BEAN_DESCRIPTOR_PARSER   = "description.parser";
-    final static public String BEAN_BUILDER_LAWN        = "builder.lawn";
-    final static public String BEAN_BUILDER_LAWN_MOWER  = "builder.lawn-mower";
+    final static public String BEAN_LAWN        = "lawn";
+    final static public String BEAN_LAWN_MOWER  = "lawn-mower";
+    final static public String BEAN_SHEARER  = "shearer";
     
 }

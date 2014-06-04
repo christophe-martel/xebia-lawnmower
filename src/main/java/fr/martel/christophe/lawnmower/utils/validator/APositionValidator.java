@@ -14,26 +14,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.martel.christophe.lawnmower.model;
 
-import fr.martel.christophe.lawnmower.constants.Movement;
-import fr.martel.christophe.lawnmower.process.commands.ICommands;
-import java.util.ArrayList;
+package fr.martel.christophe.lawnmower.utils.validator;
+
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface IAutomaticLawnMower
-        extends ILawnMower {
+abstract public class APositionValidator implements IPositionValidator {
     
-    public ArrayList<Movement> getMovements();
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private int maxWidth = 1;
     
-    public ICommands getCommands();
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private int maxHeight = 1;
     
-    public IAutomaticLawnMower setCommands(ICommands movementComputer);
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private int minWidth = 1;
     
-    public IAutomaticLawnMower setMovements(ArrayList<Movement> movements);
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private int minHeight = 1;
     
-
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private boolean including = false;
+    
 }

@@ -18,7 +18,7 @@
 package fr.martel.christophe.lawnmower.process.commands;
 
 import fr.martel.christophe.lawnmower.constants.Movement;
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 import java.util.LinkedHashMap;
 
@@ -32,5 +32,5 @@ public interface ICommands {
     
     public LinkedHashMap<Movement, IMovement> getMovements ();
     
-    public ICommands apply (IAutomaticLawnMower automaticLawnMower)  throws LawnMowerException;
+    public ICommands apply (ILawnMower lawnMower)  throws LawnMowerException;
 }

@@ -15,7 +15,6 @@
     
     <import resource="classpath:configuration/included/validators.xml"/>
     <import resource="classpath:configuration/included/commands.xml"/>
-    <import resource="classpath:configuration/included/lawn.xml"/>
     <import resource="classpath:configuration/included/lawn-mower.xml"/>
     <import resource="classpath:configuration/included/utils.xml"/>
     

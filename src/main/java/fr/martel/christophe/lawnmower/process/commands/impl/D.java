@@ -18,10 +18,9 @@
 package fr.martel.christophe.lawnmower.process.commands.impl;
 
 import fr.martel.christophe.lawnmower.constants.CompassPoint;
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.process.commands.AMovement;
 import fr.martel.christophe.lawnmower.process.commands.IMovement;
-import static fr.martel.christophe.lawnmower.process.commands.impl.A.logger;
 
 
 import org.slf4j.Logger;
@@ -36,32 +35,32 @@ public class D extends AMovement {
     final static Logger logger = LoggerFactory.getLogger(D.class);
     
     @Override
-    public IMovement apply(IAutomaticLawnMower automaticLawnMower) {
+    public IMovement apply(ILawnMower lawnMower) {
         logger.debug("receive movement D");
-        logger.debug("in front of: {}", automaticLawnMower.getInFrontOf().name());
-        logger.debug("current position {}.{}", automaticLawnMower.getX(), automaticLawnMower.getY());
+        logger.debug("in front of: {}", lawnMower.getInFrontOf().name());
+        logger.debug("current position {}.{}", lawnMower.getX(), lawnMower.getY());
         
         
-        switch (automaticLawnMower.getInFrontOf()) {
+        switch (lawnMower.getInFrontOf()) {
             case N : {
-                automaticLawnMower.setInFrontOf(CompassPoint.E);
+                lawnMower.setInFrontOf(CompassPoint.E);
                 
             } break;
             case E : {
-                automaticLawnMower.setInFrontOf(CompassPoint.S);
+                lawnMower.setInFrontOf(CompassPoint.S);
                 
             } break;
             case S : {
-                automaticLawnMower.setInFrontOf(CompassPoint.W);
+                lawnMower.setInFrontOf(CompassPoint.W);
                 
             } break;
             case W :
             default : {
-                automaticLawnMower.setInFrontOf(CompassPoint.N);
+                lawnMower.setInFrontOf(CompassPoint.N);
                 
             } break;
         }
-        logger.info("Turn on {}", automaticLawnMower.getInFrontOf().getLabel());
+        logger.info("Turn on {}", lawnMower.getInFrontOf().getLabel());
         return this;
     }
     

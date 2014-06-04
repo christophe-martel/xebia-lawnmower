@@ -15,17 +15,24 @@
     <context:component-scan base-package="fr.martel.christophe.lawnmower" />
     <aop:aspectj-autoproxy />
     
-    <bean   id="builder.lawn-mower"
-            class="fr.martel.christophe.lawnmower.model.lawnmower.LawnMowerBuilder"
+    
+    <bean   id="shearer"
+            class="fr.martel.christophe.lawnmower.process.Shearer"
             scope="prototype" >
-        <property name="validators">
-            <list>
-                <ref bean="validator.lawn-mower" />
-            </list>
-        </property>
-        <property name="commands" >
-            <ref bean="lawn-mower.commands" />
-        </property>
+        <constructor-arg ref="lawn.validator.size"/>
+    </bean>
+    
+    <bean   id="lawn"
+            class="fr.martel.christophe.lawnmower.model.lawn.Lawn"
+            scope="prototype" />
+    
+    
+    <bean   id="lawn-mower"
+            class="fr.martel.christophe.lawnmower.model.lawnmower.LawnMower"
+            init-method="init"
+            scope="prototype" >
+        <constructor-arg ref="lawn-mower.commands"/>
+        <constructor-arg ref="lawn-mower.validator"/>
     </bean>
     
     

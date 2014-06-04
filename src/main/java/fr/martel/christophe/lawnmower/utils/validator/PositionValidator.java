@@ -33,58 +33,9 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class PositionValidator implements IPositionValidator {
+public class PositionValidator extends APositionValidator {
     
     final static Logger logger = LoggerFactory.getLogger(PositionValidator.class);
-    
-    @Accessors(chain = true)
-    @Getter
-    private int maxWidth = 1;
-    
-    @Accessors(chain = true)
-    @Getter
-    private int maxHeight = 1;
-    
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private boolean includingZero = false;
-    
-    /**
-     * 
-     * @param maxWidth
-     * @return 
-     * @throws LawnMowerException 
-     */
-    @Override
-    public PositionValidator setMaxWidth (int maxWidth) throws LawnMowerException {
-        if (maxWidth < 1) {
-            logger.error("maxWidth '{}' must be greater than 0", maxWidth);
-            throw new LawnMowerException("unvalid maxWidth");
-        }
-        
-        this.maxWidth = maxWidth;
-        return this;
-    }
-    
-    /**
-     * 
-     * @param maxHeight
-     * @return
-     * @throws LawnMowerException 
-     */
-    @Override
-    public PositionValidator setMaxHeight (int maxHeight) throws LawnMowerException {
-        if (maxHeight < 1) {
-            logger.error("maxHeight '{}' must be greater than 0", maxHeight);
-            throw new LawnMowerException("unvalid maxHeight");
-        }
-        
-        
-        this.maxHeight = maxHeight;
-        return this;
-    }
-    
     
     /**
      * 
@@ -94,23 +45,22 @@ public class PositionValidator implements IPositionValidator {
      */
     @Override
     public boolean isValid(int x, int y) {
-        return this.isValidRange(x, this.getMaxWidth())
+        return this.isValidRange(this.getMinWidth(), x)
+            && this.isValidRange(x, this.getMaxWidth())
+            && this.isValidRange(this.getMaxHeight(), y)
             && this.isValidRange(y, this.getMaxHeight());
     }
     
     /**
      * 
-     * @param i
+     * @param min
      * @param max
      * @return return TRUE if i is between 0 and max
      */
-    protected boolean isValidRange (int i, int max) {
-        int minLimit = true == this.isIncludingZero()
-            ? -1
-            : 0;
-        
-        return (minLimit < i )
-                && (i <= max);
+    protected boolean isValidRange (int min, int max) {
+        return true == this.isIncluding()
+            ? min <= max
+            : min < max;
     }
     
 }

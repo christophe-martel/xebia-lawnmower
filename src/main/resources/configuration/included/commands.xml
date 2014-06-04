@@ -19,7 +19,7 @@
             class="fr.martel.christophe.lawnmower.process.commands.impl.A"
             scope="prototype" >
         <property name="positionValidator">
-            <ref bean="validator.lawn-mower.position" />
+            <ref bean="lawn-mower.validator.position" />
         </property>
     </bean>
     <bean   id="command.D"

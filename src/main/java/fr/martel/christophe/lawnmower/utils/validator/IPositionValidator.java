@@ -24,7 +24,7 @@ import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public interface IPositionValidator {
-
+    
     /**
      *
      * @param x
@@ -32,14 +32,14 @@ public interface IPositionValidator {
      * @return
      */
     boolean isValid (int x, int y);
-
+    
     /**
      *
      * @param maxHeight
      * @return
      * @throws LawnMowerException
      */
-    IPositionValidator setMaxHeight (int maxHeight) throws LawnMowerException;
+    IPositionValidator setMaxHeight (int maxHeight);
 
     /**
      *
@@ -47,14 +47,31 @@ public interface IPositionValidator {
      * @return
      * @throws LawnMowerException
      */
-    IPositionValidator setMaxWidth (int maxWidth) throws LawnMowerException;
+    IPositionValidator setMaxWidth (int maxWidth);
+    
     
     
     /**
+     *
+     * @param minHeight
+     * @return
+     * @throws LawnMowerException
+     */
+    IPositionValidator setMinHeight (int minHeight);
+
+    /**
+     *
+     * @param minWidth
+     * @return
+     * @throws LawnMowerException
+     */
+    IPositionValidator setMinWidth (int minWidth);
+    
+    /**
      * 
-     * @param includingZero
+     * @param including
      * @return 
      */
-    IPositionValidator setIncludingZero (boolean includingZero);
+    IPositionValidator setIncluding (boolean including);
     
 }

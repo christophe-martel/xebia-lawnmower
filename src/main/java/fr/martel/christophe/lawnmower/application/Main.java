@@ -18,18 +18,15 @@ package fr.martel.christophe.lawnmower.application;
 
 import fr.martel.christophe.lawnmower.constants.Application;
 import fr.martel.christophe.lawnmower.constants.CompassPoint;
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.constants.Movement;
+import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.model.ILawn;
-import fr.martel.christophe.lawnmower.model.lawn.ILawnBuilder;
-import fr.martel.christophe.lawnmower.model.lawnmower.ILawnMowerBuilder;
-import fr.martel.christophe.lawnmower.process.Shearer;
-import fr.martel.christophe.lawnmower.process.commands.impl.A;
+import fr.martel.christophe.lawnmower.process.IShearer;
 import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 import fr.martel.christophe.lawnmower.utils.file.ILawnMowerDesc;
 import fr.martel.christophe.lawnmower.utils.file.ILawnMowerDescReader;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -49,7 +46,7 @@ public class Main {
     
     private ILawn lawn = null;
     
-    private ArrayList<IAutomaticLawnMower> lawnMowers = new ArrayList<>();
+    private ArrayList<ILawnMower> lawnMowers = new ArrayList<>();
     
     
     
@@ -70,6 +67,23 @@ public class Main {
         }
         
     }
+    
+    public static ILawn getNewLawn () {
+        return ((ILawn) context
+            .getBean(Application.BEAN_LAWN));
+    }
+    
+    public static ILawnMower getNewLawnMower () {
+        return ((ILawnMower) context
+            .getBean(Application.BEAN_LAWN_MOWER));
+    }
+    
+    
+    public static IShearer getNewShearer () {
+        return ((IShearer) context
+            .getBean(Application.BEAN_SHEARER));
+    }
+    
     
     protected Main() {
         logger.info("start");
@@ -103,9 +117,18 @@ public class Main {
     protected Main run () throws LawnMowerException {
         logger.info("run");
         
-        (new Shearer()).run(this.lawn, this.lawnMowers);
+        IShearer shearer = Main
+            .getNewShearer()
+            .on(this.lawn)
+            .push(this.lawnMowers)
+            .run();
         
-        
+        if (true == shearer.isFail()) {
+            logger.info("Oups, an error occurs ...");
+            
+        } else {
+            logger.info("Done");
+        }
         
         return this;
     }
@@ -119,16 +142,11 @@ public class Main {
     protected Main initLawn () throws LawnMowerException {
         logger.info("create lawn");
         
-        ILawnBuilder builder = (ILawnBuilder) context
-            .getBean(Application.BEAN_BUILDER_LAWN);
-        
-        
-        this.lawn = builder
-            .newLawn()
+        this.lawn = Main
+            .getNewLawn()
             .setHeight(this.reader.getLawn().getDimension().height)
             .setWidth(this.reader.getLawn().getDimension().width)
-            .getLawn();
-        
+        ;
         
         return this;
     }
@@ -137,19 +155,14 @@ public class Main {
     protected Main initLawnMowers () throws LawnMowerException {
         logger.info("create lawn mowers");
         
-        ILawnMowerBuilder builder = (ILawnMowerBuilder) context
-            .getBean(Application.BEAN_BUILDER_LAWN_MOWER);
-        
         for(ILawnMowerDesc desc : this.reader.getLawnMowers()) {
             this.lawnMowers.add(
-                builder
-                    .newLawnMower()
-                    .withDefaultCommands()
+                Main
+                    .getNewLawnMower()
                     .setX(desc.getPosition().x)
                     .setY(desc.getPosition().y)
                     .setInFrontOf(CompassPoint.getByName(desc.getInFrontOf()))
-                    .setMovements(desc.getMovements())
-                    .getLawnMower());
+                    .setMovements(Movement.parse(desc.getMovements())));
             
         }
         

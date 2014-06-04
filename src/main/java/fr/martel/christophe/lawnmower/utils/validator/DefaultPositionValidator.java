@@ -17,35 +17,11 @@
 
 package fr.martel.christophe.lawnmower.utils.validator;
 
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class DefaultPositionValidator implements IPositionValidator {
-    
-    final static Logger logger = LoggerFactory.getLogger(DefaultPositionValidator.class);
-    
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private int maxWidth = 1;
-    
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private int maxHeight = 1;
-    
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private boolean includingZero = false;
+public class DefaultPositionValidator extends APositionValidator {
     
     @Override
     public boolean isValid (int x, int y) {

@@ -18,14 +18,15 @@ package fr.martel.christophe.lawnmower.model.lawnmower;
 
 import fr.martel.christophe.lawnmower.constants.CompassPoint;
 import fr.martel.christophe.lawnmower.constants.Movement;
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
 import fr.martel.christophe.lawnmower.model.ILawn;
-import fr.martel.christophe.lawnmower.process.commands.DefaultCommands;
+import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.process.commands.ICommands;
+import fr.martel.christophe.lawnmower.process.validator.ILawnMowerValidator;
 import java.util.ArrayList;
 import lombok.AccessLevel;
 import lombok.experimental.Accessors;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -33,7 +34,7 @@ import lombok.Setter;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public class LawnMower
-        implements IAutomaticLawnMower {
+        implements ILawnMower {
     
     @Accessors(chain = true)
     @Getter
@@ -63,9 +64,25 @@ public class LawnMower
     
     @Accessors(chain = true)
     @Getter
-    @Setter
-    private ICommands commands = new DefaultCommands();
+    @Setter(AccessLevel.PACKAGE)
+    private ICommands commands = null;
     
+    @Accessors(chain = true)
+    @Getter
+    @Setter(AccessLevel.PACKAGE)
+    private ILawnMowerValidator validator = null;
     
+    public LawnMower(
+            @NonNull ICommands commands,
+            @NonNull ILawnMowerValidator validator) {
+        this.commands = commands;
+        this.validator = validator;
+    }
+    
+    public LawnMower init () {
+        this.validator.setLawnMower(this);
+        
+        return this;
+    }
     
 }

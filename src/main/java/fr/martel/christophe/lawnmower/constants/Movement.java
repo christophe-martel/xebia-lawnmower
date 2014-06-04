@@ -17,6 +17,7 @@
 
 package fr.martel.christophe.lawnmower.constants;
 
+import java.util.ArrayList;
 import lombok.Getter;
 
 /**
@@ -61,4 +62,13 @@ public enum Movement {
         return Movement.getByName(Character.toString(c));
     }
     
+    static public ArrayList<Movement> parse (ArrayList<Character> movements) {
+        ArrayList<Movement> result = new ArrayList<>();
+        
+        for (Character c : movements) {
+            result.add(Movement.getByName(c));
+        }
+        
+        return result;
+    }
 }

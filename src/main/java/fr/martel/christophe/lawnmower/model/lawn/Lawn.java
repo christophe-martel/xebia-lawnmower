@@ -17,7 +17,6 @@
 package fr.martel.christophe.lawnmower.model.lawn;
 
 import fr.martel.christophe.lawnmower.model.ILawn;
-import lombok.AccessLevel;
 import lombok.experimental.Accessors;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,12 +30,12 @@ public class Lawn
         implements ILawn {
     @Accessors(chain = true)
     @Getter
-    @Setter(AccessLevel.PACKAGE)
+    @Setter
     private int width = 0;
     
     @Accessors(chain = true)
     @Getter
-    @Setter(AccessLevel.PACKAGE)
+    @Setter
     private int height = 0;
     
 }

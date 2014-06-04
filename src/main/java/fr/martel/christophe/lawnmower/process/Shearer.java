@@ -17,14 +17,15 @@
 
 package fr.martel.christophe.lawnmower.process;
 
-import fr.martel.christophe.lawnmower.constants.Movement;
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.model.ILawn;
-import fr.martel.christophe.lawnmower.model.lawn.LawnBuilder;
-import fr.martel.christophe.lawnmower.process.commands.IMovement;
+import fr.martel.christophe.lawnmower.process.validator.ILawnValidator;
 import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 import java.util.ArrayList;
-import java.util.Map.Entry;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,56 +34,69 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Shearer {
+public class Shearer implements IShearer {
     
     final static Logger logger = LoggerFactory.getLogger(Shearer.class);
     
-    public Shearer run (ILawn lawn, ArrayList<IAutomaticLawnMower> lawnMowers) throws LawnMowerException {
-        
-        this.prepareLawnMowers(lawn, lawnMowers);
-        
-        
-        for (IAutomaticLawnMower lm : lawnMowers) {
-            
-            logger.debug("lawn: {}x{}", lawn.getWidth(), lawn.getHeight());
-            logger.debug("run sequence: {}", lm.getMovements());
-            
-            lm.getCommands().apply(lm);
-        }
-        
+    private ILawnValidator validator = null;
+
+    public Shearer (ILawnValidator validator) {
+        this.validator = validator;
+    }
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter(AccessLevel.PRIVATE)
+    private ILawn lawn = null;
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter(AccessLevel.PRIVATE)
+    private ArrayList<ILawnMower> lawnMowers = new ArrayList<>();
+    
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter(AccessLevel.PRIVATE)
+    private boolean fail = false;
+    
+    @Override
+    public IShearer on(ILawn lawn) {
+        this.lawn = lawn;
+        return this;
+    }
+
+    @Override
+    public IShearer push(ILawnMower lawnMower) {
+        this.lawnMowers.add(lawnMower);
         return this;
     }
     
-    protected Shearer prepareLawnMowers (
-            ILawn lawn,
-            ArrayList<IAutomaticLawnMower> lawnMowers) throws LawnMowerException {
-        
-        for (IAutomaticLawnMower lm : lawnMowers) {
-            this.prepareLawnMower(lawn, lm);
+    @Override
+    public IShearer push(ArrayList<ILawnMower> lawnMowers) {
+        for (ILawnMower lawnMower : lawnMowers) {
+            this.push(lawnMower);
             
         }
-        
-        
         return this;
     }
     
-    protected Shearer prepareLawnMower (
-            ILawn lawn,
-            IAutomaticLawnMower lawnMower) throws LawnMowerException {
-        
-        for (Entry<Movement, IMovement> entry : lawnMower.getCommands().getMovements().entrySet()) {
-            entry
-                .getValue()
-                .getPositionValidator()
-                .setMaxHeight(lawn.getHeight())
-                .setMaxWidth(lawn.getWidth());
-            
+    @Override
+    public IShearer run () {
+        this.setFail(true);
+        try {
+            for (ILawnMower lm : lawnMowers) {
+                logger.debug("lawn: {}x{}", lawn.getWidth(), lawn.getHeight());
+                logger.debug("run sequence: {}", lm.getMovements());
+                
+                lm.getCommands().apply(lm);
+            }
+            this.setFail(false);
+        } catch (LawnMowerException ex) {
+            logger.error("error", ex);
         }
-            
-        
         return this;
     }
-    
     
     
     

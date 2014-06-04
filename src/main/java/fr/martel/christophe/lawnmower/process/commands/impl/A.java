@@ -17,9 +17,8 @@
 
 package fr.martel.christophe.lawnmower.process.commands.impl;
 
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.process.commands.AMovement;
-
 import fr.martel.christophe.lawnmower.process.commands.IMovement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,16 +32,16 @@ public class A extends AMovement  {
     final static Logger logger = LoggerFactory.getLogger(A.class);
     
     @Override
-    public IMovement apply(IAutomaticLawnMower automaticLawnMower) {
+    public IMovement apply(ILawnMower lawnMower) {
         logger.debug("receive movement A");
-        logger.debug("in front of: {}", automaticLawnMower.getInFrontOf().name());
-        logger.debug("current position {}.{}", automaticLawnMower.getX(), automaticLawnMower.getY());
+        logger.debug("in front of: {}", lawnMower.getInFrontOf().name());
+        logger.debug("current position {}.{}", lawnMower.getX(), lawnMower.getY());
         
-        int newX = automaticLawnMower.getX();
-        int newY = automaticLawnMower.getY();
+        int newX = lawnMower.getX();
+        int newY = lawnMower.getY();
         
         
-        switch (automaticLawnMower.getInFrontOf()) {
+        switch (lawnMower.getInFrontOf()) {
             case N : {
                 newY++;
                 
@@ -69,7 +68,7 @@ public class A extends AMovement  {
             
         } else {
             logger.info("move to point {}.{}", newX, newY);
-            automaticLawnMower
+            lawnMower
                 .setX(newX)
                 .setY(newY);
             

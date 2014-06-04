@@ -27,7 +27,5 @@ import fr.martel.christophe.lawnmower.utils.validator.IPositionValidator;
  */
 public interface ILawnValidator {
     
-    public ILawnValidator setPositionValidator (IPositionValidator positionValidator);
-    
     public boolean isValid (ILawn lawn);
 }

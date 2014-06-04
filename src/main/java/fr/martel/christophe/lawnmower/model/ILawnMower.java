@@ -18,6 +18,10 @@
 package fr.martel.christophe.lawnmower.model;
 
 import fr.martel.christophe.lawnmower.constants.CompassPoint;
+import fr.martel.christophe.lawnmower.constants.Movement;
+import fr.martel.christophe.lawnmower.process.commands.ICommands;
+import fr.martel.christophe.lawnmower.process.validator.ILawnMowerValidator;
+import java.util.ArrayList;
 
 
 /**
@@ -37,4 +41,13 @@ public interface ILawnMower {
     public ILawnMower setY(int y);
     
     public ILawnMower setInFrontOf(CompassPoint cp);
+    
+    public ArrayList<Movement> getMovements();
+    
+    public ICommands getCommands();
+    
+    public ILawnMowerValidator getValidator();
+    
+    public ILawnMower setMovements(ArrayList<Movement> movements);
+    
 }

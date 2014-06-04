@@ -17,39 +17,53 @@
 
 package fr.martel.christophe.lawnmower.process.validator.impl;
 
+import fr.martel.christophe.lawnmower.model.ILawn;
 import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.process.validator.ILawnMowerValidator;
+import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 import fr.martel.christophe.lawnmower.utils.validator.DefaultPositionValidator;
 import fr.martel.christophe.lawnmower.utils.validator.IPositionValidator;
-import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public class PositionOfLawnMowerValidator implements ILawnMowerValidator {
-
+    
+    final static Logger logger = LoggerFactory.getLogger(PositionOfLawnMowerValidator.class);
+    
     @Accessors(chain = true)
-    @Getter
     @Setter
+    private ILawnMower lawnMower = null;
+    
     private IPositionValidator positionValidator = new DefaultPositionValidator();
     
-
+    
+    public PositionOfLawnMowerValidator(IPositionValidator positionValidator) {
+        this.positionValidator = positionValidator;
+    }
+    
     @Override
-    public boolean isValid (ILawnMower lawnmower) {
+    public boolean isValid (ILawn lawn) {
+        boolean result = false;
         
-        if (null == lawnmower) {
-            return false;
+        if (null == lawn) {
+            return result;
             
         }
         
         return this
-            .getPositionValidator()
+            .positionValidator
+            .setMaxWidth(lawn.getWidth())
+            .setMaxHeight(lawn.getHeight())
             .isValid(
-                lawnmower.getX(),
-                lawnmower.getY());
+                this.lawnMower.getX(),
+                this.lawnMower.getY());
+        
     }
     
     

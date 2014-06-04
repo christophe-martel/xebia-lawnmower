@@ -23,8 +23,13 @@ package fr.martel.christophe.lawnmower.model;
  */
 public interface ILawn {
     
+    public ILawn setWidth (int height);
+    
+    public ILawn setHeight (int width);
+    
     public int getWidth ();
     
     public int getHeight ();
+    
     
 }

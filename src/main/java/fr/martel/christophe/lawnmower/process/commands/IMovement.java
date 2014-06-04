@@ -17,7 +17,7 @@
 
 package fr.martel.christophe.lawnmower.process.commands;
 
-import fr.martel.christophe.lawnmower.model.IAutomaticLawnMower;
+import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.utils.validator.IPositionValidator;
 
 /**
@@ -26,7 +26,7 @@ import fr.martel.christophe.lawnmower.utils.validator.IPositionValidator;
  */
 public interface IMovement {
     
-    public IMovement apply (IAutomaticLawnMower automaticLawnMower);
+    public IMovement apply (ILawnMower lawnMower);
     
     public IMovement setPositionValidator (IPositionValidator positionValidator);
     

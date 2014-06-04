@@ -16,39 +16,35 @@
     <aop:aspectj-autoproxy />
     
     <!-- lawn validator -->
-    <bean   id="validator.lawn.position"
-            class="fr.martel.christophe.lawnmower.utils.validator.PositionValidator"
-            scope="prototype" >
-        <property name="maxWidth" value="10" />
-        <property name="maxHeight" value="10" />
-        <property name="includingZero" value="false" />
-    </bean>
-    
-    <bean   id="validator.lawn"
+    <bean   id="lawn.validator.size"
             class="fr.martel.christophe.lawnmower.process.validator.impl.SizeOfLawnValidator"
             scope="prototype" >
-        <property name="positionValidator">
-            <ref bean="validator.lawn.position" />
-        </property>
+        <constructor-arg>
+            <bean   class="fr.martel.christophe.lawnmower.utils.validator.PositionValidator"
+                    scope="prototype" >
+                <property name="minWidth" value="1" />
+                <property name="maxWidth" value="9" />
+                <property name="minHeight" value="1" />
+                <property name="maxHeight" value="9" />
+                <property name="including" value="true" />
+            </bean>
+        </constructor-arg>
     </bean>
     
-    
-    
-    <!-- lawn mower validator -->
-    <bean   id="validator.lawn-mower.position"
+    <bean   id="lawn-mower.validator.position"
             class="fr.martel.christophe.lawnmower.utils.validator.PositionValidator"
             scope="prototype" >
+        <property name="minWidth" value="0" />
         <property name="maxWidth" value="9" />
+        <property name="minHeight" value="0" />
         <property name="maxHeight" value="9" />
-        <property name="includingZero" value="true" />
+        <property name="including" value="true" />
     </bean>
-    
-    <bean   id="validator.lawn-mower"
+            
+    <bean   id="lawn-mower.validator"
             class="fr.martel.christophe.lawnmower.process.validator.impl.PositionOfLawnMowerValidator"
             scope="prototype" >
-        <property name="positionValidator">
-            <ref bean="validator.lawn-mower.position" />
-        </property>
+        <constructor-arg ref="lawn-mower.validator.position"/>
     </bean>
     
 </beans>

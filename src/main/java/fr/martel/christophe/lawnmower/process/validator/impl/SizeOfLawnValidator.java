@@ -18,12 +18,12 @@
 package fr.martel.christophe.lawnmower.process.validator.impl;
 
 import fr.martel.christophe.lawnmower.model.ILawn;
+import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.process.validator.ILawnValidator;
 import fr.martel.christophe.lawnmower.utils.validator.DefaultPositionValidator;
 import fr.martel.christophe.lawnmower.utils.validator.IPositionValidator;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -32,27 +32,32 @@ import lombok.experimental.Accessors;
 public class SizeOfLawnValidator
         implements ILawnValidator {
     
+    final static Logger logger = LoggerFactory.getLogger(SizeOfLawnValidator.class);
     
-    @Accessors(chain = true)
-    @Getter
-    @Setter
+    
     private IPositionValidator positionValidator = new DefaultPositionValidator();
     
+    
+    public SizeOfLawnValidator (IPositionValidator positionValidator) {
+        this.positionValidator = positionValidator;
+    }
     
     /**
      * 
      * @param lawn
-     * @return return TRUE if width and height are between 0 and 10, excluded
+     * @return return TRUE if width and height are between 1 and 9, included
      */
     @Override
-    public boolean isValid(ILawn lawn) {
+    public boolean isValid (ILawn lawn) {
+        boolean result = false;
+        
         if (null == lawn) {
-            return false;
+            return result;
             
         }
         
         return this
-            .getPositionValidator()
+            .positionValidator
             .isValid(
                 lawn.getWidth(),
                 lawn.getHeight());
