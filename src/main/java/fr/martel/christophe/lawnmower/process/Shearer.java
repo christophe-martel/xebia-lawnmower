@@ -17,11 +17,14 @@
 
 package fr.martel.christophe.lawnmower.process;
 
+import fr.martel.christophe.lawnmower.constants.Movement;
 import fr.martel.christophe.lawnmower.model.ILawnMower;
 import fr.martel.christophe.lawnmower.model.ILawn;
+import fr.martel.christophe.lawnmower.process.commands.IMovement;
 import fr.martel.christophe.lawnmower.process.validator.ILawnValidator;
 import fr.martel.christophe.lawnmower.utils.exception.LawnMowerException;
 import java.util.ArrayList;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -97,6 +100,24 @@ public class Shearer implements IShearer {
         }
         return this;
     }
+    
+    
+    protected IShearer calibrateLawnMower () {
+        
+        for (ILawnMower lawnmower : this.lawnMowers) {
+            for (Map.Entry<Movement, IMovement> entry : lawnmower.getCommands().getMovements().entrySet()) {
+                entry
+                    .getValue()
+                    .getPositionValidator()
+                    .setMaxWidth(this.lawn.getWidth())
+                    .setMaxHeight(this.lawn.getHeight())
+                ;
+            }
+        }
+        
+        return this;
+    }
+    
     
     
     
