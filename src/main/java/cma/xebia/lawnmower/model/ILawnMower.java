@@ -46,8 +46,6 @@ public interface ILawnMower {
     
     public ICommands getCommands();
     
-    public ILawnMowerValidator getValidator();
-    
     public ILawnMower setMovements(List<Movement> movements);
     
 }

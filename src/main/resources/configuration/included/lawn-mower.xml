@@ -28,11 +28,10 @@
     
     
     <bean   id="lawn-mower"
-            class="cma.xebia.lawnmower.model.lawnmower.LawnMower"
+            class="cma.xebia.lawnmower.model.lawnMower.LawnMower"
             init-method="init"
             scope="prototype" >
         <constructor-arg ref="lawn-mower.commands"/>
-        <constructor-arg ref="lawn-mower.validator"/>
     </bean>
     
     

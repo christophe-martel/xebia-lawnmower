@@ -51,8 +51,6 @@ public class Main {
     private List<ILawnMower> lawnMowers = new ArrayList<>();
     
     
-    
-    
     /**
      * @param args the command line arguments
      */

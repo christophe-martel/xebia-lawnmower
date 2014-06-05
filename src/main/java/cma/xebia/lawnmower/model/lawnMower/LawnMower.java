@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cma.xebia.lawnmower.model.lawnmower;
+package cma.xebia.lawnmower.model.lawnMower;
 
 import cma.xebia.lawnmower.model.constants.CompassPoint;
 import cma.xebia.lawnmower.model.constants.Movement;
@@ -36,12 +36,6 @@ import lombok.Setter;
  */
 public class LawnMower
         implements ILawnMower {
-    
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private ILawn lawn = null;
-    
     
     @Accessors(chain = true)
     @Getter
@@ -68,22 +62,12 @@ public class LawnMower
     @Setter(AccessLevel.PACKAGE)
     private ICommands commands = null;
     
-    @Accessors(chain = true)
-    @Getter
-    @Setter(AccessLevel.PACKAGE)
-    private ILawnMowerValidator validator = null;
-    
-    public LawnMower(
-            @NonNull ICommands commands,
-            @NonNull ILawnMowerValidator validator) {
+    public LawnMower(@NonNull ICommands commands) {
         this.commands = commands;
-        this.validator = validator;
     }
     
     public LawnMower init () {
         this.commands.setLawnMower(this);
-        this.validator.setLawnMower(this);
-        
         return this;
     }
 
