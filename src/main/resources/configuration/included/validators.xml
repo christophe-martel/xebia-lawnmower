@@ -12,15 +12,15 @@
             http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.1.xsd"
         >
     <context:annotation-config />
-    <context:component-scan base-package="fr.martel.christophe.lawnmower" />
+    <context:component-scan base-package="cma.xebia.lawnmower" />
     <aop:aspectj-autoproxy />
     
     <!-- lawn validator -->
     <bean   id="lawn.validator.size"
-            class="fr.martel.christophe.lawnmower.process.validator.impl.SizeOfLawnValidator"
+            class="cma.xebia.lawnmower.process.validator.impl.SizeOfLawnValidator"
             scope="prototype" >
         <constructor-arg>
-            <bean   class="fr.martel.christophe.lawnmower.utils.validator.PositionValidator"
+            <bean   class="cma.xebia.lawnmower.utils.validator.PositionValidator"
                     scope="prototype" >
                 <property name="minWidth" value="1" />
                 <property name="maxWidth" value="9" />
@@ -32,7 +32,7 @@
     </bean>
     
     <bean   id="lawn-mower.validator.position"
-            class="fr.martel.christophe.lawnmower.utils.validator.PositionValidator"
+            class="cma.xebia.lawnmower.utils.validator.PositionValidator"
             scope="prototype" >
         <property name="minWidth" value="0" />
         <property name="maxWidth" value="9" />
@@ -42,7 +42,7 @@
     </bean>
             
     <bean   id="lawn-mower.validator"
-            class="fr.martel.christophe.lawnmower.process.validator.impl.PositionOfLawnMowerValidator"
+            class="cma.xebia.lawnmower.process.validator.impl.PositionOfLawnMowerValidator"
             scope="prototype" >
         <constructor-arg ref="lawn-mower.validator.position"/>
     </bean>

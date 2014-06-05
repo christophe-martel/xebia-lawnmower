@@ -12,34 +12,34 @@
             http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.1.xsd"
         >
     <context:annotation-config />
-    <context:component-scan base-package="fr.martel.christophe.lawnmower" />
+    <context:component-scan base-package="cma.xebia.lawnmower" />
     <aop:aspectj-autoproxy />
     
     <bean   id="command.A"
-            class="fr.martel.christophe.lawnmower.process.commands.impl.A"
+            class="cma.xebia.lawnmower.process.commands.actions.A"
             scope="prototype" >
         <property name="positionValidator">
             <ref bean="lawn-mower.validator.position" />
         </property>
     </bean>
     <bean   id="command.D"
-        class="fr.martel.christophe.lawnmower.process.commands.impl.D"
+        class="cma.xebia.lawnmower.process.commands.actions.D"
         scope="prototype" />
     <bean   id="command.G"
-        class="fr.martel.christophe.lawnmower.process.commands.impl.G"
+        class="cma.xebia.lawnmower.process.commands.actions.G"
         scope="prototype" />
     
     <bean   id="lawn-mower.commands"
-            class="fr.martel.christophe.lawnmower.process.commands.Commands"
+            class="cma.xebia.lawnmower.process.commands.Commands"
             scope="prototype" >
         <property name="movements">
             <map>
                 <entry 
-                    key="#{T(fr.martel.christophe.lawnmower.constants.Movement).A}"
+                    key="#{T(cma.xebia.lawnmower.model.constants.Movement).A}"
                     value-ref="command.A" />
-                <entry key="#{T(fr.martel.christophe.lawnmower.constants.Movement).D}"
+                <entry key="#{T(cma.xebia.lawnmower.model.constants.Movement).D}"
                     value-ref="command.D" />
-                <entry key="#{T(fr.martel.christophe.lawnmower.constants.Movement).G}"
+                <entry key="#{T(cma.xebia.lawnmower.model.constants.Movement).G}"
                     value-ref="command.G" />
             </map>
         </property>

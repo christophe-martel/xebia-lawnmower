@@ -12,23 +12,23 @@
             http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.1.xsd"
         >
     <context:annotation-config />
-    <context:component-scan base-package="fr.martel.christophe.lawnmower" />
+    <context:component-scan base-package="cma.xebia.lawnmower" />
     <aop:aspectj-autoproxy />
     
     
     <bean   id="shearer"
-            class="fr.martel.christophe.lawnmower.process.Shearer"
+            class="cma.xebia.lawnmower.process.Shearer"
             scope="prototype" >
         <constructor-arg ref="lawn.validator.size"/>
     </bean>
     
     <bean   id="lawn"
-            class="fr.martel.christophe.lawnmower.model.lawn.Lawn"
+            class="cma.xebia.lawnmower.model.lawn.Lawn"
             scope="prototype" />
     
     
     <bean   id="lawn-mower"
-            class="fr.martel.christophe.lawnmower.model.lawnmower.LawnMower"
+            class="cma.xebia.lawnmower.model.lawnmower.LawnMower"
             init-method="init"
             scope="prototype" >
         <constructor-arg ref="lawn-mower.commands"/>

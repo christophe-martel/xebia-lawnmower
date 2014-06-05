@@ -12,18 +12,18 @@
             http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.1.xsd"
         >
     <context:annotation-config />
-    <context:component-scan base-package="fr.martel.christophe.lawnmower" />
+    <context:component-scan base-package="cma.xebia.lawnmower" />
     <aop:aspectj-autoproxy />
     
     
     <bean   id="description.parser"
-            class="fr.martel.christophe.lawnmower.utils.file.LawnMowerDescReader"
+            class="cma.xebia.lawnmower.utils.file.LawnMowerDescReader"
             scope="prototype" >
         <property name="defaultResourcePath" >
-            <util:constant static-field="fr.martel.christophe.lawnmower.constants.Application.RES_LAWNMOWER_DESC"/>
+            <util:constant static-field="cma.xebia.lawnmower.application.Constant.RES_LAWNMOWER_DESC"/>
         </property>
         <property name="charset" >
-            <util:constant static-field="fr.martel.christophe.lawnmower.constants.Application.LAWNMOWER_FILE_CHARSET"/>
+            <util:constant static-field="cma.xebia.lawnmower.application.Constant.LAWNMOWER_FILE_CHARSET"/>
         </property>
     </bean>
     
