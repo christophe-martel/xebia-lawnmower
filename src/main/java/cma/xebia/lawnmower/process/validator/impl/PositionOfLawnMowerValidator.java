@@ -24,16 +24,13 @@ import cma.xebia.lawnmower.utils.validator.DefaultPositionValidator;
 import cma.xebia.lawnmower.utils.validator.IPositionValidator;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public class PositionOfLawnMowerValidator implements ILawnMowerValidator {
-    
-    final static Logger logger = LoggerFactory.getLogger(PositionOfLawnMowerValidator.class);
     
     @Accessors(chain = true)
     @Setter

@@ -18,7 +18,6 @@
 package cma.xebia.lawnmower.utils.file;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -21,8 +21,6 @@ import cma.xebia.lawnmower.model.ILawn;
 import cma.xebia.lawnmower.process.validator.ILawnValidator;
 import cma.xebia.lawnmower.utils.validator.DefaultPositionValidator;
 import cma.xebia.lawnmower.utils.validator.IPositionValidator;
-import lombok.extern.slf4j.Slf4j;
-
 
 /**
  *

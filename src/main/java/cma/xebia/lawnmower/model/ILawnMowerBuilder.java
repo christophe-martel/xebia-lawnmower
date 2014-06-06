@@ -22,7 +22,6 @@ package cma.xebia.lawnmower.model;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public interface ILawnMowerBuilder {
-    
-     public ILawnMower create ();
+    public ILawnMower create ();
     
 }

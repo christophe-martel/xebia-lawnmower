@@ -19,7 +19,6 @@ package cma.xebia.lawnmower.process;
 
 import cma.xebia.lawnmower.model.ILawn;
 import cma.xebia.lawnmower.model.ILawnMower;
-import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import java.util.List;
 
 
@@ -31,7 +30,7 @@ public interface IShearer {
     
     public boolean isFail ();
     
-    public Exception getException ();
+    public List<String> getErrors ();
     
     public IShearer init ();
     

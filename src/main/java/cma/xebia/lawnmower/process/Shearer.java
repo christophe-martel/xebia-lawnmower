@@ -32,7 +32,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -75,13 +74,14 @@ public class Shearer implements IShearer {
     @Accessors(chain = true)
     @Getter
     @Setter(AccessLevel.PRIVATE)
-    private Exception exception = null;
+    private List<String> errors = new ArrayList<>();
     
     public Shearer (
             @NonNull ILawnValidator lawnValidator,
             @NonNull ILawnMowerValidator lawnMowerValidator) {
         this.lawnValidator = lawnValidator;
         this.lawnMowerValidator = lawnMowerValidator;
+        
     }
     
     @Override
@@ -92,6 +92,7 @@ public class Shearer implements IShearer {
         this.mowed = false;
         this.lawnMowers = new ArrayList<>();
         this.lawn = null;
+        this.errors.clear();
         
         return this;
     }
@@ -153,8 +154,8 @@ public class Shearer implements IShearer {
             }
             
             this.setFail(true);
-            this.setException(new LawnMowerException(
-                String.format("lawn mowers #{} is out of bounds", i)));
+            this.errors.add(String.format(
+                "lawn mowers #{} is out of bounds", i));
         }
         
         return this;
@@ -191,7 +192,7 @@ public class Shearer implements IShearer {
             this.setFail(false);
         } catch (LawnMowerException ex) {
             log.error("error", ex);
-            this.setException(ex);
+            this.errors.add(ex.getMessage());
         }
         return this;
     }
@@ -214,7 +215,6 @@ public class Shearer implements IShearer {
         
         return this;
     }
-    
     
     
     

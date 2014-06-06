@@ -18,10 +18,8 @@ package cma.xebia.lawnmower.model.lawnMower;
 
 import cma.xebia.lawnmower.model.constants.CompassPoint;
 import cma.xebia.lawnmower.model.constants.Movement;
-import cma.xebia.lawnmower.model.ILawn;
 import cma.xebia.lawnmower.model.ILawnMower;
 import cma.xebia.lawnmower.process.commands.ICommands;
-import cma.xebia.lawnmower.process.validator.ILawnMowerValidator;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -62,15 +60,15 @@ public class LawnMower
     @Setter(AccessLevel.PACKAGE)
     private ICommands commands = null;
     
-    public LawnMower(@NonNull ICommands commands) {
+    LawnMower(@NonNull ICommands commands) {
         this.commands = commands;
     }
     
-    public LawnMower init () {
+    LawnMower init () {
         this.commands.setLawnMower(this);
         return this;
     }
-
+    
     @Override
     public String toString() {
         return String.format("LawnMower [%s%s%s]",

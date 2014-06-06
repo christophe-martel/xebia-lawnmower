@@ -22,8 +22,7 @@ import cma.xebia.lawnmower.model.ILawnMower;
 import cma.xebia.lawnmower.process.commands.AAction;
 import cma.xebia.lawnmower.process.commands.IAction;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  *
