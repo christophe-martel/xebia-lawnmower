@@ -20,17 +20,18 @@ import cma.xebia.lawnmower.model.constants.CompassPoint;
 import cma.xebia.lawnmower.model.constants.Movement;
 import cma.xebia.lawnmower.model.ILawnMower;
 import cma.xebia.lawnmower.model.ILawn;
+import cma.xebia.lawnmower.model.ILawnMowerBuilder;
+import cma.xebia.lawnmower.model.lawn.Lawn;
 import cma.xebia.lawnmower.process.IShearer;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import cma.xebia.lawnmower.utils.file.ILawnMowerDesc;
 import cma.xebia.lawnmower.utils.file.ILawnMowerDescReader;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -38,99 +39,89 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
+@Slf4j
 public class Main {
     
-    final static private Logger logger = LoggerFactory.getLogger(Main.class);
-    
-    static private ApplicationContext context = null;
-    
+    @Getter
     private ILawnMowerDescReader reader = null;
     
-    private ILawn lawn = null;
+    @Getter
+    private IShearer shearer = null;
     
-    private List<ILawnMower> lawnMowers = new ArrayList<>();
+    @Getter
+    private ILawnMowerBuilder builder = null;
     
     
     /**
      * @param args the command line arguments
      */
     public static void main (String[] args) {
+        
+        ApplicationContext context = new ClassPathXmlApplicationContext(
+                "/configuration/spring.xml",
+                Main.class);
+        
         try {
-            (new Main())
-                .configure()
+            ((Main) context.getBean(Constant.BEAN_MAIN))
                 .init(args)
                 .run()
                 .finish();
         } catch (LawnMowerException lme) {
-            logger.error("Oups", lme);
+            log.error("Oups", lme);
             
         }
         
     }
-    
-    public static ILawn getNewLawn () {
-        return ((ILawn) context
-            .getBean(Constant.BEAN_LAWN));
+
+    public Main (
+            @NonNull ILawnMowerDescReader reader,
+            @NonNull ILawnMowerBuilder builder,
+            @NonNull IShearer shearer) {
+        this.reader = reader;
+        this.builder = builder;
+        this.shearer = shearer;
     }
-    
-    public static ILawnMower getNewLawnMower () {
-        return ((ILawnMower) context
-            .getBean(Constant.BEAN_LAWN_MOWER));
-    }
-    
-    
-    public static IShearer getNewShearer () {
-        return ((IShearer) context
-            .getBean(Constant.BEAN_SHEARER));
-    }
-    
     
     protected Main() {
-        logger.info("start");
+        log.info("start");
     }
     
-    
-    
-    protected Main configure () {
-        logger.info("configure");
-        
-        context = new ClassPathXmlApplicationContext(
-                "/configuration/spring.xml",
-                Main.class);
-        
-        return this;
-    }
     
     protected Main init (String[] args) throws LawnMowerException {
-        logger.info("init");
+        log.info("init");
         
-        this
-            .initDescriptor(args)
-            .initLawn()
-            .initLawnMowers()
-        ;
+        File specific = getFileFromArguments(args);
+        if (null != specific) {
+            getReader().setDescriptorPath(specific.getAbsolutePath());
+        }
+        
+        getReader().read();
         
         return this;
     }
     
     
     protected Main run () throws LawnMowerException {
-        logger.info("run");
+        log.info("run");
         
-        IShearer shearer = Main
-            .getNewShearer()
-            .on(this.lawn)
-            .use(this.lawnMowers)
+        
+        ILawn lawn = computeLawn();
+        List<ILawnMower> lawnMowers = computeLawnMowers();
+        
+        shearer
+            .init()
+            .on(lawn)
+            .use(lawnMowers)
             .mow();
         
         if (true == shearer.isFail()) {
-            logger.info("Oups, an error occurs ...");
+            log.info("Oups, an error occurs ...");
             
         } else {
-            logger.info("Done");
+            log.info("Done");
             int i = -1;
             for (ILawnMower lm : shearer.getLawnMowers()) {
-                logger.info("lawn #{} is to position ({}x{}) and is in front of {}",
+                log.info("lawn #{} is to position ({}x{}) and is in front of {}",
                     ++i,
                     lm.getX(),
                     lm.getY(),
@@ -143,74 +134,58 @@ public class Main {
     }
     
     protected Main finish () {
-        logger.info("end");
+        log.info("end");
         
         return this;
     }
     
-    protected Main initLawn () throws LawnMowerException {
-        logger.info("create lawn");
+    protected ILawn computeLawn () throws LawnMowerException {
+        log.info("create lawn");
         
-        this.lawn = Main
-            .getNewLawn()
-            .setHeight(this.reader.getLawn().getDimension().height)
-            .setWidth(this.reader.getLawn().getDimension().width)
+        ILawn result = (new Lawn())
+            .setHeight(getReader().getLawn().getDimension().height)
+            .setWidth(getReader().getLawn().getDimension().width)
         ;
         
-        return this;
+        
+        return result;
     }
     
     
-    protected Main initLawnMowers () throws LawnMowerException {
-        logger.info("create lawn mowers");
+    protected List<ILawnMower> computeLawnMowers () throws LawnMowerException {
+        log.info("create lawn mowers");
+        List<ILawnMower> result = new ArrayList<>();
         
-        for(ILawnMowerDesc desc : this.reader.getLawnMowers()) {
-            this.lawnMowers.add(
-                Main
-                    .getNewLawnMower()
-                    .setX(desc.getPosition().x)
-                    .setY(desc.getPosition().y)
-                    .setInFrontOf(CompassPoint.valueOf(desc.getInFrontOf()))
-                    .setMovements(Movement.parseMovements(desc.getMovements())));
+        for(ILawnMowerDesc desc : reader.getLawnMowers()) {
+            result.add(getBuilder().create()
+                .setX(desc.getPosition().x)
+                .setY(desc.getPosition().y)
+                .setInFrontOf(CompassPoint.valueOf(desc.getInFrontOf()))
+                .setMovements(Movement.parseMovements(desc.getMovements())));
             
         }
         
-        return this;
-    }
-    
-    protected Main initDescriptor (String[] args) {
-        this.reader = (ILawnMowerDescReader) context
-            .getBean(Constant.BEAN_DESCRIPTOR_PARSER);
-        
-        
-        File specific = this.getFileFromArguments(args);
-        if (null != specific) {
-            this.reader.setDescriptorPath(specific.getAbsolutePath());
-        }
-        
-        this.reader.read();
-        
-        return this;
+        return result;
     }
     
     protected File getFileFromArguments (String[] args) {
         
         if (args.length < 1) {
-            logger.info("no arguments found");
+            log.info("no arguments found");
             return null;
             
         }
         
-        logger.info("Found arguments {}", args[0]);
+        log.info("Found arguments {}", args[0]);
         
         File result = new File(args[0]);
         if (true != result.exists()) {
-            logger.info("File {} doesn't exist", args[0]);
+            log.info("File {} doesn't exist", args[0]);
             return null;
         }
         
         if (true != result.isFile()) {
-            logger.info("File {} doesn't regular", args[0]);
+            log.info("File {} doesn't regular", args[0]);
             return null;
         }
         

@@ -4,27 +4,24 @@
         xmlns:aop="http://www.springframework.org/schema/aop"
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:util="http://www.springframework.org/schema/util"
         xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
-            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.1.xsd"
         >
     <context:annotation-config />
     <context:component-scan base-package="cma.xebia.lawnmower" />
     <aop:aspectj-autoproxy />
     
-    <import resource="classpath:configuration/included/utils.xml" />
-    <import resource="classpath:configuration/included/validators.xml" />
-    <import resource="classpath:configuration/included/commands.xml" />
-    <import resource="classpath:configuration/included/process.xml" />
-    <import resource="classpath:configuration/included/lawn-mower.xml" />
     
-    <bean   id="main"
-            class="cma.xebia.lawnmower.application.Main"
+    <bean   id="process.shearer"
+            class="cma.xebia.lawnmower.process.Shearer"
             scope="prototype" >
-        <constructor-arg ref="utils.description.parser"/>
-        <constructor-arg ref="process.shearer"/>
-        <constructor-arg ref="lawn-mower.builder"/>
+        <constructor-arg ref="validator.lawn.size"/>
+        <constructor-arg ref="validator.lawn-mower"/>
     </bean>
+    
     
 </beans>

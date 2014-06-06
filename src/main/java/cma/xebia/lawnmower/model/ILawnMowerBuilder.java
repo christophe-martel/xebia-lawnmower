@@ -15,39 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.process;
-
-import cma.xebia.lawnmower.model.ILawn;
-import cma.xebia.lawnmower.model.ILawnMower;
-import cma.xebia.lawnmower.utils.exception.LawnMowerException;
-import java.util.List;
-
+package cma.xebia.lawnmower.model;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface IShearer {
+public interface ILawnMowerBuilder {
     
-    public boolean isFail ();
-    
-    public Exception getException ();
-    
-    public IShearer init ();
-    
-    public IShearer on (ILawn lawn);
-    
-    public IShearer use(ILawnMower lawnMower);
-    
-    public IShearer use(List<ILawnMower> lawnMowers);
-    
-    public IShearer validate ();
-    
-    public IShearer mow ();
-    
-    public ILawn getLawn ();
-    
-    public List<ILawnMower> getLawnMowers ();
-    
+     public ILawnMower create ();
     
 }

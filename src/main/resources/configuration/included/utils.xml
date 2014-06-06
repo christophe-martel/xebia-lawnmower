@@ -16,7 +16,7 @@
     <aop:aspectj-autoproxy />
     
     
-    <bean   id="description.parser"
+    <bean   id="utils.description.parser"
             class="cma.xebia.lawnmower.utils.file.LawnMowerDescReader"
             scope="prototype" >
         <property name="defaultResourcePath" >

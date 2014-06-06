@@ -24,6 +24,7 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +32,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
+@Slf4j
 public class DefaultCommands implements ICommands {
-    
-    final static Logger logger = LoggerFactory.getLogger(DefaultCommands.class);
     
     @Accessors(chain = true)
     @Setter
@@ -47,8 +47,9 @@ public class DefaultCommands implements ICommands {
     
     @Override
     public ICommands run() {
-        logger.info("Call to defaut movement computer ...");
+        log.info("Call to defaut movement computer ...");
         return this;
     }
+    
     
 }

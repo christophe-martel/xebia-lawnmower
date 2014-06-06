@@ -24,17 +24,15 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
+@Slf4j
 public class Commands implements ICommands {
-    
-    final static Logger logger = LoggerFactory.getLogger(Commands.class);
     
     @Accessors(chain = true)
     @Setter
@@ -51,23 +49,16 @@ public class Commands implements ICommands {
      * @throws LawnMowerException
      */
     @Override
-    public ICommands run(
-
-            ) throws LawnMowerException {
-        logger.debug("Compute next position");
-        
+    public ICommands run() throws LawnMowerException {
         int sz = this.lawnMower.getMovements().size();
-        
         if (sz < 1) {
-            logger.debug("Any movement found");
+            log.debug("No action found");
             return this;
             
         }
-        
+        log.debug("run all actions");
         for (int i = 0; i < sz; i++) {
             this.executeCommand(this.lawnMower.getMovements().get(i));
-            
-            
         }
         
         
@@ -76,7 +67,7 @@ public class Commands implements ICommands {
     
     protected Commands executeCommand (Movement key) throws LawnMowerException {
         if (true != this.movements.containsKey(key)) {
-            logger.error("unknown command");
+            log.error("unknown command");
             throw new LawnMowerException(String.format("unknown command '%s'", key));
         }
         
@@ -84,4 +75,5 @@ public class Commands implements ICommands {
         
         return this;
     }
+    
 }

@@ -18,24 +18,33 @@
 package cma.xebia.lawnmower.model.lawnMower;
 
 import cma.xebia.lawnmower.model.ILawnMower;
+import cma.xebia.lawnmower.model.ILawnMowerBuilder;
 import cma.xebia.lawnmower.process.commands.ICommands;
+import com.rits.cloning.Cloner;
 import lombok.experimental.Accessors;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Builder {
+public class Builder implements ILawnMowerBuilder {
     
     @Accessors(chain = true)
     private ICommands commands = null;
     
-    public Builder (ICommands commands) {
+    private Cloner cloner = null;
+    
+    public Builder (ICommands commands, Cloner cloner) {
         this.commands = commands;
+        this.cloner = cloner;
     }
     
+    @Override
     public ILawnMower create () {
-        return new LawnMower(this.commands);
+        LawnMower result = new LawnMower(this.cloner.deepClone(this.commands));
+        result.init();
+        
+        return result;
     }
     
 }

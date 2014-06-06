@@ -15,32 +15,32 @@
     <context:component-scan base-package="cma.xebia.lawnmower" />
     <aop:aspectj-autoproxy />
     
-    <bean   id="command.A"
+    <bean   id="commands.A"
             class="cma.xebia.lawnmower.process.commands.actions.A"
             scope="prototype" >
         <property name="positionValidator">
-            <ref bean="lawn-mower.validator.position" />
+            <ref bean="validator.lawn-mower.position" />
         </property>
     </bean>
-    <bean   id="command.D"
+    <bean   id="commands.D"
         class="cma.xebia.lawnmower.process.commands.actions.D"
         scope="prototype" />
-    <bean   id="command.G"
+    <bean   id="commands.G"
         class="cma.xebia.lawnmower.process.commands.actions.G"
         scope="prototype" />
     
-    <bean   id="lawn-mower.commands"
+    <bean   id="commands.lawn-mower"
             class="cma.xebia.lawnmower.process.commands.Commands"
             scope="prototype" >
         <property name="movements">
             <map>
                 <entry 
                     key="#{T(cma.xebia.lawnmower.model.constants.Movement).A}"
-                    value-ref="command.A" />
+                    value-ref="commands.A" />
                 <entry key="#{T(cma.xebia.lawnmower.model.constants.Movement).D}"
-                    value-ref="command.D" />
+                    value-ref="commands.D" />
                 <entry key="#{T(cma.xebia.lawnmower.model.constants.Movement).G}"
-                    value-ref="command.G" />
+                    value-ref="commands.G" />
             </map>
         </property>
     </bean>

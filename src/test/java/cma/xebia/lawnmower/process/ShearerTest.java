@@ -23,27 +23,57 @@ import cma.xebia.lawnmower.model.constants.CompassPoint;
 import cma.xebia.lawnmower.model.constants.Movement;
 import cma.xebia.lawnmower.model.ILawn;
 import cma.xebia.lawnmower.model.ILawnMower;
+import cma.xebia.lawnmower.model.lawn.Lawn;
 import cma.xebia.lawnmower.utils.file.ILawnMowerDesc;
 import cma.xebia.lawnmower.utils.file.ILawnMowerDescReader;
-import cma.xebia.lawnmower.utils.file.LawnMowerDescReader;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.LinkedHashSet;
 import java.util.List;
 import junit.framework.TestCase;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
+@Slf4j
 public class ShearerTest extends TestCase {
+    
+    private ApplicationContext context = null;
+    
+    private Main main = null;
+    
     
     
     public ShearerTest(String testName) {
         super(testName);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        
+        context = new ClassPathXmlApplicationContext(
+                "/configuration/spring.xml",
+                Main.class);
+        
+        main = ((Main) context.getBean(Constant.BEAN_MAIN));
+        
+    }
+    
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        ((ConfigurableApplicationContext) context).close();
+    }
+    
+    
+    public void testNonNull () {
+        assertNotNull(main.getReader());
+        assertNotNull(main.getBuilder());
+        assertNotNull(main.getShearer());
     }
     
     /**
@@ -51,29 +81,22 @@ public class ShearerTest extends TestCase {
      */
     public void testRun() {
         
-        ApplicationContext context = new ClassPathXmlApplicationContext(
-                "/configuration/spring.xml",
-                Main.class);
         
-        IShearer shearer = ((IShearer) context
-            .getBean(Constant.BEAN_SHEARER));
+        IShearer shearer = main.getShearer();
         
-        ILawnMowerDescReader r = (new LawnMowerDescReader())
+        ILawnMowerDescReader r = main.getReader()
             .setDefaultResourcePath("/setup/lawnmower.desc")
             .setCharset("UTF-8")
             .read();
         
-        ILawn lawn = ((ILawn) context
-            .getBean(Constant.BEAN_LAWN))
+        ILawn lawn = (new Lawn())
             .setHeight(r.getLawn().getDimension().height)
             .setWidth(r.getLawn().getDimension().width)
         ;
         
         List<ILawnMower> lawnMowers = new ArrayList<>();
         for(ILawnMowerDesc desc : r.getLawnMowers()) {
-            lawnMowers.add(
-                ((ILawnMower) context
-                    .getBean(Constant.BEAN_LAWN_MOWER))
+            lawnMowers.add(main.getBuilder().create()
                 .setX(desc.getPosition().x)
                 .setY(desc.getPosition().y)
                 .setInFrontOf(CompassPoint.valueOf(desc.getInFrontOf()))
@@ -82,8 +105,10 @@ public class ShearerTest extends TestCase {
         }
         
         shearer
+            .init()
             .on(lawn)
             .use(lawnMowers)
+            .validate()
             .mow();
         
         assertEquals(false, shearer.isFail());

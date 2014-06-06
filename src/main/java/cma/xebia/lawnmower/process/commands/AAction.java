@@ -34,5 +34,4 @@ public abstract class AAction implements IAction {
     @Setter
     private IPositionValidator positionValidator = new DefaultPositionValidator();
     
-    
 }

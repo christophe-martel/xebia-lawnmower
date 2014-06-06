@@ -18,12 +18,11 @@
 package cma.xebia.lawnmower.process.validator.impl;
 
 import cma.xebia.lawnmower.model.ILawn;
-import cma.xebia.lawnmower.model.ILawnMower;
 import cma.xebia.lawnmower.process.validator.ILawnValidator;
 import cma.xebia.lawnmower.utils.validator.DefaultPositionValidator;
 import cma.xebia.lawnmower.utils.validator.IPositionValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  *
@@ -31,8 +30,6 @@ import org.slf4j.LoggerFactory;
  */
 public class SizeOfLawnValidator
         implements ILawnValidator {
-    
-    final static Logger logger = LoggerFactory.getLogger(SizeOfLawnValidator.class);
     
     
     private IPositionValidator positionValidator = new DefaultPositionValidator();

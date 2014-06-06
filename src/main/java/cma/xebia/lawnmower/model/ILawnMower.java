@@ -20,7 +20,6 @@ package cma.xebia.lawnmower.model;
 import cma.xebia.lawnmower.model.constants.CompassPoint;
 import cma.xebia.lawnmower.model.constants.Movement;
 import cma.xebia.lawnmower.process.commands.ICommands;
-import cma.xebia.lawnmower.process.validator.ILawnMowerValidator;
 import java.util.List;
 
 

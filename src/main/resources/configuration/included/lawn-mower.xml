@@ -15,23 +15,13 @@
     <context:component-scan base-package="cma.xebia.lawnmower" />
     <aop:aspectj-autoproxy />
     
-    
-    <bean   id="shearer"
-            class="cma.xebia.lawnmower.process.Shearer"
+    <bean   id="lawn-mower.builder"
+            class="cma.xebia.lawnmower.model.lawnMower.Builder"
             scope="prototype" >
-        <constructor-arg ref="lawn.validator.size"/>
-    </bean>
-    
-    <bean   id="lawn"
-            class="cma.xebia.lawnmower.model.lawn.Lawn"
-            scope="prototype" />
-    
-    
-    <bean   id="lawn-mower"
-            class="cma.xebia.lawnmower.model.lawnMower.LawnMower"
-            init-method="init"
-            scope="prototype" >
-        <constructor-arg ref="lawn-mower.commands"/>
+        <constructor-arg ref="commands.lawn-mower"/>
+        <constructor-arg >
+            <bean class="com.rits.cloning.Cloner" />
+        </constructor-arg>
     </bean>
     
     

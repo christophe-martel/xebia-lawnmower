@@ -21,34 +21,30 @@ import cma.xebia.lawnmower.model.constants.Movement;
 import cma.xebia.lawnmower.model.ILawnMower;
 import cma.xebia.lawnmower.model.ILawn;
 import cma.xebia.lawnmower.process.commands.IAction;
+import cma.xebia.lawnmower.process.validator.ILawnMowerValidator;
 import cma.xebia.lawnmower.process.validator.ILawnValidator;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.experimental.NonFinal;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
+@Slf4j
 public class Shearer implements IShearer {
     
-    final static Logger logger = LoggerFactory.getLogger(Shearer.class);
-    
-    private ILawnValidator validator = null;
-
-    public Shearer (ILawnValidator validator) {
-        this.validator = validator;
-    }
+    private ILawnValidator      lawnValidator = null;
+    private ILawnMowerValidator lawnMowerValidator = null;
     
     @Accessors(chain = true)
     @Getter
@@ -62,16 +58,50 @@ public class Shearer implements IShearer {
     
     
     @Accessors(chain = true)
+    @Getter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PRIVATE)
+    private boolean validated = false;
+    
+    @Accessors(chain = true)
+    @Getter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PRIVATE)
+    private boolean mowed = false;
+    
+    @Accessors(chain = true)
     @Getter
     @Setter(AccessLevel.PRIVATE)
     private boolean fail = false;
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter(AccessLevel.PRIVATE)
+    private Exception exception = null;
+    
+    public Shearer (
+            @NonNull ILawnValidator lawnValidator,
+            @NonNull ILawnMowerValidator lawnMowerValidator) {
+        this.lawnValidator = lawnValidator;
+        this.lawnMowerValidator = lawnMowerValidator;
+    }
+    
+    @Override
+    public IShearer init () {
+        this.lawnMowerValidator.setLawnMower(null);
+        this.fail = false;
+        this.validated = false;
+        this.mowed = false;
+        this.lawnMowers = new ArrayList<>();
+        this.lawn = null;
+        
+        return this;
+    }
     
     @Override
     public IShearer on(ILawn lawn) {
         this.lawn = lawn;
         return this;
     }
-
+    
     @Override
     public IShearer use(ILawnMower lawnMower) {
         if (true == this.lawnMowers.contains(lawnMower)) {
@@ -89,33 +119,89 @@ public class Shearer implements IShearer {
         }
         return this;
     }
+
+    @Override
+    public IShearer validate () {
+        if (this.isValidated()) {
+            return this;
+        }
+        
+        return this
+            .setValidated(true)
+            .verifyLawn()
+            .verifyLawnMower();
+    }
+    
+    
+    
+    protected Shearer verifyLawn () {
+        log.info("verification of lawn");
+        this.lawnValidator.isValid(lawn);
+        
+        return this;
+    }
+    
+    protected Shearer verifyLawnMower () {
+        log.info("verification of lawn mowers");
+        int i = -1;
+        for (ILawnMower lawnmower : this.lawnMowers) {
+            log.info("verify lawn mowers #{}", ++i);
+            if (true == this.lawnMowerValidator
+                    .setLawnMower(lawnmower)
+                    .isValid(lawn)) {
+                continue;
+            }
+            
+            this.setFail(true);
+            this.setException(new LawnMowerException(
+                String.format("lawn mowers #{} is out of bounds", i)));
+        }
+        
+        return this;
+    }
     
     @Override
     public IShearer mow () {
+        if (true == this.isMowed()) {
+            log.info("already mowed");
+            return this;
+        }
+        if (true != this.isValidated()) {
+            log.info("automatic validation");
+            this.validate();
+        }
+        this.setMowed(true);
+        if (true == this.isFail()) {
+            log.info("an error occurs...");
+            return this;
+            
+        }
         this.setFail(true);
         try {
             
             this.calibrateLawnMower();
-            logger.info("mow law {}x{} ...", lawn.getWidth(), lawn.getHeight());
+            
+            log.info("mow law {}x{} ...", lawn.getWidth(), lawn.getHeight());
             int i = -1;
             for (ILawnMower lm : lawnMowers) {
-                logger.info("with lawn {} #{} and movements {}", lm, ++i, lm.getMovements());
+                log.info("with {} #{} and movements {}", lm, ++i, lm.getMovements());
                 lm.getCommands().run();
-                logger.info("Lawn is : {}", lm);
+                log.info("Lawn mower is now : {}", lm);
             }
             this.setFail(false);
         } catch (LawnMowerException ex) {
-            logger.error("error", ex);
+            log.error("error", ex);
+            this.setException(ex);
         }
         return this;
     }
     
     
     protected IShearer calibrateLawnMower () {
-        logger.info("calibration of lawn mowers");
+        log.info("calibration of lawn mowers");
         int i = -1;
         for (ILawnMower lawnmower : this.lawnMowers) {
-            logger.info("calibrate lawn mowers #{}", ++i);
+            log.info("calibrate lawn mowers #{}", ++i);
             for (Map.Entry<Movement, IAction> entry : lawnmower.getCommands().getMovements().entrySet()) {
                 entry
                     .getValue()

@@ -20,23 +20,18 @@ package cma.xebia.lawnmower.process.commands.actions;
 import cma.xebia.lawnmower.model.ILawnMower;
 import cma.xebia.lawnmower.process.commands.AAction;
 import cma.xebia.lawnmower.process.commands.IAction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
+@Slf4j
 public class A extends AAction  {
-    
-    final static Logger logger = LoggerFactory.getLogger(A.class);
     
     @Override
     public IAction apply(ILawnMower lawnMower) {
-        logger.trace("receive movement A");
-        logger.trace("in front of: {}", lawnMower.getInFrontOf().name());
-        logger.trace("current position {}.{}", lawnMower.getX(), lawnMower.getY());
-        
         int newX = lawnMower.getX();
         int newY = lawnMower.getY();
         
@@ -61,13 +56,11 @@ public class A extends AAction  {
             } break;
         }
         
-        logger.trace("estimated position {}.{}", newX, newY);
-        
-        if (false != this.getPositionValidator().isValid(newX, newY)) {
-            logger.debug("cannot reach point {}.{}", newX, newY);
+        if (true != this.getPositionValidator().isValid(newX, newY)) {
+            log.debug("cannot reach point {}.{}", newX, newY);
             
         } else {
-            logger.debug("move to point {}.{}", newX, newY);
+            log.debug("move to point {}.{}", newX, newY);
             lawnMower
                 .setX(newX)
                 .setY(newY);

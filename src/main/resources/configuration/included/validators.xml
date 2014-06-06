@@ -16,7 +16,7 @@
     <aop:aspectj-autoproxy />
     
     <!-- lawn validator -->
-    <bean   id="lawn.validator.size"
+    <bean   id="validator.lawn.size"
             class="cma.xebia.lawnmower.process.validator.impl.SizeOfLawnValidator"
             scope="prototype" >
         <constructor-arg>
@@ -31,7 +31,7 @@
         </constructor-arg>
     </bean>
     
-    <bean   id="lawn-mower.validator.position"
+    <bean   id="validator.lawn-mower.position"
             class="cma.xebia.lawnmower.utils.validator.PositionValidator"
             scope="prototype" >
         <property name="minWidth" value="0" />
@@ -41,10 +41,10 @@
         <property name="including" value="true" />
     </bean>
             
-    <bean   id="lawn-mower.validator"
+    <bean   id="validator.lawn-mower"
             class="cma.xebia.lawnmower.process.validator.impl.PositionOfLawnMowerValidator"
             scope="prototype" >
-        <constructor-arg ref="lawn-mower.validator.position"/>
+        <constructor-arg ref="validator.lawn-mower.position"/>
     </bean>
     
 </beans>

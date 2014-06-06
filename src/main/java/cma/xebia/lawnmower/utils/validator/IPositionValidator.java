@@ -17,8 +17,6 @@
 
 package cma.xebia.lawnmower.utils.validator;
 
-import cma.xebia.lawnmower.utils.exception.LawnMowerException;
-
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
@@ -37,35 +35,37 @@ public interface IPositionValidator {
      *
      * @param maxHeight
      * @return
-     * @throws LawnMowerException
      */
     IPositionValidator setMaxHeight (int maxHeight);
-
+    
+    int getMaxHeight ();
+    
     /**
      *
      * @param maxWidth
      * @return
-     * @throws LawnMowerException
      */
     IPositionValidator setMaxWidth (int maxWidth);
     
-    
+    int getMaxWidth ();
     
     /**
      *
      * @param minHeight
      * @return
-     * @throws LawnMowerException
      */
     IPositionValidator setMinHeight (int minHeight);
-
+    
+    int getMinHeight ();
+    
     /**
      *
      * @param minWidth
      * @return
-     * @throws LawnMowerException
      */
     IPositionValidator setMinWidth (int minWidth);
+    
+    int getMinWidth ();
     
     /**
      * 
@@ -74,4 +74,5 @@ public interface IPositionValidator {
      */
     IPositionValidator setIncluding (boolean including);
     
+    boolean isIncluding ();
 }

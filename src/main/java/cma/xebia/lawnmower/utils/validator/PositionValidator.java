@@ -17,13 +17,6 @@
 
 package cma.xebia.lawnmower.utils.validator;
 
-import cma.xebia.lawnmower.utils.exception.LawnMowerException;
-import lombok.Getter;
-import lombok.Setter;
-
-import lombok.experimental.Accessors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -34,9 +27,6 @@ import org.slf4j.LoggerFactory;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public class PositionValidator extends APositionValidator {
-    
-    final static Logger logger = LoggerFactory.getLogger(PositionValidator.class);
-    
     /**
      * 
      * @param x
@@ -47,7 +37,7 @@ public class PositionValidator extends APositionValidator {
     public boolean isValid(int x, int y) {
         return this.isValidRange(this.getMinWidth(), x)
             && this.isValidRange(x, this.getMaxWidth())
-            && this.isValidRange(this.getMaxHeight(), y)
+            && this.isValidRange(this.getMinHeight(), y)
             && this.isValidRange(y, this.getMaxHeight());
     }
     
@@ -58,6 +48,7 @@ public class PositionValidator extends APositionValidator {
      * @return return TRUE if i is between 0 and max
      */
     protected boolean isValidRange (int min, int max) {
+        
         return true == this.isIncluding()
             ? min <= max
             : min < max;

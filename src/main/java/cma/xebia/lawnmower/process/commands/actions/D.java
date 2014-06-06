@@ -21,6 +21,7 @@ import cma.xebia.lawnmower.model.constants.CompassPoint;
 import cma.xebia.lawnmower.model.ILawnMower;
 import cma.xebia.lawnmower.process.commands.AAction;
 import cma.xebia.lawnmower.process.commands.IAction;
+import lombok.extern.slf4j.Slf4j;
 
 
 import org.slf4j.Logger;
@@ -30,17 +31,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
+@Slf4j
 public class D extends AAction {
-
-    final static Logger logger = LoggerFactory.getLogger(D.class);
     
     @Override
     public IAction apply(ILawnMower lawnMower) {
-        logger.trace("receive movement D");
-        logger.trace("in front of: {}", lawnMower.getInFrontOf().name());
-        logger.trace("current position {}.{}", lawnMower.getX(), lawnMower.getY());
-        
-        
         switch (lawnMower.getInFrontOf()) {
             case N : {
                 lawnMower.setInFrontOf(CompassPoint.E);
@@ -60,7 +55,7 @@ public class D extends AAction {
                 
             } break;
         }
-        logger.debug("Turn on {}", lawnMower.getInFrontOf().getLabel());
+        log.debug("Turn on {}", lawnMower.getInFrontOf().getLabel());
         return this;
     }
     

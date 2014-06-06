@@ -18,8 +18,6 @@
 package cma.xebia.lawnmower.process.validator;
 
 import cma.xebia.lawnmower.model.ILawn;
-import cma.xebia.lawnmower.utils.validator.IPositionValidator;
-
 
 /**
  *
