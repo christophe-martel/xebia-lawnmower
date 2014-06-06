@@ -30,15 +30,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cma.xebia.lawnmower.application.Constant;
+import cma.xebia.lawnmower.utils.helpers.StringHelper;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
+@Slf4j
 public class LawnMowerDescReader implements ILawnMowerDescReader {
-    
-    final static Logger logger = LoggerFactory.getLogger(LawnMowerDescReader.class);
     
     @Accessors(chain = true)
     @Getter
@@ -102,12 +103,12 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
             while (true) {
                 inputLine = in.readLine();
                 if (null == inputLine) {
-                    logger.debug("End of file");
+                    log.debug("End of file");
                     break;
                 }
                 
                 if (true == this.isFail()) {
-                    logger.warn("Prematured end of file");
+                    log.warn("Prematured end of file");
                     break;
                 }
                 
@@ -115,14 +116,14 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
                 
                 inputLine = inputLine.trim();
                 if (true == inputLine.isEmpty()) {
-                    logger.trace("Ignoring empty line #{}", lineCounter);
+                    log.trace("Ignoring empty line #{}", lineCounter);
                     continue;
                 }
                 
                 this.parseLine(lineCounter, inputLine);
             }
         } catch (IOException ex) {
-            logger.error("An exception occurs", ex);
+            log.error("An exception occurs", ex);
             this.fail = true;
         }
         
@@ -136,7 +137,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     }
     
     protected BufferedReader getReaderFromResource () throws IOException {
-        logger.info("load resource file {} with charset {}", this.defaultResourcePath, this.charset);
+        log.info("load resource file {} with charset {}", this.defaultResourcePath, this.charset);
         return new BufferedReader(
             new InputStreamReader(
                 this.getClass().getResourceAsStream(this.defaultResourcePath),
@@ -144,16 +145,16 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     }
     
     protected BufferedReader getReaderFromFile () throws IOException {
-        logger.debug("load local file {} with charset {}", this.descriptorPath, this.charset);
+        log.debug("load local file {} with charset {}", this.descriptorPath, this.charset);
         File f = new File(this.descriptorPath);
         
         if (true != f.exists()) {
-            logger.debug("file {} doesn't exist", this.descriptorPath);
+            log.debug("file {} doesn't exist", this.descriptorPath);
             return null;
         }
         
         if (true != f.isFile()) {
-            logger.debug("file {} isn't regular", this.descriptorPath);
+            log.debug("file {} isn't regular", this.descriptorPath);
             return null;
         }
         
@@ -164,7 +165,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     }
     
     protected LawnMowerDescReader parseLine (int lineCounter, String line) {
-        logger.debug("Parse line #{} with value:{}", lineCounter, line);
+        log.debug("Parse line #{} with value:{}", lineCounter, line);
         
         if (0 == lineCounter) {
             this.parseLawnDimension(line);
@@ -193,12 +194,13 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
             
         }
         
-        String[] data = line.split("");
-        this.lawn.getDimension().setSize(
-            Integer.parseInt(data[0], 10),
-            Integer.parseInt(data[1], 10));
+        List<String> data = StringHelper.getChars(line);
         
-        logger.debug(
+        this.lawn.getDimension().setSize(
+            Integer.parseInt(data.get(0), 10),
+            Integer.parseInt(data.get(1), 10));
+        
+        log.debug(
             "init lawn with dimension {}x{}",
             this.lawn.getDimension().width,
             this.lawn.getDimension().height);
@@ -220,21 +222,21 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
             .createNewLawnMowerDesc()
             .getCurrentLawnMowerDesc();
         
-        String[] data = line.split("");
+        List<String> data = StringHelper.getChars(line);
         lmd
             .getPosition()
                 .setLocation(
-                    Integer.parseInt(data[0], 10),
-                    Integer.parseInt(data[1], 10));
+                    Integer.parseInt(data.get(0), 10),
+                    Integer.parseInt(data.get(1), 10));
         
-        logger.debug(
+        log.debug(
             "init lawn mower with position ({}, {})",
             lmd.getPosition().x,
             lmd.getPosition().y);
         
-        lmd.setInFrontOf(data[2].substring(0, 1));
+        lmd.setInFrontOf(data.get(2));
         
-        logger.debug("turn lawn on {}", lmd.getInFrontOf());
+        log.debug("turn lawn on {}", lmd.getInFrontOf());
         
         return this;
     }
@@ -246,13 +248,13 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
             
         }
         
-        logger.debug("add actions {} to current lawn mower", line);
+        log.debug("add actions {} to current lawn mower", line);
         
         ILawnMowerDesc lmd = this
             .getCurrentLawnMowerDesc();
         
-        for(String movement : line.split("")) {
-            logger.trace("add action {} to current lawn mower", movement);
+        for(String movement : StringHelper.getChars(line)) {
+            log.trace("add action {} to current lawn mower", movement);
             
             lmd.getMovements().add(movement.substring(0, 1));
         }
@@ -278,7 +280,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     }
     
     protected LawnMowerDescReader fail (String message) {
-        logger.error(message);
+        log.error(message);
         this.fail = true;
         return this;
     }
