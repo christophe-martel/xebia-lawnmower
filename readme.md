@@ -14,16 +14,14 @@
     * Des tests ? `mvn test`
     * Un peu d'audit ? `mvn sonar:sonar`
 
-# Exécution$
+# Exécution
 ## Méthode dite "La RACHE"
 Cf. http://www.byatoo.com/la-rache/
 * `mvn exec:java`
 
 ## Redistribuable ?
-* Création d'un jar mvn package
-* Exécution :
-    mvn package
-    java -jar target/lawnmower-1.0-SNAPSHOT.one-jar.jar
+* Création d'un jar `mvn package`
+* Exécution :`java -jar target/lawnmower-1.0-SNAPSHOT.one-jar.jar`
 
 # Aide
 En cas d'erreur, utiliser de la poudre verte
