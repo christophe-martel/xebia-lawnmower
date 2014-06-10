@@ -2,6 +2,7 @@
 # Pré requis
 * JVM 1.7 minimum
 * Maven 3
+* Un vrai shell (comme bash)
 
 # Documentation
 ## Fonctionnelle
@@ -10,6 +11,7 @@
 # Installation & exécution
 * Récupération de sources `git clone https://github.com/christophe-martel/xebia-lawnmower.git`
 * Préparation
+    * Etre au bon endroit `cd xebia-lawnmower`
     * Un classique : `mvn clean`
     * Des tests ? `mvn test`
     * Un peu d'audit ? `mvn sonar:sonar`
