@@ -19,8 +19,8 @@
     <import resource="classpath:configuration/included/process.xml" />
     <import resource="classpath:configuration/included/lawn-mower.xml" />
     
-    <bean   id="main"
-            class="cma.xebia.lawnmower.application.Main"
+    <bean   id="lawn-mower.controller"
+            class="cma.xebia.lawnmower.controller.impl.LawnMowerController"
             scope="prototype" >
         <constructor-arg ref="utils.description.parser"/>
         <constructor-arg ref="process.shearer"/>

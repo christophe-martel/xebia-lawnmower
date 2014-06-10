@@ -16,30 +16,30 @@
     <aop:aspectj-autoproxy />
     
     <bean   id="commands.A"
-            class="cma.xebia.lawnmower.process.commands.actions.A"
+            class="cma.xebia.lawnmower.business.entity.lawnmower.commands.actions.A"
             scope="prototype" >
         <property name="positionValidator">
             <ref bean="validator.lawn-mower.position" />
         </property>
     </bean>
     <bean   id="commands.D"
-        class="cma.xebia.lawnmower.process.commands.actions.D"
+        class="cma.xebia.lawnmower.business.entity.lawnmower.commands.actions.D"
         scope="prototype" />
     <bean   id="commands.G"
-        class="cma.xebia.lawnmower.process.commands.actions.G"
+        class="cma.xebia.lawnmower.business.entity.lawnmower.commands.actions.G"
         scope="prototype" />
     
     <bean   id="commands.lawn-mower"
-            class="cma.xebia.lawnmower.process.commands.Commands"
+            class="cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands"
             scope="prototype" >
         <property name="movements">
             <map>
                 <entry 
-                    key="#{T(cma.xebia.lawnmower.model.constants.Movement).A}"
+                    key="#{T(cma.xebia.lawnmower.business.entity.constants.Movement).A}"
                     value-ref="commands.A" />
-                <entry key="#{T(cma.xebia.lawnmower.model.constants.Movement).D}"
+                <entry key="#{T(cma.xebia.lawnmower.business.entity.constants.Movement).D}"
                     value-ref="commands.D" />
-                <entry key="#{T(cma.xebia.lawnmower.model.constants.Movement).G}"
+                <entry key="#{T(cma.xebia.lawnmower.business.entity.constants.Movement).G}"
                     value-ref="commands.G" />
             </map>
         </property>

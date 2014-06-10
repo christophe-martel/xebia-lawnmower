@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import cma.xebia.lawnmower.application.Constant;
 import cma.xebia.lawnmower.utils.helpers.StringHelper;
@@ -102,25 +100,20 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
             
             while (true) {
                 inputLine = in.readLine();
-                if (null == inputLine) {
+                if ((null == inputLine)
+                        || (this.isFail())) {
                     log.debug("End of file");
-                    break;
-                }
-                
-                if (true == this.isFail()) {
-                    log.warn("Prematured end of file");
                     break;
                 }
                 
                 lineCounter++;
                 
                 inputLine = inputLine.trim();
-                if (true == inputLine.isEmpty()) {
-                    log.trace("Ignoring empty line #{}", lineCounter);
-                    continue;
+                if (!inputLine.isEmpty()) {
+                    this.parseLine(lineCounter, inputLine);
                 }
                 
-                this.parseLine(lineCounter, inputLine);
+                
             }
         } catch (IOException ex) {
             log.error("An exception occurs", ex);
@@ -148,12 +141,12 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
         log.debug("load local file {} with charset {}", this.descriptorPath, this.charset);
         File f = new File(this.descriptorPath);
         
-        if (true != f.exists()) {
+        if (!f.exists()) {
             log.debug("file {} doesn't exist", this.descriptorPath);
             return null;
         }
         
-        if (true != f.isFile()) {
+        if (!f.isFile()) {
             log.debug("file {} isn't regular", this.descriptorPath);
             return null;
         }
@@ -189,7 +182,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
             return this.fail("two characters expected");
         }
         
-        if (true != line.matches("^\\d{2}$")) {
+        if (!line.matches("^\\d{2}$")) {
             return this.fail("two digits expected");
             
         }
@@ -213,7 +206,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
             return this.fail("three characters expected");
         }
         
-        if (true != line.matches("^\\d{2}[NESW]$")) {
+        if (!line.matches("^\\d{2}[NESW]$")) {
             return this.fail("two digits followed by a direction [N|E|S|W] expected");
             
         }
@@ -243,7 +236,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     
     protected LawnMowerDescReader parseLawnMowerMovements (String line) {
         
-        if (true != line.matches("^[DGA]+$")) {
+        if (!line.matches("^[DGA]+$")) {
             return this.fail("Only valid movement [D|G|A] expected");
             
         }

@@ -15,38 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.utils.helpers;
+package cma.xebia.lawnmower.business.entity.lawnmower.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import cma.xebia.lawnmower.business.entity.constants.Movement;
+import cma.xebia.lawnmower.business.entity.ILawnMower;
+import cma.xebia.lawnmower.utils.exception.LawnMowerException;
+import java.util.Map;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class StringHelper {
+public interface ICommands {
     
-    private StringHelper () {
-    }
+    public ICommands setLawnMower (ILawnMower lawnMower);
     
-    public static List<String> getChars (String str) {
-        List<String> result = new ArrayList<>();
-        
-        if (str.length() < 1) {
-            return result;
-        }
-        
-        result.addAll(Arrays.asList(str.split("")));
-        
-        // jdk 1.7 ...
-        if ("".equals(result.get(0))) {
-            result.remove(0);
-        }
-        
-        return result;
-    }
+    public ICommands setMovements (Map<Movement, IAction> commands);
     
+    public Map<Movement, IAction> getMovements ();
     
-    
+    public ICommands run ()  throws LawnMowerException;
 }

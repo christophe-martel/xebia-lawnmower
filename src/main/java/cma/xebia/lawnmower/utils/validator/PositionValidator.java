@@ -49,7 +49,7 @@ public class PositionValidator extends APositionValidator {
      */
     protected boolean isValidRange (int min, int max) {
         
-        return true == this.isIncluding()
+        return this.isIncluding()
             ? min <= max
             : min < max;
     }

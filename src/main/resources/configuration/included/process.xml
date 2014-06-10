@@ -17,7 +17,7 @@
     
     
     <bean   id="process.shearer"
-            class="cma.xebia.lawnmower.process.Shearer"
+            class="cma.xebia.lawnmower.business.service.Shearer"
             scope="prototype" >
         <constructor-arg ref="validator.lawn.size"/>
         <constructor-arg ref="validator.lawn-mower"/>

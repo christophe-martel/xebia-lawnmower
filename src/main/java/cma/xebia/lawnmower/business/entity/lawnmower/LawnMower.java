@@ -14,44 +14,69 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package cma.xebia.lawnmower.business.entity.lawnmower;
 
-package cma.xebia.lawnmower.utils.validator;
-
-
-import lombok.Getter;
-import lombok.Setter;
+import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
+import cma.xebia.lawnmower.business.entity.constants.Movement;
+import cma.xebia.lawnmower.business.entity.ILawnMower;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.ICommands;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AccessLevel;
 import lombok.experimental.Accessors;
-
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public abstract class APositionValidator implements IPositionValidator {
+public class LawnMower
+        implements ILawnMower {
     
     @Accessors(chain = true)
     @Getter
     @Setter
-    private int maxWidth = 1;
+    private int x = 0;
     
     @Accessors(chain = true)
     @Getter
     @Setter
-    private int maxHeight = 1;
+    private int y = 0;
     
     @Accessors(chain = true)
     @Getter
     @Setter
-    private int minWidth = 1;
+    private CompassPoint inFrontOf = CompassPoint.N;
     
     @Accessors(chain = true)
     @Getter
     @Setter
-    private int minHeight = 1;
+    private List<Movement> movements = new ArrayList<>();
     
     @Accessors(chain = true)
     @Getter
-    @Setter
-    private boolean including = false;
+    @Setter(AccessLevel.PACKAGE)
+    private ICommands commands = null;
+    
+    LawnMower(@NonNull ICommands commands) {
+        this.commands = commands;
+    }
+    
+    LawnMower init () {
+        this.commands.setLawnMower(this);
+        return this;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("LawnMower [%s%s%s]",
+            this.getX(),
+            this.getY(),
+            this.getInFrontOf());
+    }
+    
+    
     
 }

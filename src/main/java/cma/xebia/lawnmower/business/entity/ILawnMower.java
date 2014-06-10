@@ -15,38 +15,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.utils.helpers;
+package cma.xebia.lawnmower.business.entity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
+import cma.xebia.lawnmower.business.entity.constants.Movement;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.ICommands;
 import java.util.List;
+
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class StringHelper {
+public interface ILawnMower {
     
-    private StringHelper () {
-    }
+    public int getX();
     
-    public static List<String> getChars (String str) {
-        List<String> result = new ArrayList<>();
-        
-        if (str.length() < 1) {
-            return result;
-        }
-        
-        result.addAll(Arrays.asList(str.split("")));
-        
-        // jdk 1.7 ...
-        if ("".equals(result.get(0))) {
-            result.remove(0);
-        }
-        
-        return result;
-    }
+    public int getY();
     
+    public CompassPoint getInFrontOf();
     
+    public ILawnMower setX(int x);
+    
+    public ILawnMower setY(int y);
+    
+    public ILawnMower setInFrontOf(CompassPoint cp);
+    
+    public List<Movement> getMovements();
+    
+    public ICommands getCommands();
+    
+    public ILawnMower setMovements(List<Movement> movements);
     
 }

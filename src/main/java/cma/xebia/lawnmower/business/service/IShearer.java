@@ -15,38 +15,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.utils.helpers;
+package cma.xebia.lawnmower.business.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import cma.xebia.lawnmower.business.entity.ILawn;
+import cma.xebia.lawnmower.business.entity.ILawnMower;
 import java.util.List;
+
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class StringHelper {
+public interface IShearer {
     
-    private StringHelper () {
-    }
+    public boolean isFail ();
     
-    public static List<String> getChars (String str) {
-        List<String> result = new ArrayList<>();
-        
-        if (str.length() < 1) {
-            return result;
-        }
-        
-        result.addAll(Arrays.asList(str.split("")));
-        
-        // jdk 1.7 ...
-        if ("".equals(result.get(0))) {
-            result.remove(0);
-        }
-        
-        return result;
-    }
+    public List<String> getErrors ();
     
+    public IShearer init ();
+    
+    public IShearer on (ILawn lawn);
+    
+    public IShearer use(ILawnMower lawnMower);
+    
+    public IShearer use(List<ILawnMower> lawnMowers);
+    
+    public IShearer validate ();
+    
+    public IShearer mow ();
+    
+    public ILawn getLawn ();
+    
+    public List<ILawnMower> getLawnMowers ();
     
     
 }

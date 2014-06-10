@@ -15,38 +15,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.utils.helpers;
+package cma.xebia.lawnmower.business.entity.constants;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import cma.xebia.lawnmower.business.entity.constants.Movement;
+import junit.framework.TestCase;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class StringHelper {
+public class MovementTest extends TestCase {
     
-    private StringHelper () {
+    public MovementTest (String testName) {
+        super(testName);
     }
     
-    public static List<String> getChars (String str) {
-        List<String> result = new ArrayList<>();
+    public void testLength () {
+        assertEquals(Movement.values().length, 3);
         
-        if (str.length() < 1) {
-            return result;
-        }
+    }
+    
+    public void testGetByNameString () {
         
-        result.addAll(Arrays.asList(str.split("")));
+        assertEquals(Movement.D, Movement.valueOf("D"));
+        assertEquals(Movement.G, Movement.valueOf("G"));
+        assertEquals(Movement.A, Movement.valueOf("A"));
         
-        // jdk 1.7 ...
-        if ("".equals(result.get(0))) {
-            result.remove(0);
-        }
-        
-        return result;
     }
     
     
+    public void testGetLabel () {
+        
+        assertEquals("Droite", Movement.valueOf("D").getLabel());
+        assertEquals("Gauche", Movement.valueOf("G").getLabel());
+        assertEquals("Avancer", Movement.valueOf("A").getLabel());
+        
+    }
     
 }

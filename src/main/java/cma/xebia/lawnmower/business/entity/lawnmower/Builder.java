@@ -15,38 +15,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.utils.helpers;
+package cma.xebia.lawnmower.business.entity.lawnmower;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import cma.xebia.lawnmower.business.entity.ILawnMower;
+import cma.xebia.lawnmower.business.entity.ILawnMowerBuilder;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.ICommands;
+import com.rits.cloning.Cloner;
+import lombok.experimental.Accessors;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class StringHelper {
+public class Builder implements ILawnMowerBuilder {
     
-    private StringHelper () {
+    @Accessors(chain = true)
+    private ICommands commands = null;
+    
+    private Cloner cloner = null;
+    
+    public Builder (ICommands commands, Cloner cloner) {
+        this.commands = commands;
+        this.cloner = cloner;
     }
     
-    public static List<String> getChars (String str) {
-        List<String> result = new ArrayList<>();
-        
-        if (str.length() < 1) {
-            return result;
-        }
-        
-        result.addAll(Arrays.asList(str.split("")));
-        
-        // jdk 1.7 ...
-        if ("".equals(result.get(0))) {
-            result.remove(0);
-        }
+    @Override
+    public ILawnMower create () {
+        LawnMower result = new LawnMower(this.cloner.deepClone(this.commands));
+        result.init();
         
         return result;
     }
-    
-    
     
 }

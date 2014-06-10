@@ -14,39 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package cma.xebia.lawnmower.business.entity.lawn;
 
-package cma.xebia.lawnmower.utils.helpers;
+import cma.xebia.lawnmower.business.entity.ILawn;
+import lombok.experimental.Accessors;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
- *
- * @author Christophe Martel <mail.christophe.martel@gmail.com>
+ * 
+ * @author Christophe Martel <mail.christophe.martel@gmail.com>tophe Martel <mail.christophe.martel@gmail.com>
  */
-public class StringHelper {
+public class Lawn
+        implements ILawn {
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private int width = 0;
     
-    private StringHelper () {
-    }
-    
-    public static List<String> getChars (String str) {
-        List<String> result = new ArrayList<>();
-        
-        if (str.length() < 1) {
-            return result;
-        }
-        
-        result.addAll(Arrays.asList(str.split("")));
-        
-        // jdk 1.7 ...
-        if ("".equals(result.get(0))) {
-            result.remove(0);
-        }
-        
-        return result;
-    }
-    
-    
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private int height = 0;
     
 }

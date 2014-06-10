@@ -15,38 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.utils.helpers;
+package cma.xebia.lawnmower.business.entity.constants;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import lombok.Getter;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class StringHelper {
+public enum Movement {
+    D("Droite"),
+    G("Gauche"),
+    A("Avancer");
     
-    private StringHelper () {
+    
+    @Getter
+    private String label = "";
+    
+    Movement (String label) {
+        this.label = label;
     }
     
-    public static List<String> getChars (String str) {
-        List<String> result = new ArrayList<>();
+    
+    public static List<Movement> parseMovements (List<String> movements) {
+        List<Movement> result = new ArrayList<>();
         
-        if (str.length() < 1) {
-            return result;
-        }
-        
-        result.addAll(Arrays.asList(str.split("")));
-        
-        // jdk 1.7 ...
-        if ("".equals(result.get(0))) {
-            result.remove(0);
+        for (String s : movements) {
+            result.add(Movement.valueOf(s));
         }
         
         return result;
     }
-    
-    
-    
 }

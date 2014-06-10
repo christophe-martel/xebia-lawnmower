@@ -17,7 +17,7 @@
     
     <!-- lawn validator -->
     <bean   id="validator.lawn.size"
-            class="cma.xebia.lawnmower.process.validator.impl.SizeOfLawnValidator"
+            class="cma.xebia.lawnmower.business.service.process.validator.impl.SizeOfLawnValidator"
             scope="prototype" >
         <constructor-arg>
             <bean   class="cma.xebia.lawnmower.utils.validator.PositionValidator"
@@ -42,7 +42,7 @@
     </bean>
             
     <bean   id="validator.lawn-mower"
-            class="cma.xebia.lawnmower.process.validator.impl.PositionOfLawnMowerValidator"
+            class="cma.xebia.lawnmower.business.service.process.validator.impl.PositionOfLawnMowerValidator"
             scope="prototype" >
         <constructor-arg ref="validator.lawn-mower.position"/>
     </bean>

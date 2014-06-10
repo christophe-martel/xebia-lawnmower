@@ -22,12 +22,17 @@ package cma.xebia.lawnmower.application;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-abstract public class Constant {
+public class Constant {
     
-    final static public String RES_LAWNMOWER_DESC       = "/lawnmower.desc";
-    final static public String LAWNMOWER_FILE_CHARSET   = "UTF-8";
+    public static final String RES_LAWNMOWER_DESC       = "/lawnmower.desc";
     
-    final static public String BEAN_MAIN   = "main";
+    public static final String LAWNMOWER_FILE_CHARSET   = "UTF-8";
+    
+    public static final String BEAN_CONTROLLER   = "lawn-mower.controller";
+
+    private Constant () {
+    }
+    
     
     
 }
