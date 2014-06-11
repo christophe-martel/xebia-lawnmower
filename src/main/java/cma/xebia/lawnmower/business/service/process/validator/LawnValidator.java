@@ -17,13 +17,13 @@
 
 package cma.xebia.lawnmower.business.service.process.validator;
 
-import cma.xebia.lawnmower.business.entity.ILawn;
+import cma.xebia.lawnmower.business.entity.lawn.Lawn;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface ILawnValidator {
+public interface LawnValidator {
     
-    public boolean isValid (ILawn lawn);
+    public boolean isValid (Lawn lawn);
 }

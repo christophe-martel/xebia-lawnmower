@@ -17,9 +17,10 @@
 
 package cma.xebia.lawnmower.business.service.process.validator.impl;
 
-import cma.xebia.lawnmower.business.entity.ILawn;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
-import cma.xebia.lawnmower.business.service.process.validator.ILawnMowerValidator;
+
+import cma.xebia.lawnmower.business.entity.lawn.Lawn;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
+import cma.xebia.lawnmower.business.service.process.validator.LawnMowerValidator;
 import cma.xebia.lawnmower.utils.validator.DefaultPositionValidator;
 import cma.xebia.lawnmower.utils.validator.IPositionValidator;
 import lombok.Setter;
@@ -30,11 +31,11 @@ import lombok.experimental.Accessors;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class PositionOfLawnMowerValidator implements ILawnMowerValidator {
+public class PositionOfLawnMowerValidator implements LawnMowerValidator {
     
     @Accessors(chain = true)
     @Setter
-    private ILawnMower lawnMower = null;
+    private LawnMower lawnMower = null;
     
     private IPositionValidator positionValidator = new DefaultPositionValidator();
     
@@ -44,7 +45,7 @@ public class PositionOfLawnMowerValidator implements ILawnMowerValidator {
     }
     
     @Override
-    public boolean isValid (ILawn lawn) {
+    public boolean isValid (Lawn lawn) {
         boolean result = false;
         
         if (null == lawn) {

@@ -22,10 +22,8 @@ import cma.xebia.lawnmower.application.Main;
 import cma.xebia.lawnmower.application.Constant;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.ILawn;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.controller.impl.LawnMowerController;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
 import cma.xebia.lawnmower.utils.file.ILawnMowerDesc;
 import cma.xebia.lawnmower.utils.file.ILawnMowerDescReader;
 import java.util.ArrayList;
@@ -55,8 +53,6 @@ public class ShearerTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        super.setUp();
-        
         context = new ClassPathXmlApplicationContext(
                 "/configuration/spring.xml",
                 Main.class);
@@ -67,7 +63,6 @@ public class ShearerTest extends TestCase {
     
     @Override
     protected void tearDown() throws Exception {
-        super.tearDown();
         ((ConfigurableApplicationContext) context).close();
     }
     
@@ -91,12 +86,12 @@ public class ShearerTest extends TestCase {
             .setCharset("UTF-8")
             .read();
         
-        ILawn lawn = (new Lawn())
+        Lawn lawn = (new Lawn())
             .setHeight(r.getLawn().getDimension().height)
             .setWidth(r.getLawn().getDimension().width)
         ;
         
-        List<ILawnMower> lawnMowers = new ArrayList<>();
+        List<LawnMower> lawnMowers = new ArrayList<>();
         for(ILawnMowerDesc desc : r.getLawnMowers()) {
             lawnMowers.add(controller.getBuilder().create()
                 .setX(desc.getPosition().x)

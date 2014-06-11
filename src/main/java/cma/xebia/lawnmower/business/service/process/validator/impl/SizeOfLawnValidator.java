@@ -17,8 +17,8 @@
 
 package cma.xebia.lawnmower.business.service.process.validator.impl;
 
-import cma.xebia.lawnmower.business.entity.ILawn;
-import cma.xebia.lawnmower.business.service.process.validator.ILawnValidator;
+import cma.xebia.lawnmower.business.entity.lawn.Lawn;
+import cma.xebia.lawnmower.business.service.process.validator.LawnValidator;
 import cma.xebia.lawnmower.utils.validator.DefaultPositionValidator;
 import cma.xebia.lawnmower.utils.validator.IPositionValidator;
 
@@ -27,7 +27,7 @@ import cma.xebia.lawnmower.utils.validator.IPositionValidator;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public class SizeOfLawnValidator
-        implements ILawnValidator {
+        implements LawnValidator {
     
     
     private IPositionValidator positionValidator = new DefaultPositionValidator();
@@ -43,7 +43,7 @@ public class SizeOfLawnValidator
      * @return return TRUE if width and height are between 1 and 9, included
      */
     @Override
-    public boolean isValid (ILawn lawn) {
+    public boolean isValid (Lawn lawn) {
         boolean result = false;
         
         if (null == lawn) {

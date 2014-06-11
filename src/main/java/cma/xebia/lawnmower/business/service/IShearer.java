@@ -17,8 +17,8 @@
 
 package cma.xebia.lawnmower.business.service;
 
-import cma.xebia.lawnmower.business.entity.ILawn;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
+import cma.xebia.lawnmower.business.entity.lawn.Lawn;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
 import java.util.List;
 
 
@@ -34,19 +34,19 @@ public interface IShearer {
     
     public IShearer init ();
     
-    public IShearer on (ILawn lawn);
+    public IShearer on (Lawn lawn);
     
-    public IShearer use(ILawnMower lawnMower);
+    public IShearer use(LawnMower lawnMower);
     
-    public IShearer use(List<ILawnMower> lawnMowers);
+    public IShearer use(List<LawnMower> lawnMowers);
     
     public IShearer validate ();
     
     public IShearer mow ();
     
-    public ILawn getLawn ();
+    public Lawn getLawn ();
     
-    public List<ILawnMower> getLawnMowers ();
+    public List<LawnMower> getLawnMowers ();
     
     
 }

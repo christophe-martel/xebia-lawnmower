@@ -18,8 +18,7 @@ package cma.xebia.lawnmower.business.entity.lawnmower;
 
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.ICommands;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -32,8 +31,7 @@ import lombok.Setter;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class LawnMower
-        implements ILawnMower {
+public class LawnMower {
     
     @Accessors(chain = true)
     @Getter
@@ -58,9 +56,9 @@ public class LawnMower
     @Accessors(chain = true)
     @Getter
     @Setter(AccessLevel.PACKAGE)
-    private ICommands commands = null;
+    private Commands commands = null;
     
-    LawnMower(@NonNull ICommands commands) {
+    LawnMower(@NonNull Commands commands) {
         this.commands = commands;
     }
     

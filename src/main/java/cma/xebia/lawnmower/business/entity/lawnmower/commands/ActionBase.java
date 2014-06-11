@@ -15,36 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.entity.lawnmower;
+package cma.xebia.lawnmower.business.entity.lawnmower.commands;
 
-import cma.xebia.lawnmower.business.entity.ILawnMower;
-import cma.xebia.lawnmower.business.entity.ILawnMowerBuilder;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.ICommands;
-import com.rits.cloning.Cloner;
+import cma.xebia.lawnmower.utils.validator.DefaultPositionValidator;
+import cma.xebia.lawnmower.utils.validator.IPositionValidator;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Builder implements ILawnMowerBuilder {
+public abstract class ActionBase implements Action {
     
     @Accessors(chain = true)
-    private ICommands commands = null;
-    
-    private Cloner cloner = null;
-    
-    public Builder (ICommands commands, Cloner cloner) {
-        this.commands = commands;
-        this.cloner = cloner;
-    }
-    
-    @Override
-    public ILawnMower create () {
-        LawnMower result = new LawnMower(this.cloner.deepClone(this.commands));
-        result.init();
-        
-        return result;
-    }
+    @Getter
+    @Setter
+    private IPositionValidator positionValidator = new DefaultPositionValidator();
     
 }

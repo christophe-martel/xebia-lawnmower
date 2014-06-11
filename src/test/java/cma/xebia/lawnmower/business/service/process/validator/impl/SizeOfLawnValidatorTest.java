@@ -17,7 +17,6 @@
 
 package cma.xebia.lawnmower.business.service.process.validator.impl;
 
-import cma.xebia.lawnmower.business.entity.ILawn;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
 import cma.xebia.lawnmower.utils.validator.PositionValidator;
 import junit.framework.TestCase;

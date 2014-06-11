@@ -15,13 +15,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.entity;
+package cma.xebia.lawnmower.business.entity.lawnmower;
+
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
+import com.rits.cloning.Cloner;
+import lombok.experimental.Accessors;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface ILawnMowerBuilder {
-    public ILawnMower create ();
+public class BuilderImpl implements LawnMowerBuilder {
+    
+    @Accessors(chain = true)
+    private Commands commands = null;
+    
+    private Cloner cloner = null;
+    
+    public BuilderImpl (Commands commands, Cloner cloner) {
+        this.commands = commands;
+        this.cloner = cloner;
+    }
+    
+    @Override
+    public LawnMower create () {
+        LawnMower result = new LawnMower(this.cloner.deepClone(this.commands));
+        result.init();
+        
+        return result;
+    }
     
 }

@@ -15,36 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.entity;
+package cma.xebia.lawnmower.business.service.process.validator;
 
-import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
-import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.ICommands;
-import java.util.List;
+import cma.xebia.lawnmower.business.entity.lawn.Lawn;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
 
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface ILawnMower {
+public interface LawnMowerValidator {
     
-    public int getX();
+    public LawnMowerValidator setLawnMower (LawnMower lawnMower);
     
-    public int getY();
-    
-    public CompassPoint getInFrontOf();
-    
-    public ILawnMower setX(int x);
-    
-    public ILawnMower setY(int y);
-    
-    public ILawnMower setInFrontOf(CompassPoint cp);
-    
-    public List<Movement> getMovements();
-    
-    public ICommands getCommands();
-    
-    public ILawnMower setMovements(List<Movement> movements);
+    public boolean isValid (Lawn lawn);
     
 }

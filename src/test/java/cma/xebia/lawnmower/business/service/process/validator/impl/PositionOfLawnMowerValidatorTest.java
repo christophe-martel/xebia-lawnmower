@@ -17,19 +17,27 @@
 
 package cma.xebia.lawnmower.business.service.process.validator.impl;
 
-import cma.xebia.lawnmower.business.entity.ILawn;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
-import cma.xebia.lawnmower.business.entity.LawnMowerTest;
+import cma.xebia.lawnmower.application.Constant;
+import cma.xebia.lawnmower.application.Main;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
+import cma.xebia.lawnmower.business.entity.lawnmower.BuilderImpl;
+
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMowerBuilder;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.CommandsImpl;
+import cma.xebia.lawnmower.controller.impl.LawnMowerController;
 import cma.xebia.lawnmower.utils.validator.PositionValidator;
 import junit.framework.TestCase;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public class PositionOfLawnMowerValidatorTest extends TestCase {
+    
+    protected LawnMowerBuilder builder = null;
     
     protected PositionOfLawnMowerValidator validator = null;
     
@@ -39,7 +47,17 @@ public class PositionOfLawnMowerValidatorTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        super.setUp();
+        
+        
+        ApplicationContext context = new ClassPathXmlApplicationContext(
+                "/configuration/spring.xml",
+                Main.class);
+        
+        
+        builder = ((LawnMowerBuilder) context.getBean("lawn-mower.builder"));
+        
+        ((ConfigurableApplicationContext) context).close();
+        
         validator = new PositionOfLawnMowerValidator(
             (new PositionValidator())
                 .setIncluding(true)
@@ -52,7 +70,7 @@ public class PositionOfLawnMowerValidatorTest extends TestCase {
 
     @Override
     protected void tearDown() throws Exception {
-        super.tearDown();
+        builder = null;
         validator = null;
     }
     
@@ -66,19 +84,19 @@ public class PositionOfLawnMowerValidatorTest extends TestCase {
         
         
         assertTrue(validator
-            .setLawnMower((new LawnMowerTest()).setX(2).setY(2))
+            .setLawnMower(builder.create().setX(2).setY(2))
             .isValid((new Lawn()).setHeight(9).setWidth(9)));
         
         assertFalse(validator
-            .setLawnMower((new LawnMowerTest()).setX(9).setY(9))
+            .setLawnMower(builder.create().setX(9).setY(9))
             .isValid((new Lawn()).setHeight(5).setWidth(5)));
         
         assertFalse(validator
-            .setLawnMower((new LawnMowerTest()).setX(9).setY(2))
+            .setLawnMower(builder.create().setX(9).setY(2))
             .isValid((new Lawn()).setHeight(5).setWidth(5)));
         
         assertFalse(validator
-            .setLawnMower((new LawnMowerTest()).setX(2).setY(9))
+            .setLawnMower(builder.create().setX(2).setY(9))
             .isValid((new Lawn()).setHeight(5).setWidth(5)));
         
     }
@@ -88,7 +106,7 @@ public class PositionOfLawnMowerValidatorTest extends TestCase {
      */
     public void testIsValidWithNullLawn() {
         assertFalse(validator
-            .setLawnMower((new LawnMowerTest()).setX(0).setY(0))
+            .setLawnMower(builder.create().setX(0).setY(0))
             .isValid(null));
     }
     

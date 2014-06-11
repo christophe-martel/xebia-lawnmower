@@ -14,66 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package cma.xebia.lawnmower.business.entity.lawnmower.commands;
 
 import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
-
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-@Slf4j
-public class Commands implements ICommands {
+public interface Commands {
     
-    @Accessors(chain = true)
-    @Setter
-    private ILawnMower lawnMower = null;
+    public Commands setLawnMower (LawnMower lawnMower);
     
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private Map<Movement, IAction> movements = new LinkedHashMap<>();
+    public Commands setMovements (Map<Movement, Action> commands);
     
-    /**
-     *
-     * @return
-     * @throws LawnMowerException
-     */
-    @Override
-    public ICommands run() throws LawnMowerException {
-        int sz = this.lawnMower.getMovements().size();
-        if (sz < 1) {
-            log.debug("No action found");
-            return this;
-            
-        }
-        log.debug("run all actions");
-        for (int i = 0; i < sz; i++) {
-            this.executeCommand(this.lawnMower.getMovements().get(i));
-        }
-        
-        
-        return this;
-    }
+    public Map<Movement, Action> getMovements ();
     
-    protected Commands executeCommand (Movement key) throws LawnMowerException {
-        if (!this.movements.containsKey(key)) {
-            log.error("unknown command");
-            throw new LawnMowerException(String.format("unknown command '%s'", key));
-        }
-        
-        this.movements.get(key).apply(this.lawnMower);
-        
-        return this;
-    }
-    
+    public Commands run ()  throws LawnMowerException;
 }

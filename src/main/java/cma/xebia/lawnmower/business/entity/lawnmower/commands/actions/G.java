@@ -18,9 +18,9 @@
 package cma.xebia.lawnmower.business.entity.lawnmower.commands.actions;
 
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.AAction;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.IAction;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.ActionBase;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -29,10 +29,10 @@ import lombok.extern.slf4j.Slf4j;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 @Slf4j
-public class G extends AAction {
+public class G extends ActionBase {
     
     @Override
-    public IAction apply(ILawnMower lawnMower) {
+    public Action apply(LawnMower lawnMower) {
         
         switch (lawnMower.getInFrontOf()) {
             case N :

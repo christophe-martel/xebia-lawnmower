@@ -19,12 +19,11 @@ package cma.xebia.lawnmower.controller.impl;
 
 
 import cma.xebia.lawnmower.controller.IController;
-import cma.xebia.lawnmower.business.entity.ILawn;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
-import cma.xebia.lawnmower.business.entity.ILawnMowerBuilder;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMowerBuilder;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
 import cma.xebia.lawnmower.business.service.IShearer;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import cma.xebia.lawnmower.utils.file.ILawnMowerDesc;
@@ -50,12 +49,12 @@ public class LawnMowerController implements IController {
     private IShearer shearer = null;
     
     @Getter
-    private ILawnMowerBuilder builder = null;
+    private LawnMowerBuilder builder = null;
     
     
     public LawnMowerController (
             @NonNull ILawnMowerDescReader reader,
-            @NonNull ILawnMowerBuilder builder,
+            @NonNull LawnMowerBuilder builder,
             @NonNull IShearer shearer) {
         this.reader = reader;
         this.builder = builder;
@@ -87,8 +86,8 @@ public class LawnMowerController implements IController {
         log.info("run");
         
         
-        ILawn lawn = computeLawn();
-        List<ILawnMower> lawnMowers = computeLawnMowers();
+        Lawn lawn = computeLawn();
+        List<LawnMower> lawnMowers = computeLawnMowers();
         
         shearer
             .init()
@@ -102,7 +101,7 @@ public class LawnMowerController implements IController {
         } else {
             log.info("Done");
             int i = -1;
-            for (ILawnMower lm : shearer.getLawnMowers()) {
+            for (LawnMower lm : shearer.getLawnMowers()) {
                 log.info("lawn #{} is to position ({}x{}) and is in front of {}",
                     ++i,
                     lm.getX(),
@@ -122,7 +121,7 @@ public class LawnMowerController implements IController {
         return this;
     }
     
-    protected ILawn computeLawn () throws LawnMowerException {
+    protected Lawn computeLawn () throws LawnMowerException {
         log.info("create lawn");
         
         return (new Lawn())
@@ -132,9 +131,9 @@ public class LawnMowerController implements IController {
     }
     
     
-    protected List<ILawnMower> computeLawnMowers () throws LawnMowerException {
+    protected List<LawnMower> computeLawnMowers () throws LawnMowerException {
         log.info("create lawn mowers");
-        List<ILawnMower> result = new ArrayList<>();
+        List<LawnMower> result = new ArrayList<>();
         
         for(ILawnMowerDesc desc : reader.getLawnMowers()) {
             result.add(getBuilder().create()

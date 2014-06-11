@@ -17,22 +17,19 @@
 
 package cma.xebia.lawnmower.business.entity.lawnmower.commands;
 
-import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
-import cma.xebia.lawnmower.utils.exception.LawnMowerException;
-import java.util.Map;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
+import cma.xebia.lawnmower.utils.validator.IPositionValidator;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface ICommands {
+public interface Action {
     
-    public ICommands setLawnMower (ILawnMower lawnMower);
+    public Action apply (LawnMower lawnMower);
     
-    public ICommands setMovements (Map<Movement, IAction> commands);
+    public Action setPositionValidator (IPositionValidator positionValidator);
     
-    public Map<Movement, IAction> getMovements ();
+    public IPositionValidator getPositionValidator ();
     
-    public ICommands run ()  throws LawnMowerException;
 }

@@ -16,7 +16,6 @@
  */
 package cma.xebia.lawnmower.business.entity.lawn;
 
-import cma.xebia.lawnmower.business.entity.ILawn;
 import lombok.experimental.Accessors;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +25,7 @@ import lombok.Setter;
  * 
  * @author Christophe Martel <mail.christophe.martel@gmail.com>tophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Lawn
-        implements ILawn {
+public class Lawn {
     @Accessors(chain = true)
     @Getter
     @Setter

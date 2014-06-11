@@ -18,11 +18,11 @@
 package cma.xebia.lawnmower.business.service;
 
 import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
-import cma.xebia.lawnmower.business.entity.ILawn;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.IAction;
-import cma.xebia.lawnmower.business.service.process.validator.ILawnMowerValidator;
-import cma.xebia.lawnmower.business.service.process.validator.ILawnValidator;
+import cma.xebia.lawnmower.business.entity.lawn.Lawn;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
+import cma.xebia.lawnmower.business.service.process.validator.LawnMowerValidator;
+import cma.xebia.lawnmower.business.service.process.validator.LawnValidator;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,16 +42,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Shearer implements IShearer {
     
-    private ILawnValidator      lawnValidator = null;
-    private ILawnMowerValidator lawnMowerValidator = null;
+    private LawnValidator      lawnValidator = null;
+    private LawnMowerValidator lawnMowerValidator = null;
     
     @Accessors(chain = true)
     @Getter
-    private ILawn lawn = null;
+    private Lawn lawn = null;
     
     @Accessors(chain = true)
     @Getter
-    private List<ILawnMower> lawnMowers = new ArrayList<>();
+    private List<LawnMower> lawnMowers = new ArrayList<>();
     
     
     @Accessors(chain = true)
@@ -74,8 +74,8 @@ public class Shearer implements IShearer {
     private List<String> errors = new ArrayList<>();
     
     public Shearer (
-            @NonNull ILawnValidator lawnValidator,
-            @NonNull ILawnMowerValidator lawnMowerValidator) {
+            @NonNull LawnValidator lawnValidator,
+            @NonNull LawnMowerValidator lawnMowerValidator) {
         this.lawnValidator = lawnValidator;
         this.lawnMowerValidator = lawnMowerValidator;
         
@@ -95,13 +95,13 @@ public class Shearer implements IShearer {
     }
     
     @Override
-    public IShearer on(ILawn lawn) {
+    public IShearer on(Lawn lawn) {
         this.lawn = lawn;
         return this;
     }
     
     @Override
-    public IShearer use(ILawnMower lawnMower) {
+    public IShearer use(LawnMower lawnMower) {
         if (this.lawnMowers.contains(lawnMower)) {
             return this;
         }
@@ -110,8 +110,8 @@ public class Shearer implements IShearer {
     }
     
     @Override
-    public IShearer use(List<ILawnMower> lawnMowers) {
-        for (ILawnMower lawnMower : lawnMowers) {
+    public IShearer use(List<LawnMower> lawnMowers) {
+        for (LawnMower lawnMower : lawnMowers) {
             this.use(lawnMower);
             
         }
@@ -142,7 +142,7 @@ public class Shearer implements IShearer {
     protected Shearer verifyLawnMower () {
         log.info("verification of lawn mowers");
         int i = -1;
-        for (ILawnMower lawnmower : this.lawnMowers) {
+        for (LawnMower lawnmower : this.lawnMowers) {
             log.info("verify lawn mowers #{}", ++i);
             if (this.lawnMowerValidator
                     .setLawnMower(lawnmower)
@@ -180,7 +180,7 @@ public class Shearer implements IShearer {
             
             log.info("mow law {}x{} ...", lawn.getWidth(), lawn.getHeight());
             int i = -1;
-            for (ILawnMower lm : lawnMowers) {
+            for (LawnMower lm : lawnMowers) {
                 log.info("with {} #{} and movements {}", lm, ++i, lm.getMovements());
                 lm.getCommands().run();
                 log.info("Lawn mower is now : {}", lm);
@@ -197,9 +197,9 @@ public class Shearer implements IShearer {
     protected IShearer calibrateLawnMower () {
         log.info("calibration of lawn mowers");
         int i = -1;
-        for (ILawnMower lawnmower : this.lawnMowers) {
+        for (LawnMower lawnmower : this.lawnMowers) {
             log.info("calibrate lawn mowers #{}", ++i);
-            for (Map.Entry<Movement, IAction> entry : lawnmower.getCommands().getMovements().entrySet()) {
+            for (Map.Entry<Movement, Action> entry : lawnmower.getCommands().getMovements().entrySet()) {
                 entry
                     .getValue()
                     .getPositionValidator()

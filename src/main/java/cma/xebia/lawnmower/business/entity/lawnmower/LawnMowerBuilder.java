@@ -15,20 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.service.process.validator;
-
-import cma.xebia.lawnmower.business.entity.ILawn;
-import cma.xebia.lawnmower.business.entity.ILawnMower;
-
+package cma.xebia.lawnmower.business.entity.lawnmower;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface ILawnMowerValidator {
-    
-    public ILawnMowerValidator setLawnMower (ILawnMower lawnMower);
-    
-    public boolean isValid (ILawn lawn);
+public interface LawnMowerBuilder {
+    public LawnMower create ();
     
 }

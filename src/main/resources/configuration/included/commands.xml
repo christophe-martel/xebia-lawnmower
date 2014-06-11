@@ -30,7 +30,7 @@
         scope="prototype" />
     
     <bean   id="commands.lawn-mower"
-            class="cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands"
+            class="cma.xebia.lawnmower.business.entity.lawnmower.commands.CommandsImpl"
             scope="prototype" >
         <property name="movements">
             <map>
