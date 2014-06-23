@@ -19,13 +19,14 @@ package cma.xebia.lawnmower.business.service.process.validator.impl;
 
 import cma.xebia.lawnmower.application.Constant;
 import cma.xebia.lawnmower.application.Main;
+import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
 import cma.xebia.lawnmower.business.entity.lawnmower.BuilderImpl;
 
 import cma.xebia.lawnmower.business.entity.lawnmower.LawnMowerBuilder;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.CommandsImpl;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.impl.DefaultCommands;
 import cma.xebia.lawnmower.controller.impl.LawnMowerController;
-import cma.xebia.lawnmower.utils.validator.PositionValidator;
+import cma.xebia.lawnmower.utils.validator.RangeValidator;
 import junit.framework.TestCase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -35,13 +36,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class PositionOfLawnMowerValidatorTest extends TestCase {
+public class PositionValidatorTest extends TestCase {
     
     protected LawnMowerBuilder builder = null;
     
-    protected PositionOfLawnMowerValidator validator = null;
+    protected PositionValidator validator = null;
     
-    public PositionOfLawnMowerValidatorTest(String testName) {
+    public PositionValidatorTest(String testName) {
         super(testName);
     }
 
@@ -58,8 +59,8 @@ public class PositionOfLawnMowerValidatorTest extends TestCase {
         
         ((ConfigurableApplicationContext) context).close();
         
-        validator = new PositionOfLawnMowerValidator(
-            (new PositionValidator())
+        validator = new PositionValidator(
+            (new RangeValidator())
                 .setIncluding(true)
                 .setMinHeight(0)
                 .setMaxHeight(9)
@@ -78,26 +79,25 @@ public class PositionOfLawnMowerValidatorTest extends TestCase {
     
     
     /**
-     * Test of isValid method, of class PositionOfLawnMowerValidator.
+     * Test of isValid method, of class RangeValidator.
      */
     public void testIsValid() {
         
+        assertTrue(validator.isValid(
+            builder.create(2, 2, CompassPoint.N),
+            new Lawn(9, 9)));
         
-        assertTrue(validator
-            .setLawnMower(builder.create().setX(2).setY(2))
-            .isValid((new Lawn()).setHeight(9).setWidth(9)));
+        assertFalse(validator.isValid(
+            builder.create(9, 9, CompassPoint.N),
+            new Lawn(5, 5)));
         
-        assertFalse(validator
-            .setLawnMower(builder.create().setX(9).setY(9))
-            .isValid((new Lawn()).setHeight(5).setWidth(5)));
+        assertFalse(validator.isValid(
+            builder.create(9, 2, CompassPoint.N),
+            new Lawn(5, 5)));
         
-        assertFalse(validator
-            .setLawnMower(builder.create().setX(9).setY(2))
-            .isValid((new Lawn()).setHeight(5).setWidth(5)));
-        
-        assertFalse(validator
-            .setLawnMower(builder.create().setX(2).setY(9))
-            .isValid((new Lawn()).setHeight(5).setWidth(5)));
+        assertFalse(validator.isValid(
+            builder.create(2, 9, CompassPoint.N),
+            new Lawn(5, 5)));
         
     }
     
@@ -105,9 +105,11 @@ public class PositionOfLawnMowerValidatorTest extends TestCase {
      * Test of isValid method, of class SizeOfLawnValidator with null Ilawn.
      */
     public void testIsValidWithNullLawn() {
-        assertFalse(validator
-            .setLawnMower(builder.create().setX(0).setY(0))
-            .isValid(null));
+        
+        assertFalse(validator.isValid(
+            builder.create(0, 0, CompassPoint.N),
+            null));
+        
     }
     
 }

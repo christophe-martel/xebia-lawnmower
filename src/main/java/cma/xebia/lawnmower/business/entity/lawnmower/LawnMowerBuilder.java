@@ -17,6 +17,9 @@
 
 package cma.xebia.lawnmower.business.entity.lawnmower;
 
+import cma.xebia.lawnmower.business.entity.Positionable;
+import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
+
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
@@ -24,4 +27,7 @@ package cma.xebia.lawnmower.business.entity.lawnmower;
 public interface LawnMowerBuilder {
     public LawnMower create ();
     
+    public LawnMower create (int x, int y, CompassPoint inFrontOf);
+    
+    public LawnMower create (Positionable positioned);
 }

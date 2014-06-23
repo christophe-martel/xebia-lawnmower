@@ -14,18 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package cma.xebia.lawnmower.business.entity.lawnmower.commands.impl;
 
-package cma.xebia.lawnmower.utils.validator;
+import cma.xebia.lawnmower.business.entity.constants.Movement;
+import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
+import cma.xebia.lawnmower.utils.exception.LawnMowerException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class DefaultPositionValidator extends APositionValidator {
+@Slf4j
+public class DefaultCommands implements Commands {
     
-    @Override
-    public boolean isValid (int x, int y) {
-        return true;
-    }
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private Map<Movement, Action> movements = new LinkedHashMap<>();
     
 }

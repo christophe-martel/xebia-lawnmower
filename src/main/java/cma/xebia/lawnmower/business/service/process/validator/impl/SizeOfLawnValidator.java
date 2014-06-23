@@ -17,36 +17,37 @@
 
 package cma.xebia.lawnmower.business.service.process.validator.impl;
 
+import cma.xebia.lawnmower.business.entity.Dimensionable;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.business.service.process.validator.LawnValidator;
-import cma.xebia.lawnmower.utils.validator.DefaultPositionValidator;
-import cma.xebia.lawnmower.utils.validator.IPositionValidator;
+import cma.xebia.lawnmower.business.service.process.validator.DimentionableValidator;
+import cma.xebia.lawnmower.utils.validator.DefaultRangeValidator;
+import cma.xebia.lawnmower.utils.validator.IRangeValidator;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public class SizeOfLawnValidator
-        implements LawnValidator {
+        implements DimentionableValidator {
     
     
-    private IPositionValidator positionValidator = new DefaultPositionValidator();
+    private IRangeValidator positionValidator = new DefaultRangeValidator();
     
     
-    public SizeOfLawnValidator (IPositionValidator positionValidator) {
+    public SizeOfLawnValidator (IRangeValidator positionValidator) {
         this.positionValidator = positionValidator;
     }
     
     /**
      * 
-     * @param lawn
+     * @param dimensionable
      * @return return TRUE if width and height are between 1 and 9, included
      */
     @Override
-    public boolean isValid (Lawn lawn) {
+    public boolean isValid (Dimensionable dimensionable) {
         boolean result = false;
         
-        if (null == lawn) {
+        if (null == dimensionable) {
             return result;
             
         }
@@ -54,8 +55,8 @@ public class SizeOfLawnValidator
         return this
             .positionValidator
             .isValid(
-                lawn.getWidth(),
-                lawn.getHeight());
+                dimensionable.getDimension().width,
+                dimensionable.getDimension().height);
     }
     
 }

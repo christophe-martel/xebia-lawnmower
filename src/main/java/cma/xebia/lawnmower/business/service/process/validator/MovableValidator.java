@@ -15,23 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.entity.lawnmower.commands;
+package cma.xebia.lawnmower.business.service.process.validator;
 
-import cma.xebia.lawnmower.utils.validator.DefaultPositionValidator;
-import cma.xebia.lawnmower.utils.validator.IPositionValidator;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import cma.xebia.lawnmower.business.entity.Movable;
+import cma.xebia.lawnmower.business.entity.Positionable;
+import java.util.Set;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public abstract class ActionBase implements Action {
+public interface MovableValidator {
     
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private IPositionValidator positionValidator = new DefaultPositionValidator();
+    public boolean isValid (
+            Movable movable,
+            Set<Positionable> obstacles);
     
 }

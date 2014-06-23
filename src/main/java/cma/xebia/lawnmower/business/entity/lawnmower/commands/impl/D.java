@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.entity.lawnmower.commands.actions;
+package cma.xebia.lawnmower.business.entity.lawnmower.commands.impl;
 
+import cma.xebia.lawnmower.business.entity.Movable;
+import cma.xebia.lawnmower.business.entity.Position;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.ActionBase;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,30 +28,41 @@ import lombok.extern.slf4j.Slf4j;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 @Slf4j
-public class D extends ActionBase {
+public class D implements Action {
     
     @Override
-    public Action apply(LawnMower lawnMower) {
-        switch (lawnMower.getInFrontOf()) {
+    public Position apply (Movable movable) {
+        Position result = new Position(movable.getPosition());
+        
+        CompassPoint newInFrontOf;
+        
+        switch (result.getInFrontOf()) {
             case N :
-                lawnMower.setInFrontOf(CompassPoint.E);
+                newInFrontOf = CompassPoint.E;
                 break;
                 
             case E :
-                lawnMower.setInFrontOf(CompassPoint.S);
+                newInFrontOf = CompassPoint.S;
                 break;
                 
             case S :
-                lawnMower.setInFrontOf(CompassPoint.W);
+                newInFrontOf = CompassPoint.W;
                 break;
             
             case W :
             default :
-                lawnMower.setInFrontOf(CompassPoint.N);
+                newInFrontOf = CompassPoint.N;
                 break;
         }
-        log.debug("Turn on {}", lawnMower.getInFrontOf().getLabel());
-        return this;
+        
+        result.setInFrontOf(newInFrontOf);
+        
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "D";
     }
     
 }

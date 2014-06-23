@@ -15,17 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.entity.lawnmower.commands;
+package cma.xebia.lawnmower.business.entity;
 
-import cma.xebia.lawnmower.business.entity.Movable;
-import cma.xebia.lawnmower.business.entity.Position;
+import java.awt.Dimension;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface Action {
+public interface Dimensionable {
     
-    public Position apply (Movable movable);
+    public Dimension getDimension ();
     
 }

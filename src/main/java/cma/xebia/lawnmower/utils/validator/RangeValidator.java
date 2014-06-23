@@ -26,7 +26,7 @@ package cma.xebia.lawnmower.utils.validator;
  * 
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class PositionValidator extends APositionValidator {
+public class RangeValidator extends ARangeValidator {
     /**
      * 
      * @param x

@@ -16,11 +16,18 @@
  */
 package cma.xebia.lawnmower.business.entity.lawnmower;
 
+import cma.xebia.lawnmower.business.entity.Movable;
+import cma.xebia.lawnmower.business.entity.Position;
+import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.experimental.Accessors;
 import lombok.Getter;
@@ -31,30 +38,20 @@ import lombok.Setter;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class LawnMower {
+public class LawnMower
+        implements  Positionable,
+                    Movable {
     
     @Accessors(chain = true)
     @Getter
-    @Setter
-    private int x = 0;
+    private Position position = null;
+    
     
     @Accessors(chain = true)
     @Getter
-    @Setter
-    private int y = 0;
+    private List<Action> movements = new ArrayList<>();
     
     @Accessors(chain = true)
-    @Getter
-    @Setter
-    private CompassPoint inFrontOf = CompassPoint.N;
-    
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private List<Movement> movements = new ArrayList<>();
-    
-    @Accessors(chain = true)
-    @Getter
     @Setter(AccessLevel.PACKAGE)
     private Commands commands = null;
     
@@ -62,17 +59,30 @@ public class LawnMower {
         this.commands = commands;
     }
     
-    LawnMower init () {
-        this.commands.setLawnMower(this);
+    public LawnMower program (List<Movement> movements) {
+        this.movements = new ArrayList<>();
+        
+        for (Movement movement : movements) {
+            this.movements.add(this.commands.getMovements().get(movement));
+            
+        }
+        
         return this;
     }
     
     @Override
+    public Movable moveTo(@NonNull Positionable anotherLocation) {
+        this.position = new Position(anotherLocation.getPosition());
+        
+        return this;
+    }
+    
+    
+    
+    @Override
     public String toString() {
-        return String.format("LawnMower [%s%s%s]",
-            this.getX(),
-            this.getY(),
-            this.getInFrontOf());
+        return String.format("LawnMower {%s}",
+            this.getPosition());
     }
     
     

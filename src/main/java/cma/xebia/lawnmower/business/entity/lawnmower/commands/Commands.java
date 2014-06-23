@@ -18,8 +18,6 @@
 package cma.xebia.lawnmower.business.entity.lawnmower.commands;
 
 import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
-import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import java.util.Map;
 
 /**
@@ -27,12 +25,6 @@ import java.util.Map;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 public interface Commands {
-    
-    public Commands setLawnMower (LawnMower lawnMower);
-    
-    public Commands setMovements (Map<Movement, Action> commands);
-    
     public Map<Movement, Action> getMovements ();
     
-    public Commands run ()  throws LawnMowerException;
 }

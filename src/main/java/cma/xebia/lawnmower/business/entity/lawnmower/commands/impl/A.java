@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.entity.lawnmower.commands.actions;
+package cma.xebia.lawnmower.business.entity.lawnmower.commands.impl;
 
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.ActionBase;
+import cma.xebia.lawnmower.business.entity.Movable;
+import cma.xebia.lawnmower.business.entity.Position;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,15 +28,17 @@ import lombok.extern.slf4j.Slf4j;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 @Slf4j
-public class A extends ActionBase  {
+public class A implements Action {
     
     @Override
-    public Action apply(LawnMower lawnMower) {
-        int newX = lawnMower.getX();
-        int newY = lawnMower.getY();
+    public Position apply(Movable movable) {
+        Position result = new Position(movable.getPosition());
+        
+        int newX = result.getX();
+        int newY = result.getY();
         
         
-        switch (lawnMower.getInFrontOf()) {
+        switch (result.getInFrontOf()) {
             case N :
                 newY++;
                 break;
@@ -55,19 +57,20 @@ public class A extends ActionBase  {
                 break;
         }
         
-        if (!this.getPositionValidator().isValid(newX, newY)) {
-            log.debug("cannot reach point {}.{}", newX, newY);
-            
-        } else {
-            log.debug("move to point {}.{}", newX, newY);
-            lawnMower
-                .setX(newX)
-                .setY(newY);
-            
-        }
+        result
+            .setX(newX)
+            .setY(newY)
+        ;
         
+        return result;
         
-        return this;
     }
+    
+    @Override
+    public String toString() {
+        return "A";
+    }
+    
+    
     
 }

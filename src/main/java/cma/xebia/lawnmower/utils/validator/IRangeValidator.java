@@ -21,7 +21,7 @@ package cma.xebia.lawnmower.utils.validator;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface IPositionValidator {
+public interface IRangeValidator {
     
     /**
      *
@@ -36,7 +36,7 @@ public interface IPositionValidator {
      * @param maxHeight
      * @return
      */
-    IPositionValidator setMaxHeight (int maxHeight);
+    IRangeValidator setMaxHeight (int maxHeight);
     
     int getMaxHeight ();
     
@@ -45,7 +45,7 @@ public interface IPositionValidator {
      * @param maxWidth
      * @return
      */
-    IPositionValidator setMaxWidth (int maxWidth);
+    IRangeValidator setMaxWidth (int maxWidth);
     
     int getMaxWidth ();
     
@@ -54,7 +54,7 @@ public interface IPositionValidator {
      * @param minHeight
      * @return
      */
-    IPositionValidator setMinHeight (int minHeight);
+    IRangeValidator setMinHeight (int minHeight);
     
     int getMinHeight ();
     
@@ -63,7 +63,7 @@ public interface IPositionValidator {
      * @param minWidth
      * @return
      */
-    IPositionValidator setMinWidth (int minWidth);
+    IRangeValidator setMinWidth (int minWidth);
     
     int getMinWidth ();
     
@@ -72,7 +72,7 @@ public interface IPositionValidator {
      * @param including
      * @return 
      */
-    IPositionValidator setIncluding (boolean including);
+    IRangeValidator setIncluding (boolean including);
     
     boolean isIncluding ();
 }

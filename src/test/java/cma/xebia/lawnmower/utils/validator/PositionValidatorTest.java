@@ -30,13 +30,13 @@ public class PositionValidatorTest extends TestCase {
     }
     
     /**
-     * Test of isValid method, of class PositionValidator.
+     * Test of isValid method, of class RangeValidator.
      */
     public void testIsValid() {
         System.out.println("isValid");
         int x = 0;
         int y = 0;
-        PositionValidator validator = new PositionValidator();
+        RangeValidator validator = new RangeValidator();
         validator
             .setIncluding(true)
             .setMinHeight(1)
@@ -61,13 +61,13 @@ public class PositionValidatorTest extends TestCase {
     
     
     /**
-     * Test of isValid method, of class PositionValidator.
+     * Test of isValid method, of class RangeValidator.
      */
     public void testIsValidIncluding () {
         System.out.println("isValid");
         int x = 0;
         int y = 0;
-        PositionValidator validator = new PositionValidator();
+        RangeValidator validator = new RangeValidator();
         validator
             .setIncluding(false)
             .setMinHeight(0)

@@ -15,44 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.service;
+package cma.xebia.lawnmower.business.service.process.validator;
 
 import cma.xebia.lawnmower.business.entity.Dimensionable;
-import cma.xebia.lawnmower.business.entity.Movable;
 import cma.xebia.lawnmower.business.entity.Positionable;
-import java.util.List;
 
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface IShearer {
+public interface PositionableValidator {
     
-    public boolean isFail ();
-    
-    public List<String> getErrors ();
-    
-    public IShearer init ();
-    
-    public IShearer on (Dimensionable dimensionable);
-    
-    public IShearer use(Movable movable);
-    
-    public IShearer use(List<Movable> movables);
-    
-    public IShearer withObstacle (Positionable obstacle);
-    
-    public IShearer withObstacles (List<Positionable> obstacles);
-    
-    public IShearer validate ();
-    
-    public IShearer mow ();
-    
-    public Dimensionable getPlayground ();
-    
-    public List<Movable> getMovables ();
-    
-    public List<Positionable> getObstacles ();
+    public boolean isValid (
+            Positionable positionable,
+            Dimensionable dimensionable);
     
 }

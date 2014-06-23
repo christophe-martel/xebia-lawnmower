@@ -15,40 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.entity.lawnmower.commands;
-
-import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
-
+package cma.xebia.lawnmower.business.entity;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-@Slf4j
-public class DefaultCommands implements Commands {
+public interface Positionable {
     
-    @Accessors(chain = true)
-    @Setter
-    private LawnMower lawnMower = null;
-    
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private Map<Movement, Action> movements = new LinkedHashMap<>();
-    
-    
-    @Override
-    public Commands run() {
-        log.info("Call to defaut movement computer ...");
-        return this;
-    }
-    
+    public Position getPosition ();
     
 }

@@ -15,20 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.service.process.validator;
-
-import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
-
+package cma.xebia.lawnmower.utils.validator;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface LawnMowerValidator {
+public class DefaultRangeValidator extends ARangeValidator {
     
-    public LawnMowerValidator setLawnMower (LawnMower lawnMower);
-    
-    public boolean isValid (Lawn lawn);
+    @Override
+    public boolean isValid (int x, int y) {
+        return true;
+    }
     
 }

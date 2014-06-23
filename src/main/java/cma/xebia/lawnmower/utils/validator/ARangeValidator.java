@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public abstract class APositionValidator implements IPositionValidator {
+public abstract class ARangeValidator implements IRangeValidator {
     
     @Accessors(chain = true)
     @Getter

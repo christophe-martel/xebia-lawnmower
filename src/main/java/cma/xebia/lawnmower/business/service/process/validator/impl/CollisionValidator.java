@@ -15,44 +15,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.service;
+package cma.xebia.lawnmower.business.service.process.validator.impl;
 
-import cma.xebia.lawnmower.business.entity.Dimensionable;
 import cma.xebia.lawnmower.business.entity.Movable;
 import cma.xebia.lawnmower.business.entity.Positionable;
-import java.util.List;
-
+import cma.xebia.lawnmower.business.service.process.validator.MovableValidator;
+import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface IShearer {
+@Slf4j
+public class CollisionValidator implements MovableValidator {
     
-    public boolean isFail ();
+    @Override
+    public boolean isValid(Movable movable, Set<Positionable> obstacles) {
+        
+        for (Positionable positionable : obstacles) {
+            if (positionable == movable) {
+                continue;
+            }
+            
+            if (positionable.getPosition().isInSameLocation(movable)) {
+                log.debug("for movable %s found obstacle %s", movable, positionable);
+                return false;
+            }
+            
+        }
+        
+        return true;
+    }
     
-    public List<String> getErrors ();
     
-    public IShearer init ();
-    
-    public IShearer on (Dimensionable dimensionable);
-    
-    public IShearer use(Movable movable);
-    
-    public IShearer use(List<Movable> movables);
-    
-    public IShearer withObstacle (Positionable obstacle);
-    
-    public IShearer withObstacles (List<Positionable> obstacles);
-    
-    public IShearer validate ();
-    
-    public IShearer mow ();
-    
-    public Dimensionable getPlayground ();
-    
-    public List<Movable> getMovables ();
-    
-    public List<Positionable> getObstacles ();
     
 }

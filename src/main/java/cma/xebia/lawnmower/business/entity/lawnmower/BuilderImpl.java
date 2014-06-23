@@ -17,8 +17,12 @@
 
 package cma.xebia.lawnmower.business.entity.lawnmower;
 
+import cma.xebia.lawnmower.business.entity.Position;
+import cma.xebia.lawnmower.business.entity.Positionable;
+import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
 import com.rits.cloning.Cloner;
+import lombok.NonNull;
 import lombok.experimental.Accessors;
 
 /**
@@ -40,9 +44,27 @@ public class BuilderImpl implements LawnMowerBuilder {
     @Override
     public LawnMower create () {
         LawnMower result = new LawnMower(this.cloner.deepClone(this.commands));
-        result.init();
         
         return result;
     }
     
+    @Override
+    public LawnMower create (@NonNull Positionable positioned) {
+        LawnMower result = this.create();
+        
+        result.moveTo(positioned);
+        
+        return result;
+    }
+    
+    @Override
+    public LawnMower create (int x, int y, CompassPoint inFrontOf) {
+        Position result = new Position();
+        result
+            .setX(x)
+            .setY(y)
+            .setInFrontOf(inFrontOf);
+        
+        return this.create(result);
+    }
 }

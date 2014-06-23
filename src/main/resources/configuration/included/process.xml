@@ -21,6 +21,7 @@
             scope="prototype" >
         <constructor-arg ref="validator.lawn.size"/>
         <constructor-arg ref="validator.lawn-mower"/>
+        <constructor-arg ref="validator.obstacles"/>
     </bean>
     
     

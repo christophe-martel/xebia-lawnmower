@@ -18,7 +18,7 @@
 package cma.xebia.lawnmower.business.service.process.validator.impl;
 
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.utils.validator.PositionValidator;
+import cma.xebia.lawnmower.utils.validator.RangeValidator;
 import junit.framework.TestCase;
 
 /**
@@ -37,7 +37,7 @@ public class SizeOfLawnValidatorTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         validator = new SizeOfLawnValidator(
-            (new PositionValidator())
+            (new RangeValidator())
                 .setIncluding(true)
                 .setMinHeight(1)
                 .setMaxHeight(9)
@@ -59,16 +59,18 @@ public class SizeOfLawnValidatorTest extends TestCase {
      */
     public void testIsValid() {
         
-        assertFalse(validator.isValid((new Lawn()).setHeight(0).setWidth(1)));
-        assertFalse(validator.isValid((new Lawn()).setHeight(1).setWidth(0)));
-        assertFalse(validator.isValid((new Lawn()).setHeight(0).setWidth(0)));
         
-        assertTrue(validator.isValid((new Lawn()).setHeight(1).setWidth(1)));
-        assertTrue(validator.isValid((new Lawn()).setHeight(9).setWidth(9)));
         
-        assertFalse(validator.isValid((new Lawn()).setHeight(9).setWidth(10)));
-        assertFalse(validator.isValid((new Lawn()).setHeight(10).setWidth(9)));
-        assertFalse(validator.isValid((new Lawn()).setHeight(10).setWidth(10)));
+        assertFalse(validator.isValid(new Lawn(1, 0)));
+        assertFalse(validator.isValid(new Lawn(0, 1)));
+        assertFalse(validator.isValid(new Lawn(0, 0)));
+        
+        assertTrue(validator.isValid(new Lawn(1, 1)));
+        assertTrue(validator.isValid(new Lawn(9, 9)));
+        
+        assertFalse(validator.isValid(new Lawn(10, 9)));
+        assertFalse(validator.isValid(new Lawn(9, 10)));
+        assertFalse(validator.isValid(new Lawn(10, 10)));
         
         
     }

@@ -17,16 +17,23 @@
 
 package cma.xebia.lawnmower.business.service;
 
+import cma.xebia.lawnmower.business.entity.Dimensionable;
+import cma.xebia.lawnmower.business.entity.Movable;
+import cma.xebia.lawnmower.business.entity.Position;
+import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
-import cma.xebia.lawnmower.business.service.process.validator.LawnMowerValidator;
-import cma.xebia.lawnmower.business.service.process.validator.LawnValidator;
-import cma.xebia.lawnmower.utils.exception.LawnMowerException;
+import cma.xebia.lawnmower.business.service.process.validator.DimentionableValidator;
+import cma.xebia.lawnmower.business.service.process.validator.MovableValidator;
+import cma.xebia.lawnmower.business.service.process.validator.PositionableValidator;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -42,17 +49,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Shearer implements IShearer {
     
-    private LawnValidator      lawnValidator = null;
-    private LawnMowerValidator lawnMowerValidator = null;
+    private DimentionableValidator  playgroundValidator = null;
+    private PositionableValidator   positionValidator   = null;
+    private MovableValidator        collisionValidator  = null;
     
     @Accessors(chain = true)
     @Getter
-    private Lawn lawn = null;
+    private Dimensionable playground = null;
     
     @Accessors(chain = true)
     @Getter
-    private List<LawnMower> lawnMowers = new ArrayList<>();
+    private List<Movable> movables = new ArrayList<>();
     
+    
+    @Accessors(chain = true)
+    @Getter
+    private List<Positionable> obstacles = new ArrayList<>();
     
     @Accessors(chain = true)
     @Getter(AccessLevel.PRIVATE)
@@ -74,50 +86,75 @@ public class Shearer implements IShearer {
     private List<String> errors = new ArrayList<>();
     
     public Shearer (
-            @NonNull LawnValidator lawnValidator,
-            @NonNull LawnMowerValidator lawnMowerValidator) {
-        this.lawnValidator = lawnValidator;
-        this.lawnMowerValidator = lawnMowerValidator;
+            @NonNull DimentionableValidator playgroundValidator,
+            @NonNull PositionableValidator  positionValidator,
+            @NonNull MovableValidator       collisionValidator) {
+        this.playgroundValidator = playgroundValidator;
+        this.positionValidator = positionValidator;
+        this.collisionValidator = collisionValidator;
         
     }
     
     @Override
     public IShearer init () {
-        this.lawnMowerValidator.setLawnMower(null);
         this.fail = false;
         this.validated = false;
         this.mowed = false;
-        this.lawnMowers = new ArrayList<>();
-        this.lawn = null;
+        this.movables = new ArrayList<>();
+        this.obstacles = new ArrayList<>();
+        this.playground = null;
         this.errors.clear();
         
         return this;
     }
     
     @Override
-    public IShearer on(Lawn lawn) {
-        this.lawn = lawn;
+    public IShearer on(Dimensionable dimensionable) {
+        this.playground = dimensionable;
         return this;
     }
     
     @Override
-    public IShearer use(LawnMower lawnMower) {
-        if (this.lawnMowers.contains(lawnMower)) {
+    public IShearer use(Movable movable) {
+        if (this.obstacles.contains(movable)) {
+            log.warn("cannot add an obstacle into movables stack");
             return this;
         }
-        this.lawnMowers.add(lawnMower);
+        if (this.movables.contains(movable)) {
+            return this;
+        }
+        this.movables.add(movable);
         return this;
     }
     
     @Override
-    public IShearer use(List<LawnMower> lawnMowers) {
-        for (LawnMower lawnMower : lawnMowers) {
-            this.use(lawnMower);
+    public IShearer use(List<Movable> movables) {
+        for (Movable movable : movables) {
+            this.use(movable);
             
         }
         return this;
     }
-
+    
+    @Override
+    public IShearer withObstacle(Positionable obstacle) {
+        if (this.obstacles.contains(obstacle)) {
+            return this;
+        }
+        this.obstacles.add(obstacle);
+        return this;
+    }
+    
+    @Override
+    public IShearer withObstacles(List<Positionable> obstacles) {
+        for (Positionable obstacle : obstacles) {
+            this.withObstacle(obstacle);
+            
+        }
+        return this;
+    }
+    
+    
     @Override
     public IShearer validate () {
         if (this.isValidated()) {
@@ -134,7 +171,7 @@ public class Shearer implements IShearer {
     
     protected Shearer verifyLawn () {
         log.info("verification of lawn");
-        this.lawnValidator.isValid(lawn);
+        this.playgroundValidator.isValid(this.playground);
         
         return this;
     }
@@ -142,11 +179,10 @@ public class Shearer implements IShearer {
     protected Shearer verifyLawnMower () {
         log.info("verification of lawn mowers");
         int i = -1;
-        for (LawnMower lawnmower : this.lawnMowers) {
+        for (Movable movable : this.movables) {
             log.info("verify lawn mowers #{}", ++i);
-            if (this.lawnMowerValidator
-                    .setLawnMower(lawnmower)
-                    .isValid(lawn)) {
+            if (this.positionValidator
+                    .isValid(movable, this.playground)) {
                 continue;
             }
             
@@ -174,44 +210,75 @@ public class Shearer implements IShearer {
             
         }
         this.setFail(true);
-        try {
-            
-            this.calibrateLawnMower();
-            
-            log.info("mow law {}x{} ...", lawn.getWidth(), lawn.getHeight());
-            int i = -1;
-            for (LawnMower lm : lawnMowers) {
-                log.info("with {} #{} and movements {}", lm, ++i, lm.getMovements());
-                lm.getCommands().run();
-                log.info("Lawn mower is now : {}", lm);
-            }
-            this.setFail(false);
-        } catch (LawnMowerException ex) {
-            log.error("error", ex);
-            this.errors.add(ex.getMessage());
-        }
-        return this;
-    }
-    
-    
-    protected IShearer calibrateLawnMower () {
-        log.info("calibration of lawn mowers");
+        
+        log.info("mow law {}x{} ...",
+            this.playground.getDimension().width,
+            this.playground.getDimension().height);
+        
+        // creating obstacles list
+        final Set<Positionable> allObstacles = Collections
+            .unmodifiableSet(this.getAllObstacles());
+        
         int i = -1;
-        for (LawnMower lawnmower : this.lawnMowers) {
-            log.info("calibrate lawn mowers #{}", ++i);
-            for (Map.Entry<Movement, Action> entry : lawnmower.getCommands().getMovements().entrySet()) {
-                entry
-                    .getValue()
-                    .getPositionValidator()
-                    .setMaxWidth(this.lawn.getWidth())
-                    .setMaxHeight(this.lawn.getHeight())
-                ;
-            }
+        for (Movable movable : this.movables) {
+            i++;
+            this.run(movable, allObstacles, i);
         }
+        this.setFail(false);
         
         return this;
     }
     
+    protected IShearer run (
+            Movable movable,
+            Set<Positionable> allObstacles,
+            int index) {
+        log.info("with {} #{} and movements {}",
+            movable,
+            ++index,
+            movable.getMovements());
+        
+        Position nextPosition;
+        
+        for (Action action: movable.getMovements()) {
+            
+            nextPosition = action.apply(movable);
+            log.debug("Action {}, next position is {}", action, nextPosition);
+            
+            // position validation
+            if (!this.positionValidator
+                    .isValid(nextPosition, this.playground)) {
+                // Out of bound...
+                // nothing to do ...
+                log.debug("next position is unreachable ...");
+                
+            } else if (!this
+                    .collisionValidator
+                    .isValid(movable, allObstacles)) {
+                // collision detected
+                // nothing to do ...
+                log.debug("next position is already taken...");
+                
+            } else {
+                movable.moveTo(nextPosition);
+                
+            }
+            
+            
+        }
+        
+        log.info("Lawn mower is now : {}", movable);
+        
+        return this;
+    }
+    
+    protected Set<Positionable> getAllObstacles () {
+        Set<Positionable> result = new HashSet<>();
+        result.addAll(this.obstacles);
+        result.addAll(this.movables);
+        
+        return result;
+    }
     
     
 }

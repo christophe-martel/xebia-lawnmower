@@ -18,6 +18,10 @@ package cma.xebia.lawnmower.controller.impl;
 
 
 
+import cma.xebia.lawnmower.business.entity.Dimensionable;
+import cma.xebia.lawnmower.business.entity.Movable;
+import cma.xebia.lawnmower.business.entity.Position;
+import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.controller.IController;
 import cma.xebia.lawnmower.business.entity.lawnmower.LawnMowerBuilder;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
@@ -86,8 +90,8 @@ public class LawnMowerController implements IController {
         log.info("run");
         
         
-        Lawn lawn = computeLawn();
-        List<LawnMower> lawnMowers = computeLawnMowers();
+        Dimensionable lawn = computeLawn();
+        List<Movable> lawnMowers = computeLawnMowers();
         
         shearer
             .init()
@@ -101,12 +105,12 @@ public class LawnMowerController implements IController {
         } else {
             log.info("Done");
             int i = -1;
-            for (LawnMower lm : shearer.getLawnMowers()) {
+            for (Positionable positionable : shearer.getMovables()) {
                 log.info("lawn #{} is to position ({}x{}) and is in front of {}",
                     ++i,
-                    lm.getX(),
-                    lm.getY(),
-                    lm.getInFrontOf());
+                    positionable.getPosition().getX(),
+                    positionable.getPosition().getY(),
+                    positionable.getPosition().getInFrontOf());
                 
             }
         }
@@ -121,26 +125,28 @@ public class LawnMowerController implements IController {
         return this;
     }
     
-    protected Lawn computeLawn () throws LawnMowerException {
+    protected Dimensionable computeLawn () throws LawnMowerException {
         log.info("create lawn");
         
-        return (new Lawn())
-            .setHeight(getReader().getLawn().getDimension().height)
-            .setWidth(getReader().getLawn().getDimension().width)
+        return new Lawn(
+            getReader().getLawn().getDimension().width,
+            getReader().getLawn().getDimension().height)
         ;
     }
     
     
-    protected List<LawnMower> computeLawnMowers () throws LawnMowerException {
+    protected List<Movable> computeLawnMowers () throws LawnMowerException {
         log.info("create lawn mowers");
-        List<LawnMower> result = new ArrayList<>();
+        List<Movable> result = new ArrayList<>();
         
         for(ILawnMowerDesc desc : reader.getLawnMowers()) {
-            result.add(getBuilder().create()
-                .setX(desc.getPosition().x)
-                .setY(desc.getPosition().y)
-                .setInFrontOf(CompassPoint.valueOf(desc.getInFrontOf()))
-                .setMovements(Movement.parseMovements(desc.getMovements())));
+            result.add(getBuilder()
+                .create(
+                    desc.getPosition().x,
+                    desc.getPosition().y,
+                    CompassPoint.valueOf(desc.getInFrontOf()))
+                .program(Movement.parseMovements(desc.getMovements()))
+            );
             
         }
         

@@ -20,7 +20,7 @@
             class="cma.xebia.lawnmower.business.service.process.validator.impl.SizeOfLawnValidator"
             scope="prototype" >
         <constructor-arg>
-            <bean   class="cma.xebia.lawnmower.utils.validator.PositionValidator"
+            <bean   class="cma.xebia.lawnmower.utils.validator.RangeValidator"
                     scope="prototype" >
                 <property name="minWidth" value="1" />
                 <property name="maxWidth" value="9" />
@@ -32,7 +32,7 @@
     </bean>
     
     <bean   id="validator.lawn-mower.position"
-            class="cma.xebia.lawnmower.utils.validator.PositionValidator"
+            class="cma.xebia.lawnmower.utils.validator.RangeValidator"
             scope="prototype" >
         <property name="minWidth" value="0" />
         <property name="maxWidth" value="9" />
@@ -42,9 +42,15 @@
     </bean>
             
     <bean   id="validator.lawn-mower"
-            class="cma.xebia.lawnmower.business.service.process.validator.impl.PositionOfLawnMowerValidator"
+            class="cma.xebia.lawnmower.business.service.process.validator.impl.PositionValidator"
             scope="prototype" >
         <constructor-arg ref="validator.lawn-mower.position"/>
     </bean>
+            
+    <bean   id="validator.obstacles"
+            class="cma.xebia.lawnmower.business.service.process.validator.impl.CollisionValidator"
+            scope="prototype" />
+    
+    
     
 </beans>

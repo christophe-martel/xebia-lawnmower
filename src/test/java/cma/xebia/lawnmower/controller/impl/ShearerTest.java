@@ -20,10 +20,11 @@ package cma.xebia.lawnmower.controller.impl;
 import cma.xebia.lawnmower.business.service.IShearer;
 import cma.xebia.lawnmower.application.Main;
 import cma.xebia.lawnmower.application.Constant;
+import cma.xebia.lawnmower.business.entity.Movable;
+import cma.xebia.lawnmower.business.entity.Position;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
 import cma.xebia.lawnmower.utils.file.ILawnMowerDesc;
 import cma.xebia.lawnmower.utils.file.ILawnMowerDescReader;
 import java.util.ArrayList;
@@ -86,18 +87,21 @@ public class ShearerTest extends TestCase {
             .setCharset("UTF-8")
             .read();
         
-        Lawn lawn = (new Lawn())
-            .setHeight(r.getLawn().getDimension().height)
-            .setWidth(r.getLawn().getDimension().width)
+        Lawn lawn = new Lawn(
+            r.getLawn().getDimension().width,
+            r.getLawn().getDimension().height)
         ;
         
-        List<LawnMower> lawnMowers = new ArrayList<>();
+        List<Movable> lawnMowers = new ArrayList<>();
         for(ILawnMowerDesc desc : r.getLawnMowers()) {
             lawnMowers.add(controller.getBuilder().create()
-                .setX(desc.getPosition().x)
-                .setY(desc.getPosition().y)
-                .setInFrontOf(CompassPoint.valueOf(desc.getInFrontOf()))
-                .setMovements(Movement.parseMovements(desc.getMovements())));
+                .program(Movement.parseMovements(desc.getMovements()))
+                .moveTo(
+                    (new Position())
+                        .setX(desc.getPosition().x)
+                        .setY(desc.getPosition().y)
+                        .setInFrontOf(CompassPoint.valueOf(desc.getInFrontOf())))
+                );
             
         }
         
@@ -110,17 +114,17 @@ public class ShearerTest extends TestCase {
         
         assertEquals(false, shearer.isFail());
         
-        assertEquals(2, shearer.getLawnMowers().size());
-        assertEquals(lawnMowers.get(0), shearer.getLawnMowers().get(0));
-        assertEquals(lawnMowers.get(1), shearer.getLawnMowers().get(1));
+        assertEquals(2, shearer.getMovables().size());
+        assertEquals(lawnMowers.get(0), shearer.getMovables().get(0));
+        assertEquals(lawnMowers.get(1), shearer.getMovables().get(1));
         
-        assertEquals(1, shearer.getLawnMowers().get(0).getX());
-        assertEquals(3, shearer.getLawnMowers().get(0).getY());
-        assertEquals(CompassPoint.N, shearer.getLawnMowers().get(0).getInFrontOf());
+        assertEquals(1, shearer.getMovables().get(0).getPosition().getX());
+        assertEquals(3, shearer.getMovables().get(0).getPosition().getY());
+        assertEquals(CompassPoint.N, shearer.getMovables().get(0).getPosition().getInFrontOf());
         
-        assertEquals(5, shearer.getLawnMowers().get(1).getX());
-        assertEquals(1, shearer.getLawnMowers().get(1).getY());
-        assertEquals(CompassPoint.E, shearer.getLawnMowers().get(1).getInFrontOf());
+        assertEquals(5, shearer.getMovables().get(1).getPosition().getX());
+        assertEquals(1, shearer.getMovables().get(1).getPosition().getY());
+        assertEquals(CompassPoint.E, shearer.getMovables().get(1).getPosition().getInFrontOf());
         
     }
     

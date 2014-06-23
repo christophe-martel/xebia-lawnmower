@@ -16,24 +16,26 @@
  */
 package cma.xebia.lawnmower.business.entity.lawn;
 
+import cma.xebia.lawnmower.business.entity.Dimensionable;
+import java.awt.Dimension;
 import lombok.experimental.Accessors;
 import lombok.Getter;
-import lombok.Setter;
 
 
 /**
  * 
  * @author Christophe Martel <mail.christophe.martel@gmail.com>tophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Lawn {
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private int width = 0;
+public class Lawn implements Dimensionable {
     
     @Accessors(chain = true)
     @Getter
-    @Setter
-    private int height = 0;
+    private Dimension dimension = null;
+    
+    public Lawn(int width, int height) {
+        this.dimension = new Dimension(width, height);
+    }
+    
+    
     
 }

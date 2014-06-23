@@ -15,15 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.service.process.validator;
+package cma.xebia.lawnmower.business.entity;
 
-import cma.xebia.lawnmower.business.entity.lawn.Lawn;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
+import java.util.List;
+import lombok.NonNull;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface LawnValidator {
+public interface Movable extends Positionable {
     
-    public boolean isValid (Lawn lawn);
+    public List<Action> getMovements ();
+    
+    public Movable moveTo (@NonNull Positionable anotherLocation);
+    
 }

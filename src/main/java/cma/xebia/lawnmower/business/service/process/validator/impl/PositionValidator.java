@@ -18,48 +18,52 @@
 package cma.xebia.lawnmower.business.service.process.validator.impl;
 
 
-import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
-import cma.xebia.lawnmower.business.service.process.validator.LawnMowerValidator;
-import cma.xebia.lawnmower.utils.validator.DefaultPositionValidator;
-import cma.xebia.lawnmower.utils.validator.IPositionValidator;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import cma.xebia.lawnmower.business.entity.Dimensionable;
+import cma.xebia.lawnmower.business.entity.Positionable;
+import cma.xebia.lawnmower.business.service.process.validator.PositionableValidator;
+import cma.xebia.lawnmower.utils.validator.DefaultRangeValidator;
+import cma.xebia.lawnmower.utils.validator.IRangeValidator;
+
 
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class PositionOfLawnMowerValidator implements LawnMowerValidator {
+public class PositionValidator implements PositionableValidator {
     
-    @Accessors(chain = true)
-    @Setter
-    private LawnMower lawnMower = null;
+    private IRangeValidator positionValidator = new DefaultRangeValidator();
     
-    private IPositionValidator positionValidator = new DefaultPositionValidator();
-    
-    
-    public PositionOfLawnMowerValidator(IPositionValidator positionValidator) {
+    public PositionValidator(IRangeValidator positionValidator) {
         this.positionValidator = positionValidator;
     }
     
+    /**
+     * 
+     * @param positionable
+     * @param dimensionable
+     * @return 
+     */
     @Override
-    public boolean isValid (Lawn lawn) {
+    public boolean isValid (
+            Positionable positionable,
+            Dimensionable dimensionable) {
         boolean result = false;
         
-        if (null == lawn) {
+        if ((null == positionable)
+                || (null == dimensionable)) {
             return result;
             
         }
         
+        
         return this
             .positionValidator
-            .setMaxWidth(lawn.getWidth())
-            .setMaxHeight(lawn.getHeight())
+            .setMaxWidth(dimensionable.getDimension().width)
+            .setMaxHeight(dimensionable.getDimension().height)
             .isValid(
-                this.lawnMower.getX(),
-                this.lawnMower.getY());
+                positionable.getPosition().getX(),
+                positionable.getPosition().getY());
         
     }
     
