@@ -1,0 +1,38 @@
+                                      _     _       
+                            __  _____| |__ (_) __ _ 
+                            \ \/ / _ \ '_ \| |/ _` |
+                             >  <  __/ |_) | | (_| |
+                            /_/\_\___|_.__/|_|\__,_|
+                                      _     _       
+                         _____ _____ _____ _____ _____  
+                        |_____|_____|_____|_____|_____| 
+                                                         
+                       |  _.    ._     |\/| _      _ .__ 
+                       |_(_|\/\/| |    |  |(_)\/\/(/_|_> 
+                                                                             
+    _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____  
+   |_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____| 
+                                                                             
+
+Command line usage:
+    mvn clean compile exec:java -Dexec.args="$ARGS"
+    
+    $ARGS : [--file=/path/to/file] [--resource=/path/to/resource] [--help]
+    
+    
+Example:
+    1) Configuration par défaut (implicite)
+        mvn clean compile exec:java
+    
+    2) Chargement d'un fichier de configuration externe
+        mvn exec:java -Dexec.args="--file=/home/user/lawnmower.desc"
+    
+    3) Configuration par défaut (explicite)
+        mvn exec:java -Dexec.args="--resource=/lawnmower.desc"
+    
+    4) Configuration avec des obstacles
+        mvn exec:java -Dexec.args="--resource=/lawnmower+obstacles.desc"
+    
+    5) Ce message
+        mvn exec:java -Dexec.args="--help"
+    
