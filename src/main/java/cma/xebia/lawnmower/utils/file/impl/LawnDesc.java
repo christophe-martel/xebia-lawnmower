@@ -15,35 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.utils.file;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
+package cma.xebia.lawnmower.utils.file.impl;
+
+import cma.xebia.lawnmower.utils.file.DimensionableDesc;
+import java.awt.Dimension;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class LawnMowerDesc implements ILawnMowerDesc {
+public class LawnDesc implements DimensionableDesc {
     
     @Accessors(chain = true)
     @Getter
     @Setter
-    private Point position = new Point();
-    
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private String inFrontOf = "N";
-    
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private List<String> movements = new ArrayList<>();
+    private Dimension dimension = new Dimension();
     
     
 }

@@ -44,7 +44,7 @@ public class LawnMower
     
     @Accessors(chain = true)
     @Getter
-    private Position position = null;
+    private Position position;
     
     
     @Accessors(chain = true)
@@ -52,11 +52,11 @@ public class LawnMower
     private List<Action> movements = new ArrayList<>();
     
     @Accessors(chain = true)
-    @Setter(AccessLevel.PACKAGE)
-    private Commands commands = null;
+    final private Commands commands;
     
     LawnMower(@NonNull Commands commands) {
         this.commands = commands;
+        this.position = new Position();
     }
     
     public LawnMower program (List<Movement> movements) {

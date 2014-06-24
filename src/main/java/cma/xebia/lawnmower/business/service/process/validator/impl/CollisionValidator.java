@@ -21,6 +21,7 @@ import cma.xebia.lawnmower.business.entity.Movable;
 import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.business.service.process.validator.MovableValidator;
 import java.util.Set;
+import java.util.TreeSet;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -31,15 +32,18 @@ import lombok.extern.slf4j.Slf4j;
 public class CollisionValidator implements MovableValidator {
     
     @Override
-    public boolean isValid(Movable movable, Set<Positionable> obstacles) {
+    public boolean isValid(
+            Movable current,
+            Positionable nextPosition,
+            Set<Positionable> obstacles) {
         
-        for (Positionable positionable : obstacles) {
-            if (positionable == movable) {
+        for (Positionable obstacle : obstacles) {
+            if (obstacle == current) {
                 continue;
             }
             
-            if (positionable.getPosition().isInSameLocation(movable)) {
-                log.debug("for movable %s found obstacle %s", movable, positionable);
+            if (obstacle.getPosition().isInSameLocation(nextPosition)) {
+                log.debug("for movable %s found obstacle %s", nextPosition, obstacle);
                 return false;
             }
             
@@ -48,6 +52,26 @@ public class CollisionValidator implements MovableValidator {
         return true;
     }
     
-    
+    @Override
+    public Set<Positionable> getAlreadyPositioned (
+            Movable current,
+            Positionable nextPosition,
+            Set<Positionable> obstacles) {
+        Set<Positionable> result = new TreeSet<>();
+        
+        for (Positionable obstacle : obstacles) {
+            if (obstacle == current) {
+                continue;
+            }
+            
+            if (!obstacle.getPosition().isInSameLocation(nextPosition)) {
+                continue;
+            }
+            
+            result.add(obstacle);
+        }
+        
+        return result;
+    }
     
 }

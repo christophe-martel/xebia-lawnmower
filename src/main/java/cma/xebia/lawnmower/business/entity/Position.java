@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Position implements Positionable {
+public class Position implements Positionable, Comparable<Positionable> {
     
     
     @Accessors(chain = true)
@@ -76,6 +76,41 @@ public class Position implements Positionable {
             this.getX(),
             this.getY(),
             this.getInFrontOf());
+    }
+    
+    @Override
+    public int compareTo(@NonNull Positionable o) {
+        final int BEFORE = -1;
+        final int EQUAL = 0;
+        final int AFTER = 1;
+        
+        if (this == o) {
+            return EQUAL;
+        }
+        
+        Position p = o.getPosition();
+        
+        if (this == p) {
+            return EQUAL;
+        }
+        
+        if (this.x < p.getX()) {
+            return BEFORE;
+            
+        } else if (p.getX() < this.x) {
+            return AFTER;
+            
+        }
+        
+        if (this.y < p.getY()) {
+            return BEFORE;
+            
+        } else if (p.getY() < this.y) {
+            return AFTER;
+            
+        }
+        
+        return this.inFrontOf.compareTo(p.getInFrontOf());
     }
     
 }

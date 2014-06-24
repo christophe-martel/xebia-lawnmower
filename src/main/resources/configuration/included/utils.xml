@@ -17,7 +17,7 @@
     
     
     <bean   id="utils.description.parser"
-            class="cma.xebia.lawnmower.utils.file.LawnMowerDescReader"
+            class="cma.xebia.lawnmower.utils.file.impl.Reader"
             scope="prototype" >
         <property name="defaultResourcePath" >
             <util:constant static-field="cma.xebia.lawnmower.application.Constant.RES_LAWNMOWER_DESC"/>

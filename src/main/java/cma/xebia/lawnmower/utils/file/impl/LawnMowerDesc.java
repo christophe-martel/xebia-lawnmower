@@ -15,26 +15,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.service.process.validator;
+package cma.xebia.lawnmower.utils.file.impl;
+import cma.xebia.lawnmower.utils.file.MovableDesc;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
-import cma.xebia.lawnmower.business.entity.Movable;
-import cma.xebia.lawnmower.business.entity.Positionable;
-import java.util.Set;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface MovableValidator {
+public class LawnMowerDesc implements MovableDesc {
     
-    public boolean isValid (
-            Movable current,
-            Positionable nextPosition,
-            Set<Positionable> obstacles);
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private Point position = new Point();
     
-    public Set<Positionable> getAlreadyPositioned (
-            Movable current,
-            Positionable nextPosition,
-            Set<Positionable> obstacles);
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private String inFrontOf = "N";
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private List<String> movements = new ArrayList<>();
+    
     
 }

@@ -15,26 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.business.service.process.validator;
+package cma.xebia.lawnmower.utils.file;
 
-import cma.xebia.lawnmower.business.entity.Movable;
-import cma.xebia.lawnmower.business.entity.Positionable;
-import java.util.Set;
+import java.awt.Point;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface MovableValidator {
+public interface PositionDesc {
     
-    public boolean isValid (
-            Movable current,
-            Positionable nextPosition,
-            Set<Positionable> obstacles);
-    
-    public Set<Positionable> getAlreadyPositioned (
-            Movable current,
-            Positionable nextPosition,
-            Set<Positionable> obstacles);
+    public Point getPosition ();
     
 }

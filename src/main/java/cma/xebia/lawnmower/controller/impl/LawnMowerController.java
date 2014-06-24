@@ -27,11 +27,12 @@ import cma.xebia.lawnmower.business.entity.lawnmower.LawnMowerBuilder;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
+import cma.xebia.lawnmower.business.entity.obstacle.Obstacle;
 import cma.xebia.lawnmower.business.service.IShearer;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
-import cma.xebia.lawnmower.utils.file.ILawnMowerDesc;
-import cma.xebia.lawnmower.utils.file.ILawnMowerDescReader;
+import cma.xebia.lawnmower.utils.file.MovableDesc;
+import cma.xebia.lawnmower.utils.file.DescReader;
+import cma.xebia.lawnmower.utils.file.PositionDesc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LawnMowerController implements IController {
     
     @Getter
-    private ILawnMowerDescReader reader = null;
+    private DescReader reader = null;
     
     @Getter
     private IShearer shearer = null;
@@ -57,7 +58,7 @@ public class LawnMowerController implements IController {
     
     
     public LawnMowerController (
-            @NonNull ILawnMowerDescReader reader,
+            @NonNull DescReader reader,
             @NonNull LawnMowerBuilder builder,
             @NonNull IShearer shearer) {
         this.reader = reader;
@@ -90,12 +91,14 @@ public class LawnMowerController implements IController {
         log.info("run");
         
         
-        Dimensionable lawn = computeLawn();
-        List<Movable> lawnMowers = computeLawnMowers();
+        Dimensionable lawn = this.computeLawn();
+        List<Movable> lawnMowers = this.computeLawnMowers();
+        List<Positionable> obstacle = this.computeObstacles();
         
         shearer
             .init()
             .on(lawn)
+            .withObstacles(obstacle)
             .use(lawnMowers)
             .mow();
         
@@ -134,12 +137,28 @@ public class LawnMowerController implements IController {
         ;
     }
     
+    protected List<Positionable> computeObstacles () {
+        log.info("create obstacles");
+        List<Positionable> result = new ArrayList<>();
+        
+        for(PositionDesc desc : reader.getObstacles()) {
+            
+            result.add((new Obstacle())
+                .setX(desc.getPosition().x)
+                .setY(desc.getPosition().y))
+            ;
+            
+        }
+        
+        
+        return result;
+    }
     
     protected List<Movable> computeLawnMowers () throws LawnMowerException {
         log.info("create lawn mowers");
         List<Movable> result = new ArrayList<>();
         
-        for(ILawnMowerDesc desc : reader.getLawnMowers()) {
+        for(MovableDesc desc : reader.getLawnMowers()) {
             result.add(getBuilder()
                 .create(
                     desc.getPosition().x,

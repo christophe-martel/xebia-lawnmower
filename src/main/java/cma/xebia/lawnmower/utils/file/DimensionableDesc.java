@@ -17,25 +17,14 @@
 
 package cma.xebia.lawnmower.utils.file;
 
-import java.util.List;
+import java.awt.Dimension;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface ILawnMowerDescReader {
+public interface DimensionableDesc {
     
-    public ILawnMowerDescReader setDefaultResourcePath (String defaultResourcePath);
+    public Dimension getDimension ();
     
-    public ILawnMowerDescReader setDescriptorPath (String descriptorPath);
-    
-    public ILawnMowerDescReader setCharset (String charset);
-    
-    public ILawnMowerDescReader read ();
-    
-    public ILawnDesc getLawn ();
-    
-    public List<ILawnMowerDesc> getLawnMowers ();
-    
-    public boolean isFail ();
 }

@@ -67,6 +67,16 @@ public class StringHelperTest extends TestCase {
             StringHelper.getChars("AADAADADDA"));
     }
     
-    
+    public void testJoin () {
+        
+        assertEquals(
+            "GAGAGAGAA",
+            StringHelper.join(Arrays.asList("G", "A", "G", "A", "G", "A", "G", "A", "A")));
+        
+        assertEquals(
+            "AADAADADDA",
+            StringHelper.join(Arrays.asList("AA", "D", "AADA", "DDA")));
+        
+    }
     
 }

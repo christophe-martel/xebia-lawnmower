@@ -17,21 +17,27 @@
 
 package cma.xebia.lawnmower.utils.file;
 
-import java.awt.Dimension;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import java.util.List;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class LawnDesc implements ILawnDesc {
+public interface DescReader {
     
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private Dimension dimension = new Dimension();
+    public DescReader setDefaultResourcePath (String defaultResourcePath);
     
+    public DescReader setDescriptorPath (String descriptorPath);
     
+    public DescReader setCharset (String charset);
+    
+    public DescReader read ();
+    
+    public DimensionableDesc getLawn ();
+    
+    public List<PositionDesc> getObstacles ();
+    
+    public List<MovableDesc> getLawnMowers ();
+    
+    public boolean isFail ();
 }

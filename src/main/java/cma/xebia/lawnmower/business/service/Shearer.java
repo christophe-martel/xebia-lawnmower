@@ -21,18 +21,14 @@ import cma.xebia.lawnmower.business.entity.Dimensionable;
 import cma.xebia.lawnmower.business.entity.Movable;
 import cma.xebia.lawnmower.business.entity.Position;
 import cma.xebia.lawnmower.business.entity.Positionable;
-import cma.xebia.lawnmower.business.entity.constants.Movement;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import cma.xebia.lawnmower.business.service.process.validator.DimentionableValidator;
 import cma.xebia.lawnmower.business.service.process.validator.MovableValidator;
 import cma.xebia.lawnmower.business.service.process.validator.PositionableValidator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -219,6 +215,11 @@ public class Shearer implements IShearer {
         final Set<Positionable> allObstacles = Collections
             .unmodifiableSet(this.getAllObstacles());
         
+        for (Positionable positionable : allObstacles) {
+            log.info("with obstacle {}", positionable);
+            
+        }
+        
         int i = -1;
         for (Movable movable : this.movables) {
             i++;
@@ -243,23 +244,33 @@ public class Shearer implements IShearer {
         for (Action action: movable.getMovements()) {
             
             nextPosition = action.apply(movable);
-            log.debug("Action {}, next position is {}", action, nextPosition);
             
             // position validation
             if (!this.positionValidator
                     .isValid(nextPosition, this.playground)) {
                 // Out of bound...
                 // nothing to do ...
-                log.debug("next position is unreachable ...");
+                log.warn("Action {}, next position {} is unreachable ...",
+                    action,
+                    nextPosition);
                 
             } else if (!this
                     .collisionValidator
-                    .isValid(movable, allObstacles)) {
+                    .isValid(movable, nextPosition, allObstacles)) {
                 // collision detected
                 // nothing to do ...
-                log.debug("next position is already taken...");
+                
+                log.warn("Action {}, next position {} is already taken by {}",
+                    action,
+                    nextPosition,
+                    this
+                        .collisionValidator
+                        .getAlreadyPositioned(movable, nextPosition, allObstacles));
                 
             } else {
+                log.info("Action {}, move to {}",
+                    action,
+                    nextPosition);
                 movable.moveTo(nextPosition);
                 
             }

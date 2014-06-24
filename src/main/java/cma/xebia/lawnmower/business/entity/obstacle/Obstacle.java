@@ -15,24 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.utils.file;
+package cma.xebia.lawnmower.business.entity.obstacle;
 
-import java.awt.Point;
-import java.util.List;
+import cma.xebia.lawnmower.business.entity.Position;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface ILawnMowerDesc {
-    
-    public Point getPosition ();
+public class Obstacle extends Position {
     
     
-    public String getInFrontOf ();
-    
-    public ILawnMowerDesc setInFrontOf (String inFrontOf);
-    
-    public List<String> getMovements ();
+    @Override
+    public String toString() {
+        return String.format("Obstacle (%s, %s)",
+            this.getX(),
+            this.getY());
+    }
     
 }

@@ -17,6 +17,8 @@
 
 package cma.xebia.lawnmower.utils.file;
 
+import cma.xebia.lawnmower.utils.file.impl.Reader;
+import cma.xebia.lawnmower.utils.helpers.StringHelper;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.List;
@@ -40,7 +42,7 @@ public class LawnMowerDescReaderTest extends TestCase {
         logger.info("Parse expected file");
         
         
-        ILawnMowerDescReader r = (new LawnMowerDescReader())
+        Reader r = (new Reader())
             .setDefaultResourcePath("/setup/lawnmower.desc")
             .setCharset("UTF-8")
             .read();
@@ -57,23 +59,53 @@ public class LawnMowerDescReaderTest extends TestCase {
         logger.info("check lawn mower #1");
         assertEquals(new Point(1, 2), r.getLawnMowers().get(0).getPosition());
         assertEquals("N", r.getLawnMowers().get(0).getInFrontOf());
-        assertEquals("GAGAGAGAA", this.join(r.getLawnMowers().get(0).getMovements()));
+        assertEquals("GAGAGAGAA", StringHelper.join(r.getLawnMowers().get(0).getMovements()));
         
         logger.info("check lawn mower #2");
         assertEquals(new Point(3, 3), r.getLawnMowers().get(1).getPosition());
         assertEquals("E", r.getLawnMowers().get(1).getInFrontOf());
-        assertEquals("AADAADADDA", this.join(r.getLawnMowers().get(1).getMovements()));
+        assertEquals("AADAADADDA", StringHelper.join(r.getLawnMowers().get(1).getMovements()));
         
     }
     
     
-    protected String join (List<String> str) {
+    public void testParseObstacleFile() {
+        logger.info("Parse expected file");
         
-        StringBuilder result = new StringBuilder();
-        for (String o : str) {
-            result.append(o);
-        }
         
-        return result.toString();
+        Reader r = (new Reader())
+            .setDefaultResourcePath("/setup/lawnmower+obstacles.desc")
+            .setCharset("UTF-8")
+            .read();
+        
+        logger.info("is fail ?");
+        assertFalse(r.isFail());
+        
+        logger.info("check lawn");
+        assertEquals(new Dimension(5, 5), r.getLawn().getDimension());
+        
+        logger.info("check number of obstacle");
+        assertEquals(2, r.getObstacles().size());
+        
+        logger.info("check obstacle #1");
+        assertEquals(new Point(2, 2), r.getObstacles().get(0).getPosition());
+        
+        logger.info("check obstacle #2");
+        assertEquals(new Point(1, 1), r.getObstacles().get(1).getPosition());
+        
+        logger.info("check number of lawn mowers");
+        assertEquals(2, r.getLawnMowers().size());
+        
+        logger.info("check lawn mower #1");
+        assertEquals(new Point(1, 2), r.getLawnMowers().get(0).getPosition());
+        assertEquals("N", r.getLawnMowers().get(0).getInFrontOf());
+        assertEquals("GAGAGAGAA", StringHelper.join(r.getLawnMowers().get(0).getMovements()));
+        
+        logger.info("check lawn mower #2");
+        assertEquals(new Point(3, 3), r.getLawnMowers().get(1).getPosition());
+        assertEquals("E", r.getLawnMowers().get(1).getInFrontOf());
+        assertEquals("AADAADADDA", StringHelper.join(r.getLawnMowers().get(1).getMovements()));
+        
     }
+    
 }

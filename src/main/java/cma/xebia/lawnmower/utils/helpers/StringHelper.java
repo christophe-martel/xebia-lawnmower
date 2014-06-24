@@ -47,6 +47,14 @@ public class StringHelper {
         return result;
     }
     
-    
+    public static String join (List<String> str) {
+        
+        StringBuilder result = new StringBuilder();
+        for (String o : str) {
+            result.append(o);
+        }
+        
+        return result.toString();
+    }
     
 }

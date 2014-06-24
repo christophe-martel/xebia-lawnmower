@@ -17,14 +17,22 @@
 
 package cma.xebia.lawnmower.utils.file;
 
-import java.awt.Dimension;
+import java.awt.Point;
+import java.util.List;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public interface ILawnDesc {
+public interface MovableDesc {
     
-    public Dimension getDimension ();
+    public Point getPosition ();
+    
+    
+    public String getInFrontOf ();
+    
+    public MovableDesc setInFrontOf (String inFrontOf);
+    
+    public List<String> getMovements ();
     
 }

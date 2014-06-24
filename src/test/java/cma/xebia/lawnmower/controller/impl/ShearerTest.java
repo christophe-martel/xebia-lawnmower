@@ -25,8 +25,8 @@ import cma.xebia.lawnmower.business.entity.Position;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.utils.file.ILawnMowerDesc;
-import cma.xebia.lawnmower.utils.file.ILawnMowerDescReader;
+import cma.xebia.lawnmower.utils.file.MovableDesc;
+import cma.xebia.lawnmower.utils.file.DescReader;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
@@ -82,7 +82,7 @@ public class ShearerTest extends TestCase {
         
         IShearer shearer = controller.getShearer();
         
-        ILawnMowerDescReader r = controller.getReader()
+        DescReader r = controller.getReader()
             .setDefaultResourcePath("/setup/lawnmower.desc")
             .setCharset("UTF-8")
             .read();
@@ -93,7 +93,7 @@ public class ShearerTest extends TestCase {
         ;
         
         List<Movable> lawnMowers = new ArrayList<>();
-        for(ILawnMowerDesc desc : r.getLawnMowers()) {
+        for(MovableDesc desc : r.getLawnMowers()) {
             lawnMowers.add(controller.getBuilder().create()
                 .program(Movement.parseMovements(desc.getMovements()))
                 .moveTo(

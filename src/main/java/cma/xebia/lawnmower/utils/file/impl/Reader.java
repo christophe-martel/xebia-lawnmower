@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.utils.file;
+package cma.xebia.lawnmower.utils.file.impl;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,6 +28,10 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import cma.xebia.lawnmower.application.Constant;
+import cma.xebia.lawnmower.utils.file.DimensionableDesc;
+import cma.xebia.lawnmower.utils.file.MovableDesc;
+import cma.xebia.lawnmower.utils.file.DescReader;
+import cma.xebia.lawnmower.utils.file.PositionDesc;
 import cma.xebia.lawnmower.utils.helpers.StringHelper;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +41,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 @Slf4j
-public class LawnMowerDescReader implements ILawnMowerDescReader {
+public class Reader implements DescReader {
     
     @Accessors(chain = true)
     @Getter
@@ -58,12 +62,17 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     @Accessors(chain = true)
     @Getter
     @Setter
-    private ILawnDesc lawn = new LawnDesc();
+    private DimensionableDesc lawn = new LawnDesc();
     
     @Accessors(chain = true)
     @Getter
     @Setter
-    private List<ILawnMowerDesc> lawnMowers = new ArrayList<>();
+    private List<PositionDesc> obstacles = new ArrayList<>();
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private List<MovableDesc> lawnMowers = new ArrayList<>();
     
     private int lastLawnMower = -1;
     
@@ -73,19 +82,18 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     
     
     @Override
-    public ILawnMowerDescReader read() {
+    public Reader read() {
         this.fail = false;
         this.lastLawnMower = 0;
         this.lawn = new LawnDesc();
         this.lawnMowers = new ArrayList<>();
-        
         this.readFile();
         
         return this;
     }
     
     
-    protected LawnMowerDescReader readFile () {
+    protected Reader readFile () {
         String inputLine = null;
         int lineCounter = -1;
         
@@ -157,14 +165,23 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
                 this.charset));
     }
     
-    protected LawnMowerDescReader parseLine (int lineCounter, String line) {
+    protected Reader parseLine (int lineCounter, String line) {
         log.debug("Parse line #{} with value:{}", lineCounter, line);
         
         if (0 == lineCounter) {
             this.parseLawnDimension(line);
             return this;
             
-        } else if (1 == (lineCounter % 2)) {
+        }
+        
+        if (line.startsWith("!")) {
+            this.parseObstacle(line);
+            return this;
+        }
+        
+        int lineCounterWithoutObstacle = lineCounter - this.obstacles.size();
+        
+        if (1 == (lineCounterWithoutObstacle % 2)) {
             this.parseLawnMowerPosition(line);
             return this;
             
@@ -177,7 +194,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
     }
     
     
-    protected LawnMowerDescReader parseLawnDimension (String line) {
+    protected Reader parseLawnDimension (String line) {
         if (2 != line.length()) {
             return this.fail("two characters expected");
         }
@@ -201,7 +218,37 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
         return this;
     }
     
-    protected LawnMowerDescReader parseLawnMowerPosition (String line) {
+    
+    protected Reader parseObstacle (String line) {
+        if (3 != line.length()) {
+            return this.fail("two characters expected");
+        }
+        
+        
+        if (!line.matches("^!\\d{2}$")) {
+            return this.fail("two digits expected");
+            
+        }
+        
+        line = line.substring(1);
+        
+        List<String> data = StringHelper.getChars(line);
+        
+        PositionDesc obstacle = new ObstacleDesc();
+        obstacle.getPosition().x = Integer.parseInt(data.get(0), 10);
+        obstacle.getPosition().y = Integer.parseInt(data.get(1), 10);
+        
+        this.obstacles.add(obstacle);
+        
+        log.debug(
+            "add obstacle on {}x{}",
+            obstacle.getPosition().x,
+            obstacle.getPosition().y);
+        
+        return this;
+    }
+    
+    protected Reader parseLawnMowerPosition (String line) {
         if (3 != line.length()) {
             return this.fail("three characters expected");
         }
@@ -211,7 +258,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
             
         }
         
-        ILawnMowerDesc lmd = this
+        MovableDesc lmd = this
             .createNewLawnMowerDesc()
             .getCurrentLawnMowerDesc();
         
@@ -234,7 +281,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
         return this;
     }
     
-    protected LawnMowerDescReader parseLawnMowerMovements (String line) {
+    protected Reader parseLawnMowerMovements (String line) {
         
         if (!line.matches("^[DGA]+$")) {
             return this.fail("Only valid movement [D|G|A] expected");
@@ -243,7 +290,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
         
         log.debug("add actions {} to current lawn mower", line);
         
-        ILawnMowerDesc lmd = this
+        MovableDesc lmd = this
             .getCurrentLawnMowerDesc();
         
         for(String movement : StringHelper.getChars(line)) {
@@ -256,14 +303,14 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
         return this;
     }
     
-    protected LawnMowerDescReader createNewLawnMowerDesc () {
+    protected Reader createNewLawnMowerDesc () {
         this.lawnMowers.add(new LawnMowerDesc());
         this.lastLawnMower = this.lawnMowers.size() - 1;
         
         return this;
     }
     
-    protected ILawnMowerDesc getCurrentLawnMowerDesc () {
+    protected MovableDesc getCurrentLawnMowerDesc () {
         if (this.lastLawnMower < 0) {
             this.lawnMowers.add(new LawnMowerDesc());
             this.lastLawnMower = this.lawnMowers.size() - 1;
@@ -272,7 +319,7 @@ public class LawnMowerDescReader implements ILawnMowerDescReader {
         return this.lawnMowers.get(this.lastLawnMower);
     }
     
-    protected LawnMowerDescReader fail (String message) {
+    protected Reader fail (String message) {
         log.error(message);
         this.fail = true;
         return this;
