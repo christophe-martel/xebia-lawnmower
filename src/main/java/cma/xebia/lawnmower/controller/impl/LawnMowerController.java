@@ -20,7 +20,6 @@ package cma.xebia.lawnmower.controller.impl;
 
 import cma.xebia.lawnmower.business.entity.Dimensionable;
 import cma.xebia.lawnmower.business.entity.Movable;
-import cma.xebia.lawnmower.business.entity.Position;
 import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.controller.IController;
 import cma.xebia.lawnmower.business.entity.lawnmower.LawnMowerBuilder;

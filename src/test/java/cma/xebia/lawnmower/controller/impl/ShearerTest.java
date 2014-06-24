@@ -20,15 +20,21 @@ package cma.xebia.lawnmower.controller.impl;
 import cma.xebia.lawnmower.business.service.IShearer;
 import cma.xebia.lawnmower.application.Main;
 import cma.xebia.lawnmower.application.Constant;
+import cma.xebia.lawnmower.business.entity.Dimensionable;
 import cma.xebia.lawnmower.business.entity.Movable;
 import cma.xebia.lawnmower.business.entity.Position;
+import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
+import cma.xebia.lawnmower.business.entity.obstacle.Obstacle;
 import cma.xebia.lawnmower.utils.file.MovableDesc;
 import cma.xebia.lawnmower.utils.file.DescReader;
+import cma.xebia.lawnmower.utils.file.PositionDesc;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -87,32 +93,21 @@ public class ShearerTest extends TestCase {
             .setCharset("UTF-8")
             .read();
         
-        Lawn lawn = new Lawn(
-            r.getLawn().getDimension().width,
-            r.getLawn().getDimension().height)
-        ;
-        
-        List<Movable> lawnMowers = new ArrayList<>();
-        for(MovableDesc desc : r.getLawnMowers()) {
-            lawnMowers.add(controller.getBuilder().create()
-                .program(Movement.parseMovements(desc.getMovements()))
-                .moveTo(
-                    (new Position())
-                        .setX(desc.getPosition().x)
-                        .setY(desc.getPosition().y)
-                        .setInFrontOf(CompassPoint.valueOf(desc.getInFrontOf())))
-                );
-            
-        }
+        Dimensionable lawn = this.getPlayground(r);
+        List<Positionable> obstacles = this.getObstacles(r);
+        List<Movable> lawnMowers = this.getMovables(r);
         
         shearer
             .init()
             .on(lawn)
+            .withObstacles(obstacles)
             .use(lawnMowers)
             .validate()
             .mow();
         
         assertEquals(false, shearer.isFail());
+        
+        assertEquals(0, shearer.getObstacles().size());
         
         assertEquals(2, shearer.getMovables().size());
         assertEquals(lawnMowers.get(0), shearer.getMovables().get(0));
@@ -129,4 +124,92 @@ public class ShearerTest extends TestCase {
     }
     
     
+    /**
+     * Test of run method, of class Shearer.
+     */
+    public void testRunWithObstacle() {
+        
+        
+        IShearer shearer = controller.getShearer();
+        
+        DescReader r = controller.getReader()
+            .setDefaultResourcePath("/setup/lawnmower+obstacles.desc")
+            .setCharset("UTF-8")
+            .read();
+        
+        Dimensionable lawn = this.getPlayground(r);
+        List<Positionable> obstacles = this.getObstacles(r);
+        List<Movable> lawnMowers = this.getMovables(r);
+        
+        shearer
+            .init()
+            .on(lawn)
+            .withObstacles(obstacles)
+            .use(lawnMowers)
+            .validate()
+            .mow();
+        
+        assertEquals(false, shearer.isFail());
+        
+        assertEquals(2, shearer.getObstacles().size());
+        assertEquals(2, shearer.getObstacles().get(0).getPosition().getX());
+        assertEquals(2, shearer.getObstacles().get(0).getPosition().getY());
+        assertEquals(4, shearer.getObstacles().get(1).getPosition().getX());
+        assertEquals(1, shearer.getObstacles().get(1).getPosition().getY());
+        
+        
+        assertEquals(2, shearer.getMovables().size());
+        assertEquals(lawnMowers.get(0), shearer.getMovables().get(0));
+        assertEquals(lawnMowers.get(1), shearer.getMovables().get(1));
+        
+        assertEquals(1, shearer.getMovables().get(0).getPosition().getX());
+        assertEquals(3, shearer.getMovables().get(0).getPosition().getY());
+        assertEquals(CompassPoint.N, shearer.getMovables().get(0).getPosition().getInFrontOf());
+        
+        assertEquals(5, shearer.getMovables().get(1).getPosition().getX());
+        assertEquals(1, shearer.getMovables().get(1).getPosition().getY());
+        assertEquals(CompassPoint.E, shearer.getMovables().get(1).getPosition().getInFrontOf());
+        
+    }
+    
+    protected Dimensionable getPlayground (DescReader reader) {
+        return new Lawn(
+            reader.getLawn().getDimension().width,
+            reader.getLawn().getDimension().height);
+    }
+    
+    protected List<Positionable> getObstacles (DescReader reader) {
+        List<Positionable> result = new ArrayList<>();
+        
+        for(PositionDesc desc : reader.getObstacles()) {
+            
+            result.add((new Obstacle())
+                .setX(desc.getPosition().x)
+                .setY(desc.getPosition().y))
+            ;
+            
+        }
+        
+        
+        return result;
+        
+    }
+    
+    protected List<Movable> getMovables (DescReader reader) {
+        List<Movable> result = new ArrayList<>();
+        
+        for(MovableDesc desc : reader.getLawnMowers()) {
+            result.add(controller.getBuilder().create()
+                .program(Movement.parseMovements(desc.getMovements()))
+                .moveTo(
+                    (new Position())
+                        .setX(desc.getPosition().x)
+                        .setY(desc.getPosition().y)
+                        .setInFrontOf(CompassPoint.valueOf(desc.getInFrontOf())))
+                );
+            
+        }
+        
+        return result;
+    }
 }

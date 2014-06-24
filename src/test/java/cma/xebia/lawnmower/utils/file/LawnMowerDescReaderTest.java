@@ -91,7 +91,7 @@ public class LawnMowerDescReaderTest extends TestCase {
         assertEquals(new Point(2, 2), r.getObstacles().get(0).getPosition());
         
         logger.info("check obstacle #2");
-        assertEquals(new Point(1, 1), r.getObstacles().get(1).getPosition());
+        assertEquals(new Point(4, 1), r.getObstacles().get(1).getPosition());
         
         logger.info("check number of lawn mowers");
         assertEquals(2, r.getLawnMowers().size());
