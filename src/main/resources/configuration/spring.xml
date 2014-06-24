@@ -13,6 +13,7 @@
     <context:component-scan base-package="cma.xebia.lawnmower" />
     <aop:aspectj-autoproxy />
     
+    <import resource="classpath:configuration/included/command-line.xml" />
     <import resource="classpath:configuration/included/utils.xml" />
     <import resource="classpath:configuration/included/validators.xml" />
     <import resource="classpath:configuration/included/commands.xml" />
@@ -22,6 +23,14 @@
     <bean   id="lawn-mower.controller"
             class="cma.xebia.lawnmower.controller.impl.LawnMowerController"
             scope="prototype" >
+        <constructor-arg>
+            <set>
+                <ref bean="command-line.arguments.file"/>
+                <ref bean="command-line.arguments.resource"/>
+                <ref bean="command-line.arguments.help"/>
+            </set>
+        </constructor-arg>
+        <constructor-arg ref="command-line.arguments.help"/>
         <constructor-arg ref="utils.description.parser"/>
         <constructor-arg ref="process.shearer"/>
         <constructor-arg ref="lawn-mower.builder"/>

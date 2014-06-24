@@ -31,6 +31,8 @@ public interface DescReader {
     
     public DescReader setCharset (String charset);
     
+    public String getDescriptorFileInfo ();
+    
     public DescReader read ();
     
     public DimensionableDesc getLawn ();

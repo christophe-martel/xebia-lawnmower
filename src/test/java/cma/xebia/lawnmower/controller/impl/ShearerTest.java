@@ -17,9 +17,8 @@
 
 package cma.xebia.lawnmower.controller.impl;
 
+import cma.xebia.lawnmower.SpringLoaded;
 import cma.xebia.lawnmower.business.service.IShearer;
-import cma.xebia.lawnmower.application.Main;
-import cma.xebia.lawnmower.application.Constant;
 import cma.xebia.lawnmower.business.entity.Dimensionable;
 import cma.xebia.lawnmower.business.entity.Movable;
 import cma.xebia.lawnmower.business.entity.Position;
@@ -31,46 +30,22 @@ import cma.xebia.lawnmower.business.entity.obstacle.Obstacle;
 import cma.xebia.lawnmower.utils.file.MovableDesc;
 import cma.xebia.lawnmower.utils.file.DescReader;
 import cma.xebia.lawnmower.utils.file.PositionDesc;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import static junit.framework.Assert.assertEquals;
-import junit.framework.TestCase;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 @Slf4j
-public class ShearerTest extends TestCase {
-    
-    private ApplicationContext context = null;
-    
-    private LawnMowerController controller = null;
-    
+public class ShearerTest extends SpringLoaded {
     
     
     public ShearerTest(String testName) {
         super(testName);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        context = new ClassPathXmlApplicationContext(
-                "/configuration/spring.xml",
-                Main.class);
-        
-        controller = ((LawnMowerController) context.getBean(Constant.BEAN_CONTROLLER));
-        
-    }
-    
-    @Override
-    protected void tearDown() throws Exception {
-        ((ConfigurableApplicationContext) context).close();
     }
     
     

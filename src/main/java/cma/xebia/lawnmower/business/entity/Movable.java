@@ -19,7 +19,7 @@ package cma.xebia.lawnmower.business.entity;
 
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import java.util.List;
-import lombok.NonNull;
+
 
 /**
  *
@@ -29,6 +29,6 @@ public interface Movable extends Positionable {
     
     public List<Action> getMovements ();
     
-    public Movable moveTo (@NonNull Positionable anotherLocation);
+    public Movable moveTo (Positionable anotherLocation);
     
 }

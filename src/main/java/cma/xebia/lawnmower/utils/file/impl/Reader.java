@@ -324,4 +324,16 @@ public class Reader implements DescReader {
         this.fail = true;
         return this;
     }
+    
+    public String getDescriptorFileInfo () {
+        return String.format("%s:%s:%s",
+            null == this.descriptorPath
+                ? "resource"
+                : "file",
+            this.charset,
+            null == this.descriptorPath
+                ? this.defaultResourcePath
+                : this.descriptorPath
+        );
+    }
 }

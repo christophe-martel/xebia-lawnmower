@@ -28,6 +28,7 @@ import cma.xebia.lawnmower.business.entity.constants.Movement;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
 import cma.xebia.lawnmower.business.entity.obstacle.Obstacle;
 import cma.xebia.lawnmower.business.service.IShearer;
+import cma.xebia.lawnmower.utils.cmd.Argument;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import cma.xebia.lawnmower.utils.file.MovableDesc;
 import cma.xebia.lawnmower.utils.file.DescReader;
@@ -35,6 +36,7 @@ import cma.xebia.lawnmower.utils.file.PositionDesc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -46,47 +48,80 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LawnMowerController implements IController {
     
-    @Getter
-    private DescReader reader = null;
     
     @Getter
-    private IShearer shearer = null;
+    final private Set<Argument<LawnMowerController>> arguments;
     
     @Getter
-    private LawnMowerBuilder builder = null;
+    final private Argument<LawnMowerController> help;
     
+    @Getter
+    final private DescReader reader;
+    
+    @Getter
+    final private IShearer shearer;
+    
+    @Getter
+    final private LawnMowerBuilder builder;
+    
+    private boolean doNotRun = false;
     
     public LawnMowerController (
+            @NonNull Set<Argument<LawnMowerController>> arguments,
+            @NonNull Argument<LawnMowerController> help,
             @NonNull DescReader reader,
             @NonNull LawnMowerBuilder builder,
             @NonNull IShearer shearer) {
+        this.arguments = arguments;
+        this.help = help;
         this.reader = reader;
         this.builder = builder;
         this.shearer = shearer;
     }
     
-    protected LawnMowerController () {
-        log.info("start");
-    }
-    
-    
     @Override
     public LawnMowerController init (String[] args) throws LawnMowerException {
         log.info("init");
         
-        File specific = getFileFromArguments(args);
-        if (null != specific) {
-            getReader().setDescriptorPath(specific.getAbsolutePath());
+        boolean argumentsAreCorrect = true;
+        for (String arg : args) {
+            argumentsAreCorrect &= this.parseArgument(arg);
+            
         }
         
-        getReader().read();
+        if (!argumentsAreCorrect) {
+            this.help.applyOn("", this);
+            this.doNotRun = true;
+            return this;
+        }
+        
+        this.getReader().read();
         
         return this;
     }
     
+    protected boolean parseArgument (String argument) {
+        
+        for (Argument<LawnMowerController> a : this.arguments) {
+            if (!a.isCorrespondingTo(argument)) {
+                continue;
+            }
+            if (a.applyOn(argument, this).mustStop()) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
     
     @Override
     public LawnMowerController run () throws LawnMowerException {
+        if (this.doNotRun) {
+            log.debug("do not run");
+            return this;
+            
+        }
+        
         log.info("run");
         
         
@@ -122,6 +157,11 @@ public class LawnMowerController implements IController {
     
     @Override
     public LawnMowerController finish () {
+        if (this.doNotRun) {
+            log.debug("do not run");
+            return this;
+            
+        }
         log.info("end");
         
         return this;
