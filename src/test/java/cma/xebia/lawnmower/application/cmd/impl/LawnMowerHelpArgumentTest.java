@@ -22,7 +22,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import junit.framework.TestCase;
+
 
 /**
  *
@@ -75,12 +75,12 @@ public class LawnMowerHelpArgumentTest extends SpringLoaded {
             String inputLine;
             while (true) {
                 inputLine = in.readLine();
-                builder.append(inputLine);
-                builder.append("\n");
                 if (null == inputLine) {
                     break;
                 }
                 
+                builder.append(inputLine);
+                builder.append("\n");
             }
             
         } catch (Exception ex) {

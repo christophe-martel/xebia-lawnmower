@@ -90,7 +90,9 @@ public class LawnMowerController implements IController {
         }
         
         if (!argumentsAreCorrect) {
-            this.help.applyOn("", this);
+            if (!this.help.mustStop()) {
+                this.help.applyOn("", this);
+            }
             this.doNotRun = true;
             return this;
         }

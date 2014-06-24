@@ -62,11 +62,10 @@ public class LawnMowerHelpArgument<T extends LawnMowerController>
             String inputLine;
             while (true) {
                 inputLine = in.readLine();
-                out.println(inputLine);
                 if (null == inputLine) {
                     break;
                 }
-                
+                out.println(inputLine);
             }
             
         } catch (Exception ex) {

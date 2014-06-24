@@ -29,7 +29,7 @@
     
     <bean   id="command-line.arguments.help"
             class="cma.xebia.lawnmower.application.cmd.impl.LawnMowerHelpArgument"
-            scope="prototype" >
+            scope="singleton" >
         <constructor-arg type="java.lang.String" value="help" />
         <constructor-arg>
             <util:constant static-field="java.lang.System.out" />
