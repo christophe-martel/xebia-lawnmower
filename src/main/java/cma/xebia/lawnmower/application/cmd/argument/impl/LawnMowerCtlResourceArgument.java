@@ -35,7 +35,7 @@ public class LawnMowerCtlResourceArgument<T extends LawnMowerController>
         extends DefaultArgument<T> {
     
     public LawnMowerCtlResourceArgument(String name) {
-        super(name);
+        super(name, true);
     }
     
     @Override

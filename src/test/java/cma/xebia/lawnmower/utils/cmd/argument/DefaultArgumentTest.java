@@ -34,7 +34,7 @@ public class DefaultArgumentTest extends TestCase {
      */
     public void testMustStop() {
         
-        DefaultArgument instance = new DefaultArgument("test") {
+        DefaultArgument instance = new DefaultArgument("test", true) {
             @Override
             public Argument applyOn(String argument, Object object) {
                 this.stop = true;
@@ -52,7 +52,7 @@ public class DefaultArgumentTest extends TestCase {
      */
     public void testIsCorrespondingTo() {
         
-        DefaultArgument instance = new DefaultArgument("test") {
+        DefaultArgument instance = new DefaultArgument("test", true) {
             @Override
             public Argument applyOn(String argument, Object object) {
                 return this;

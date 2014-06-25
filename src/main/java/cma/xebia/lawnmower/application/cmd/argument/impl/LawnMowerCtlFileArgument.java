@@ -35,7 +35,7 @@ public class LawnMowerCtlFileArgument<T extends LawnMowerController>
         extends DefaultArgument<T> {
     
     public LawnMowerCtlFileArgument(String name) {
-        super(name);
+        super(name, true);
     }
     
     @Override

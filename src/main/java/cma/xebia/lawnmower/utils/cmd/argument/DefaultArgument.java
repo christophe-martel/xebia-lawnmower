@@ -33,13 +33,9 @@ public abstract class DefaultArgument<T> implements Argument<T> {
     @Getter
     private final String name;
     
-    protected boolean stop = false;
-    
     protected final boolean optionable;
     
-    public DefaultArgument(@NonNull String name) {
-        this(name, true);
-    }
+    protected boolean stop = false;
     
     public DefaultArgument(
             @NonNull String name,
