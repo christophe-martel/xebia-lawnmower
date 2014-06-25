@@ -17,7 +17,7 @@
 
 package cma.xebia.lawnmower.business.entity.lawnmower;
 
-import cma.xebia.lawnmower.business.entity.Position;
+import cma.xebia.lawnmower.business.entity.impl.Position;
 import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
@@ -43,9 +43,7 @@ public class BuilderImpl implements LawnMowerBuilder {
     
     @Override
     public LawnMower create () {
-        LawnMower result = new LawnMower(this.cloner.deepClone(this.commands));
-        
-        return result;
+        return new LawnMower(this.cloner.deepClone(this.commands));
     }
     
     @Override

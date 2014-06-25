@@ -18,7 +18,7 @@
 package cma.xebia.lawnmower.business.entity.lawnmower.commands.impl;
 
 import cma.xebia.lawnmower.business.entity.Movable;
-import cma.xebia.lawnmower.business.entity.Position;
+import cma.xebia.lawnmower.business.entity.impl.Position;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import lombok.extern.slf4j.Slf4j;

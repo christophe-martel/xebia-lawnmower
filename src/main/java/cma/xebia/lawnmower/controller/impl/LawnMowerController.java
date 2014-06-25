@@ -21,22 +21,22 @@ package cma.xebia.lawnmower.controller.impl;
 import cma.xebia.lawnmower.business.entity.Dimensionable;
 import cma.xebia.lawnmower.business.entity.Movable;
 import cma.xebia.lawnmower.business.entity.Positionable;
-import cma.xebia.lawnmower.controller.IController;
+import cma.xebia.lawnmower.controller.Controller;
 import cma.xebia.lawnmower.business.entity.lawnmower.LawnMowerBuilder;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
 import cma.xebia.lawnmower.business.entity.obstacle.Obstacle;
-import cma.xebia.lawnmower.business.service.IShearer;
-import cma.xebia.lawnmower.utils.cmd.Argument;
+import cma.xebia.lawnmower.business.service.Shearer;
+import cma.xebia.lawnmower.utils.cmd.argument.Arguments;
+import cma.xebia.lawnmower.utils.cmd.template.Template;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
-import cma.xebia.lawnmower.utils.file.MovableDesc;
-import cma.xebia.lawnmower.utils.file.DescReader;
-import cma.xebia.lawnmower.utils.file.PositionDesc;
+import cma.xebia.lawnmower.utils.file.configuration.MovableDesc;
+import cma.xebia.lawnmower.utils.file.configuration.DescReader;
+import cma.xebia.lawnmower.utils.file.configuration.PositionDesc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -46,34 +46,33 @@ import lombok.extern.slf4j.Slf4j;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 @Slf4j
-public class LawnMowerController implements IController {
+public class LawnMowerController implements Controller {
     
     
     @Getter
-    final private Set<Argument<LawnMowerController>> arguments;
+    private final Arguments<LawnMowerController> arguments;
     
     @Getter
-    final private Argument<LawnMowerController> help;
+    private final Template template;
+    
     
     @Getter
-    final private DescReader reader;
+    private final DescReader reader;
     
     @Getter
-    final private IShearer shearer;
+    private final Shearer shearer;
     
     @Getter
-    final private LawnMowerBuilder builder;
-    
-    private boolean doNotRun = false;
+    private final LawnMowerBuilder builder;
     
     public LawnMowerController (
-            @NonNull Set<Argument<LawnMowerController>> arguments,
-            @NonNull Argument<LawnMowerController> help,
+            @NonNull Arguments<LawnMowerController> arguments,
+            @NonNull Template template,
             @NonNull DescReader reader,
             @NonNull LawnMowerBuilder builder,
-            @NonNull IShearer shearer) {
+            @NonNull Shearer shearer) {
         this.arguments = arguments;
-        this.help = help;
+        this.template = template;
         this.reader = reader;
         this.builder = builder;
         this.shearer = shearer;
@@ -81,19 +80,13 @@ public class LawnMowerController implements IController {
     
     @Override
     public LawnMowerController init (String[] args) throws LawnMowerException {
-        log.info("init");
+        log.debug("init");
         
-        boolean argumentsAreCorrect = true;
-        for (String arg : args) {
-            argumentsAreCorrect &= this.parseArgument(arg);
+        this.template.printHeader();
+        
+        if (this.arguments.parse(args, this).mustStop()) {
+            this.arguments.showHelp(this);
             
-        }
-        
-        if (!argumentsAreCorrect) {
-            if (!this.help.mustStop()) {
-                this.help.applyOn("", this);
-            }
-            this.doNotRun = true;
             return this;
         }
         
@@ -102,29 +95,15 @@ public class LawnMowerController implements IController {
         return this;
     }
     
-    protected boolean parseArgument (String argument) {
-        
-        for (Argument<LawnMowerController> a : this.arguments) {
-            if (!a.isCorrespondingTo(argument)) {
-                continue;
-            }
-            if (a.applyOn(argument, this).mustStop()) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
     @Override
     public LawnMowerController run () throws LawnMowerException {
-        if (this.doNotRun) {
-            log.debug("do not run");
+        if (this.arguments.mustStop()) {
+            log.debug("run : do not run");
             return this;
             
         }
         
-        log.info("run");
+        log.debug("run");
         
         
         Dimensionable lawn = this.computeLawn();
@@ -139,10 +118,10 @@ public class LawnMowerController implements IController {
             .mow();
         
         if (shearer.isFail()) {
-            log.info("Oups, an error occurs ...");
+            log.warn("Oups, an error occurs ...");
             
         } else {
-            log.info("Done");
+            log.debug("Done");
             int i = -1;
             for (Positionable positionable : shearer.getMovables()) {
                 log.info("lawn #{} is to position ({}x{}) and is in front of {}",
@@ -159,12 +138,10 @@ public class LawnMowerController implements IController {
     
     @Override
     public LawnMowerController finish () {
-        if (this.doNotRun) {
-            log.debug("do not run");
-            return this;
-            
-        }
-        log.info("end");
+        
+        this.template.printFooter();
+        
+        log.debug("end");
         
         return this;
     }

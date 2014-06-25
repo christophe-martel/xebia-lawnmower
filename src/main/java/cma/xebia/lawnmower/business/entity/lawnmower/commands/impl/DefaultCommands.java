@@ -17,10 +17,8 @@
 package cma.xebia.lawnmower.business.entity.lawnmower.commands.impl;
 
 import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.lawnmower.LawnMower;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
-import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import lombok.Getter;

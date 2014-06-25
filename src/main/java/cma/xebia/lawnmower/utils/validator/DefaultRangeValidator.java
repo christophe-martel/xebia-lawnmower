@@ -17,15 +17,41 @@
 
 package cma.xebia.lawnmower.utils.validator;
 
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class DefaultRangeValidator extends ARangeValidator {
+public abstract class DefaultRangeValidator implements RangeValidator {
     
-    @Override
-    public boolean isValid (int x, int y) {
-        return true;
-    }
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private int maxWidth = 1;
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private int maxHeight = 1;
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private int minWidth = 1;
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private int minHeight = 1;
+    
+    @Accessors(chain = true)
+    @Getter
+    @Setter
+    private boolean including = false;
     
 }

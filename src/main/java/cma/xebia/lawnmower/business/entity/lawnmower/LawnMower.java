@@ -17,22 +17,16 @@
 package cma.xebia.lawnmower.business.entity.lawnmower;
 
 import cma.xebia.lawnmower.business.entity.Movable;
-import cma.xebia.lawnmower.business.entity.Position;
+import cma.xebia.lawnmower.business.entity.impl.Position;
 import cma.xebia.lawnmower.business.entity.Positionable;
-import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
-import java.awt.Point;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import lombok.AccessLevel;
 import lombok.experimental.Accessors;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
 /**
  *
@@ -52,7 +46,7 @@ public class LawnMower
     private List<Action> movements = new ArrayList<>();
     
     @Accessors(chain = true)
-    final private Commands commands;
+    private final Commands commands;
     
     LawnMower(@NonNull Commands commands) {
         this.commands = commands;

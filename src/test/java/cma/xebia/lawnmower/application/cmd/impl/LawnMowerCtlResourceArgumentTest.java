@@ -17,6 +17,7 @@
 
 package cma.xebia.lawnmower.application.cmd.impl;
 
+import cma.xebia.lawnmower.application.cmd.argument.impl.LawnMowerCtlResourceArgument;
 import cma.xebia.lawnmower.SpringLoaded;
 import cma.xebia.lawnmower.controller.impl.LawnMowerController;
 

@@ -17,6 +17,7 @@
 
 package cma.xebia.lawnmower.business.service.process.validator.impl;
 
+import cma.xebia.lawnmower.business.service.process.impl.validator.PositionValidator;
 import cma.xebia.lawnmower.application.Constant;
 import cma.xebia.lawnmower.application.Main;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
@@ -26,7 +27,7 @@ import cma.xebia.lawnmower.business.entity.lawnmower.BuilderImpl;
 import cma.xebia.lawnmower.business.entity.lawnmower.LawnMowerBuilder;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.impl.DefaultCommands;
 import cma.xebia.lawnmower.controller.impl.LawnMowerController;
-import cma.xebia.lawnmower.utils.validator.RangeValidator;
+import cma.xebia.lawnmower.utils.validator.impl.SimpleRangeValidator;
 import junit.framework.TestCase;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -60,7 +61,7 @@ public class PositionValidatorTest extends TestCase {
         ((ConfigurableApplicationContext) context).close();
         
         validator = new PositionValidator(
-            (new RangeValidator())
+            (new SimpleRangeValidator())
                 .setIncluding(true)
                 .setMinHeight(0)
                 .setMaxHeight(9)
@@ -79,7 +80,7 @@ public class PositionValidatorTest extends TestCase {
     
     
     /**
-     * Test of isValid method, of class RangeValidator.
+     * Test of isValid method, of class SimpleRangeValidator.
      */
     public void testIsValid() {
         

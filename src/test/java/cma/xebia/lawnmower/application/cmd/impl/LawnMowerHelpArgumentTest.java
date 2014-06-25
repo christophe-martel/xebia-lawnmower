@@ -17,10 +17,11 @@
 
 package cma.xebia.lawnmower.application.cmd.impl;
 
+import cma.xebia.lawnmower.application.cmd.argument.impl.LawnMowerHelpArgument;
 import cma.xebia.lawnmower.SpringLoaded;
-import java.io.BufferedReader;
+import cma.xebia.lawnmower.utils.file.printer.impl.ResourceToSysoutPrinter;
+import cma.xebia.lawnmower.utils.helpers.StringHelper;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 
 
@@ -45,7 +46,7 @@ public class LawnMowerHelpArgumentTest extends SpringLoaded {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        System.setOut(null);
+        System.setOut(System.out);
     }
     
     /**
@@ -53,40 +54,18 @@ public class LawnMowerHelpArgumentTest extends SpringLoaded {
      */
     public void testApplyOn() {
         
+        
+        
         LawnMowerHelpArgument instance = new LawnMowerHelpArgument(
             "help",
-            System.out,
-            "/cmd/help.txt",
-            "UTF-8");
+            new ResourceToSysoutPrinter(System.out, "UTF-8"),
+            "/cmd/help.txt");
         
         
-        String expResult = this.getResourceAsString("/cmd/help.txt", "UTF-8");
+        String expResult = StringHelper.getResourceAsString("/cmd/help.txt", "UTF-8");
         instance.applyOn("--help", controller);
         assertEquals(expResult, outContent.toString());
         
     }
     
-    
-    protected String getResourceAsString (String path, String charset) {
-        StringBuilder builder = new StringBuilder();
-        try (   BufferedReader in = new BufferedReader(new InputStreamReader(
-                    this.getClass().getResourceAsStream(path),
-                    charset))) {
-            String inputLine;
-            while (true) {
-                inputLine = in.readLine();
-                if (null == inputLine) {
-                    break;
-                }
-                
-                builder.append(inputLine);
-                builder.append("\n");
-            }
-            
-        } catch (Exception ex) {
-            return "";
-        }
-        
-        return builder.toString();
-    }
 }

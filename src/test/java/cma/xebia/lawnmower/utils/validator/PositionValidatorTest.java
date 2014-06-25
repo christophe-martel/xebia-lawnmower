@@ -17,6 +17,7 @@
 
 package cma.xebia.lawnmower.utils.validator;
 
+import cma.xebia.lawnmower.utils.validator.impl.SimpleRangeValidator;
 import junit.framework.TestCase;
 
 /**
@@ -30,13 +31,13 @@ public class PositionValidatorTest extends TestCase {
     }
     
     /**
-     * Test of isValid method, of class RangeValidator.
+     * Test of isValid method, of class SimpleRangeValidator.
      */
     public void testIsValid() {
         System.out.println("isValid");
         int x = 0;
         int y = 0;
-        RangeValidator validator = new RangeValidator();
+        SimpleRangeValidator validator = new SimpleRangeValidator();
         validator
             .setIncluding(true)
             .setMinHeight(1)
@@ -61,13 +62,13 @@ public class PositionValidatorTest extends TestCase {
     
     
     /**
-     * Test of isValid method, of class RangeValidator.
+     * Test of isValid method, of class SimpleRangeValidator.
      */
     public void testIsValidIncluding () {
         System.out.println("isValid");
         int x = 0;
         int y = 0;
-        RangeValidator validator = new RangeValidator();
+        SimpleRangeValidator validator = new SimpleRangeValidator();
         validator
             .setIncluding(false)
             .setMinHeight(0)

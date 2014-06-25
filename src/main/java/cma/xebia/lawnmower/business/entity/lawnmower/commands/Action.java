@@ -18,7 +18,7 @@
 package cma.xebia.lawnmower.business.entity.lawnmower.commands;
 
 import cma.xebia.lawnmower.business.entity.Movable;
-import cma.xebia.lawnmower.business.entity.Position;
+import cma.xebia.lawnmower.business.entity.impl.Position;
 
 /**
  *

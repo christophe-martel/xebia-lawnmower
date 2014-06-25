@@ -17,8 +17,9 @@
 
 package cma.xebia.lawnmower.business.service.process.validator.impl;
 
+import cma.xebia.lawnmower.business.service.process.impl.validator.SizeOfLawnValidator;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.utils.validator.RangeValidator;
+import cma.xebia.lawnmower.utils.validator.impl.SimpleRangeValidator;
 import junit.framework.TestCase;
 
 /**
@@ -37,7 +38,7 @@ public class SizeOfLawnValidatorTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         validator = new SizeOfLawnValidator(
-            (new RangeValidator())
+            (new SimpleRangeValidator())
                 .setIncluding(true)
                 .setMinHeight(1)
                 .setMaxHeight(9)

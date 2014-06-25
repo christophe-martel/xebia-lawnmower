@@ -16,27 +16,45 @@
     <aop:aspectj-autoproxy />
     
     <bean   id="command-line.arguments.file"
-            class="cma.xebia.lawnmower.application.cmd.impl.LawnMowerCtlFileArgument"
+            class="cma.xebia.lawnmower.application.cmd.argument.impl.LawnMowerCtlFileArgument"
             scope="prototype" >
         <constructor-arg type="java.lang.String" value="file" />
     </bean>
     
     <bean   id="command-line.arguments.resource"
-            class="cma.xebia.lawnmower.application.cmd.impl.LawnMowerCtlResourceArgument"
+            class="cma.xebia.lawnmower.application.cmd.argument.impl.LawnMowerCtlResourceArgument"
             scope="prototype" >
         <constructor-arg type="java.lang.String" value="resource" />
     </bean>
     
     <bean   id="command-line.arguments.help"
-            class="cma.xebia.lawnmower.application.cmd.impl.LawnMowerHelpArgument"
+            class="cma.xebia.lawnmower.application.cmd.argument.impl.LawnMowerHelpArgument"
             scope="singleton" >
         <constructor-arg type="java.lang.String" value="help" />
-        <constructor-arg>
-            <util:constant static-field="java.lang.System.out" />
-        </constructor-arg>
+        <constructor-arg ref="utils.printer.resource-to-sysout" />
         <constructor-arg type="java.lang.String" value="/cmd/help.txt" />
-        <constructor-arg type="java.lang.String" value="UTF-8" />
     </bean>
     
+    <bean   id="command-line.arguments"
+            class="cma.xebia.lawnmower.utils.cmd.argument.impl.SimpleArguments"
+            scope="prototype" >
+        <constructor-arg>
+            <set>
+                <ref bean="command-line.arguments.file"/>
+                <ref bean="command-line.arguments.resource"/>
+                <ref bean="command-line.arguments.help"/>
+            </set>
+        </constructor-arg>
+        <constructor-arg ref="command-line.arguments.help"/>
+    </bean>
+    
+    
+    <bean   id="command-line.template"
+            class="cma.xebia.lawnmower.utils.cmd.template.impl.ResourceTemplate"
+            scope="prototype" >
+        <constructor-arg ref="utils.printer.resource-to-sysout"/>
+        <constructor-arg value="/cmd/header.txt" />
+        <constructor-arg value="/cmd/footer.txt" />
+    </bean>
     
 </beans>

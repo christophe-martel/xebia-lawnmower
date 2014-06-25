@@ -17,7 +17,7 @@
 
 package cma.xebia.lawnmower.utils.file;
 
-import cma.xebia.lawnmower.utils.file.impl.Reader;
+import cma.xebia.lawnmower.utils.file.configuration.impl.Reader;
 import cma.xebia.lawnmower.utils.helpers.StringHelper;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -88,7 +88,7 @@ public class LawnMowerDescReaderTest extends TestCase {
         assertEquals(2, r.getObstacles().size());
         
         logger.info("check obstacle #1");
-        assertEquals(new Point(2, 2), r.getObstacles().get(0).getPosition());
+        assertEquals(new Point(1, 3), r.getObstacles().get(0).getPosition());
         
         logger.info("check obstacle #2");
         assertEquals(new Point(4, 1), r.getObstacles().get(1).getPosition());

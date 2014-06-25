@@ -17,6 +17,8 @@
 
 package cma.xebia.lawnmower.business.entity;
 
+import cma.xebia.lawnmower.business.entity.impl.Position;
+
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>

@@ -17,6 +17,9 @@
 
 package cma.xebia.lawnmower.utils.helpers;
 
+import cma.xebia.lawnmower.application.Main;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import junit.framework.TestCase;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +80,53 @@ public class StringHelperTest extends TestCase {
             "AADAADADDA",
             StringHelper.join(Arrays.asList("AA", "D", "AADA", "DDA")));
         
+    }
+    
+    public void testGetResourceAsString () {
+        
+        for (String path : new String[] {
+                "/cmd/help.txt",
+                "/cmd/header.txt",
+                "/cmd/footer.txt"}) {
+            
+            
+            log.warn(path);
+            log.warn(this.getResourceAsString(path, "UTF-8"));
+            log.warn(StringHelper.getResourceAsString(path, "UTF-8"));
+            
+            assertEquals(
+                this.getResourceAsString(path, "UTF-8"),
+                StringHelper.getResourceAsString(path, "UTF-8"));
+            
+        }
+        
+        
+        
+    }
+    
+    
+    protected String getResourceAsString (String path, String charset) {
+        StringBuilder builder = new StringBuilder();
+        try (   BufferedReader in = new BufferedReader(new InputStreamReader(
+                    Main.class.getResourceAsStream(path),
+                    charset))) {
+            String inputLine;
+            while (true) {
+                inputLine = in.readLine();
+                if (null == inputLine) {
+                    break;
+                }
+                
+                builder.append(inputLine);
+                builder.append("\n");
+            }
+            
+        } catch (Exception ex) {
+            log.error("error {}", ex);
+            return "";
+        }
+        
+        return builder.toString();
     }
     
 }

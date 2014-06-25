@@ -1,38 +1,38 @@
-                                      _     _       
-                            __  _____| |__ (_) __ _ 
-                            \ \/ / _ \ '_ \| |/ _` |
-                             >  <  __/ |_) | | (_| |
-                            /_/\_\___|_.__/|_|\__,_|
-                                      _     _       
-                         _____ _____ _____ _____ _____  
-                        |_____|_____|_____|_____|_____| 
-                                                         
-                       |  _.    ._     |\/| _      _ .__ 
-                       |_(_|\/\/| |    |  |(_)\/\/(/_|_> 
-                                                                             
-    _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____  
-   |_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____|_____| 
-                                                                             
 
-Command line usage:
-    mvn clean compile exec:java -Dexec.args="$ARGS"
-    
-    $ARGS : [--file=/path/to/file] [--resource=/path/to/resource] [--help]
-    
-    
+Usage en ligne de commande
+    A) Compilation à partir des sources
+        *) `mvn clean install`
+        *) `mvn package`
+        
+        La seconde commande crée un jar exécutable, avec toutes les dépendances.
+        Ce jar est stocké à :
+            target/cma-xebia-lawnmower-${majorVersion}.${minorVersion}-full.jar
+        
+    B) Exécution
+        `java -jar cma-xebia-lawnmower-1.2-full.jar [${args}]`
+         Où ${args} est :
+            *) --help : ce message
+            *) --file="${path/to/file}" : utilisation d'un fichier de configuration externe
+            *) --resource="${path/to/resource}" : utilisation d'une configuration embarquée
+                Avec deux possibilité :
+                    - Sans obstacle : /lawnmower.desc
+                    - Avec obstacle : /lawnmower+obstacles.desc
+        
+        Si ${arg} est omis, le programme s'exécute avec l'option --resource="/lawnmower.desc"
+        
 Example:
     1) Configuration par défaut (implicite)
-        mvn clean compile exec:java
+        `java -jar cma-xebia-lawnmower-1.2-full.jar`
     
     2) Chargement d'un fichier de configuration externe
-        mvn exec:java -Dexec.args="--file=/home/user/lawnmower.desc"
+        `java -jar cma-xebia-lawnmower-1.2-full.jar --file=/home/user/lawnmower.desc`
     
     3) Configuration par défaut (explicite)
-        mvn exec:java -Dexec.args="--resource=/lawnmower.desc"
+        `java -jar cma-xebia-lawnmower-1.2-full.jar --resource=/lawnmower.desc`
     
     4) Configuration avec des obstacles
-        mvn exec:java -Dexec.args="--resource=/lawnmower+obstacles.desc"
+        `java -jar cma-xebia-lawnmower-1.2-full.jar --resource=/lawnmower+obstacles.desc`
     
     5) Ce message
-        mvn exec:java -Dexec.args="--help"
+        `java -jar cma-xebia-lawnmower-1.2-full.jar --help`
     

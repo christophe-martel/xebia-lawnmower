@@ -17,41 +17,62 @@
 
 package cma.xebia.lawnmower.utils.validator;
 
-
 /**
  *
- * maximal limit "mawHeight" and "minHeight" are included in range.
- * "acceptingZero" change minimal limit between "0" (if FALSE) and "-1"
- * minimal limit is excluded from range.
- * 
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class RangeValidator extends ARangeValidator {
+public interface RangeValidator {
+    
     /**
-     * 
+     *
      * @param x
      * @param y
-     * @return 
+     * @return
      */
-    @Override
-    public boolean isValid(int x, int y) {
-        return this.isValidRange(this.getMinWidth(), x)
-            && this.isValidRange(x, this.getMaxWidth())
-            && this.isValidRange(this.getMinHeight(), y)
-            && this.isValidRange(y, this.getMaxHeight());
-    }
+    boolean isValid (int x, int y);
+    
+    /**
+     *
+     * @param maxHeight
+     * @return
+     */
+    RangeValidator setMaxHeight (int maxHeight);
+    
+    int getMaxHeight ();
+    
+    /**
+     *
+     * @param maxWidth
+     * @return
+     */
+    RangeValidator setMaxWidth (int maxWidth);
+    
+    int getMaxWidth ();
+    
+    /**
+     *
+     * @param minHeight
+     * @return
+     */
+    RangeValidator setMinHeight (int minHeight);
+    
+    int getMinHeight ();
+    
+    /**
+     *
+     * @param minWidth
+     * @return
+     */
+    RangeValidator setMinWidth (int minWidth);
+    
+    int getMinWidth ();
     
     /**
      * 
-     * @param min
-     * @param max
-     * @return return TRUE if i is between 0 and max
+     * @param including
+     * @return 
      */
-    protected boolean isValidRange (int min, int max) {
-        
-        return this.isIncluding()
-            ? min <= max
-            : min < max;
-    }
+    RangeValidator setIncluding (boolean including);
     
+    boolean isIncluding ();
 }

@@ -16,7 +16,7 @@
  */
 package cma.xebia.lawnmower.application;
 
-import cma.xebia.lawnmower.controller.IController;
+import cma.xebia.lawnmower.controller.Controller;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -42,7 +42,7 @@ public class Main {
                 Main.class);
         
         try {
-            ((IController) context.getBean(Constant.BEAN_CONTROLLER))
+            ((Controller) context.getBean(Constant.BEAN_CONTROLLER))
                 .init(args)
                 .run()
                 .finish();

@@ -17,9 +17,12 @@
 
 package cma.xebia.lawnmower.utils.helpers;
 
+import cma.xebia.lawnmower.application.Constant;
+import cma.xebia.lawnmower.application.Main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -57,4 +60,17 @@ public class StringHelper {
         return result.toString();
     }
     
+    public static String getResourceAsString (String path, String charset) {
+        return new Scanner(
+                Main.class.getResourceAsStream(path),
+                charset)
+            .useDelimiter("\\A")
+            .next();
+    }
+    
+    public static String getResourceAsString (String path) {
+        return StringHelper
+            .getResourceAsString(path, Constant.LAWNMOWER_FILE_CHARSET);
+        
+    }
 }

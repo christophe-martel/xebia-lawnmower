@@ -23,17 +23,11 @@
     <bean   id="lawn-mower.controller"
             class="cma.xebia.lawnmower.controller.impl.LawnMowerController"
             scope="prototype" >
-        <constructor-arg>
-            <set>
-                <ref bean="command-line.arguments.file"/>
-                <ref bean="command-line.arguments.resource"/>
-                <ref bean="command-line.arguments.help"/>
-            </set>
-        </constructor-arg>
-        <constructor-arg ref="command-line.arguments.help"/>
-        <constructor-arg ref="utils.description.parser"/>
-        <constructor-arg ref="process.shearer"/>
-        <constructor-arg ref="lawn-mower.builder"/>
+        <constructor-arg ref="command-line.arguments" />
+        <constructor-arg ref="command-line.template" />
+        <constructor-arg ref="utils.description.parser" />
+        <constructor-arg ref="process.shearer" />
+        <constructor-arg ref="lawn-mower.builder" />
     </bean>
     
 </beans>

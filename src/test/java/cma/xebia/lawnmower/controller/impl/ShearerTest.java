@@ -18,18 +18,18 @@
 package cma.xebia.lawnmower.controller.impl;
 
 import cma.xebia.lawnmower.SpringLoaded;
-import cma.xebia.lawnmower.business.service.IShearer;
+import cma.xebia.lawnmower.business.service.Shearer;
 import cma.xebia.lawnmower.business.entity.Dimensionable;
 import cma.xebia.lawnmower.business.entity.Movable;
-import cma.xebia.lawnmower.business.entity.Position;
+import cma.xebia.lawnmower.business.entity.impl.Position;
 import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.constants.Movement;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
 import cma.xebia.lawnmower.business.entity.obstacle.Obstacle;
-import cma.xebia.lawnmower.utils.file.MovableDesc;
-import cma.xebia.lawnmower.utils.file.DescReader;
-import cma.xebia.lawnmower.utils.file.PositionDesc;
+import cma.xebia.lawnmower.utils.file.configuration.MovableDesc;
+import cma.xebia.lawnmower.utils.file.configuration.DescReader;
+import cma.xebia.lawnmower.utils.file.configuration.PositionDesc;
 import java.util.ArrayList;
 import java.util.List;
 import static junit.framework.Assert.assertEquals;
@@ -61,7 +61,7 @@ public class ShearerTest extends SpringLoaded {
     public void testRun() {
         
         
-        IShearer shearer = controller.getShearer();
+        Shearer shearer = controller.getShearer();
         
         DescReader r = controller.getReader()
             .setDefaultResourcePath("/setup/lawnmower.desc")
@@ -105,7 +105,7 @@ public class ShearerTest extends SpringLoaded {
     public void testRunWithObstacle() {
         
         
-        IShearer shearer = controller.getShearer();
+        Shearer shearer = controller.getShearer();
         
         DescReader r = controller.getReader()
             .setDefaultResourcePath("/setup/lawnmower+obstacles.desc")
@@ -127,8 +127,8 @@ public class ShearerTest extends SpringLoaded {
         assertEquals(false, shearer.isFail());
         
         assertEquals(2, shearer.getObstacles().size());
-        assertEquals(2, shearer.getObstacles().get(0).getPosition().getX());
-        assertEquals(2, shearer.getObstacles().get(0).getPosition().getY());
+        assertEquals(1, shearer.getObstacles().get(0).getPosition().getX());
+        assertEquals(3, shearer.getObstacles().get(0).getPosition().getY());
         assertEquals(4, shearer.getObstacles().get(1).getPosition().getX());
         assertEquals(1, shearer.getObstacles().get(1).getPosition().getY());
         
@@ -138,7 +138,7 @@ public class ShearerTest extends SpringLoaded {
         assertEquals(lawnMowers.get(1), shearer.getMovables().get(1));
         
         assertEquals(1, shearer.getMovables().get(0).getPosition().getX());
-        assertEquals(3, shearer.getMovables().get(0).getPosition().getY());
+        assertEquals(2, shearer.getMovables().get(0).getPosition().getY());
         assertEquals(CompassPoint.N, shearer.getMovables().get(0).getPosition().getInFrontOf());
         
         assertEquals(5, shearer.getMovables().get(1).getPosition().getX());
