@@ -35,11 +35,24 @@ public class SpringLoaded extends TestCase {
     
     protected LawnMowerController controller = null;
     
+    protected String selectedController = null;
     
     public SpringLoaded(String testName) {
         super(testName);
+        this.useSimpleController();
     }
     
+    protected SpringLoaded useSimpleController () {
+        this.selectedController = Constant.BEAN_CONTROLLER_SIMPLE;
+        
+        return this;
+    }
+    
+    protected SpringLoaded useThreadedController () {
+        this.selectedController = Constant.BEAN_CONTROLLER_THREADED;
+        
+        return this;
+    }
     
     @Override
     protected void setUp() throws Exception {
@@ -47,7 +60,7 @@ public class SpringLoaded extends TestCase {
                 "/configuration/spring.xml",
                 Main.class);
         
-        controller = ((LawnMowerController) context.getBean(Constant.BEAN_CONTROLLER));
+        controller = ((LawnMowerController) context.getBean(this.selectedController));
         
     }
     

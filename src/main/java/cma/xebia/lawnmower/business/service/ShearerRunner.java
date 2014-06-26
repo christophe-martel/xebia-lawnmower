@@ -15,28 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.application;
+package cma.xebia.lawnmower.business.service;
 
+import cma.xebia.lawnmower.business.service.process.validator.MovableValidator;
+import cma.xebia.lawnmower.business.service.process.validator.PositionableValidator;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Constant {
+public interface ShearerRunner {
     
-    public static final String RES_LAWNMOWER_DESC       = "/lawnmower.desc";
+    public ShearerRunner setPositionableValidator (
+            PositionableValidator positionableValidator);
     
-    public static final String LAWNMOWER_FILE_CHARSET   = "UTF-8";
+    public ShearerRunner setMovableValidator (
+            MovableValidator movableValidator);
     
-    public static final String BEAN_CONTROLLER_SIMPLE   = "lawn-mower.controller.simple";
-    
-    public static final String BEAN_CONTROLLER_THREADED = "lawn-mower.controller.threaded";
-    
-    public static final String BEAN_MAIN_ARGS           = "command-line.main.arguments";
-    
-    private Constant () {
-    }
-    
-    
+    public ShearerRunner run (Shearer shearer);
     
 }

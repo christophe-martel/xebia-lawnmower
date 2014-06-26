@@ -20,14 +20,33 @@
     <import resource="classpath:configuration/included/process.xml" />
     <import resource="classpath:configuration/included/lawn-mower.xml" />
     
-    <bean   id="lawn-mower.controller"
+    <bean   id="lawn-mower.controller.base"
+            abstract="true" >
+        <constructor-arg name="arguments"   ref="command-line.ctl.arguments" />
+        <constructor-arg name="template"    ref="command-line.ctl.template" />
+        <constructor-arg name="reader"      ref="utils.description.parser" />
+        <constructor-arg name="builder"     ref="lawn-mower.builder" />
+    </bean>
+    
+    <bean   id="lawn-mower.controller.simple"
             class="cma.xebia.lawnmower.controller.impl.LawnMowerController"
+            parent="lawn-mower.controller.base"
             scope="prototype" >
-        <constructor-arg ref="command-line.arguments" />
-        <constructor-arg ref="command-line.template" />
-        <constructor-arg ref="utils.description.parser" />
-        <constructor-arg ref="process.shearer" />
-        <constructor-arg ref="lawn-mower.builder" />
+        <constructor-arg name="shearer" ref="process.shearer.simple" />
+    </bean>
+    
+    <bean   id="lawn-mower.controller.threaded"
+            class="cma.xebia.lawnmower.controller.impl.LawnMowerController"
+            parent="lawn-mower.controller.base"
+            scope="prototype" >
+        <constructor-arg name="shearer" ref="process.shearer.threaded" />
+    </bean>
+    
+    <bean   id="lawn-mower.controller.broken-down"
+            class="cma.xebia.lawnmower.controller.impl.LawnMowerController"
+            parent="lawn-mower.controller.base"
+            scope="prototype" >
+        <constructor-arg name="shearer" ref="process.shearer.broken-down" />
     </bean>
     
 </beans>

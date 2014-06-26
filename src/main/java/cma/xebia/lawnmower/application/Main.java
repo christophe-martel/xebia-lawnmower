@@ -17,6 +17,7 @@
 package cma.xebia.lawnmower.application;
 
 import cma.xebia.lawnmower.controller.Controller;
+import cma.xebia.lawnmower.utils.cmd.argument.Arguments;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -37,12 +38,32 @@ public class Main {
      */
     public static void main (String[] args) {
         log.debug("start application");
+        
+        (new Main()).execute(args);
+    }
+    
+    protected Main execute (String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext(
                 "/configuration/spring.xml",
                 Main.class);
         
+        Main.Option option = new Main.Option();
+        
+        // get main arguments ...
+        if (context.containsBean(Constant.BEAN_MAIN_ARGS)) {
+            Arguments<Main.Option> arguments = ((Arguments<Main.Option>)
+                context.getBean(Constant.BEAN_MAIN_ARGS));
+            
+            if (arguments.parse(args, option).mustStop()) {
+                arguments.showHelp(option);
+                
+                return this;
+            }
+            
+        }
+        
         try {
-            ((Controller) context.getBean(Constant.BEAN_CONTROLLER))
+            ((Controller) context.getBean(option.selectedController))
                 .init(args)
                 .run()
                 .finish();
@@ -50,6 +71,14 @@ public class Main {
             log.error("Oups", lme);
             
         }
+        
+        return this;
+    }
+    
+    public class Option {
+        
+        public String selectedController = Constant.BEAN_CONTROLLER_SIMPLE;
+        
         
     }
     

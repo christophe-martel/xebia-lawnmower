@@ -23,11 +23,11 @@ import cma.xebia.lawnmower.business.entity.impl.Position;
 import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import cma.xebia.lawnmower.business.service.Shearer;
+import cma.xebia.lawnmower.business.service.ShearerRunner;
 import cma.xebia.lawnmower.business.service.process.validator.DimentionableValidator;
 import cma.xebia.lawnmower.business.service.process.validator.MovableValidator;
 import cma.xebia.lawnmower.business.service.process.validator.PositionableValidator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,9 +46,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SimpleShearer implements Shearer {
     
-    private DimentionableValidator  playgroundValidator = null;
-    private PositionableValidator   positionValidator   = null;
-    private MovableValidator        collisionValidator  = null;
+    private final DimentionableValidator    playgroundValidator;
+    private final PositionableValidator     positionValidator;
+    private final MovableValidator          collisionValidator;
+    private final ShearerRunner             runner;
     
     @Accessors(chain = true)
     @Getter
@@ -80,15 +81,17 @@ public class SimpleShearer implements Shearer {
     
     @Accessors(chain = true)
     @Getter
-    private List<String> errors = new ArrayList<>();
+    private final List<String> errors = new ArrayList<>();
     
     public SimpleShearer (
             @NonNull DimentionableValidator playgroundValidator,
             @NonNull PositionableValidator  positionValidator,
-            @NonNull MovableValidator       collisionValidator) {
+            @NonNull MovableValidator       collisionValidator,
+            @NonNull ShearerRunner          runner) {
         this.playgroundValidator = playgroundValidator;
         this.positionValidator = positionValidator;
         this.collisionValidator = collisionValidator;
+        this.runner = runner;
         
     }
     
@@ -226,24 +229,12 @@ public class SimpleShearer implements Shearer {
         }
         this.setFail(true);
         
-        log.info("mow law {}x{} ...",
-            this.playground.getDimension().width,
-            this.playground.getDimension().height);
+        this.runner
+            .setPositionableValidator(positionValidator)
+            .setMovableValidator(collisionValidator)
+            .run(this)
+        ;
         
-        // creating obstacles list
-        final Set<Positionable> allObstacles = Collections
-            .unmodifiableSet(this.getAllObstacles());
-        
-        for (Positionable positionable : allObstacles) {
-            log.info("with obstacle {}", positionable);
-            
-        }
-        
-        int i = -1;
-        for (Movable movable : this.movables) {
-            i++;
-            this.run(movable, allObstacles, i);
-        }
         this.setFail(false);
         
         return this;

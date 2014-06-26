@@ -27,6 +27,18 @@
         <constructor-arg type="java.lang.String" value="resource" />
     </bean>
     
+    <bean   id="command-line.arguments.select-controller"
+            class="cma.xebia.lawnmower.application.cmd.argument.impl.MainAppControllerArgument"
+            scope="singleton" >
+        <constructor-arg type="java.lang.String" value="mode" />
+        <constructor-arg >
+            <map>
+                <entry key="simple" value="lawn-mower.controller.simple" />
+                <entry key="threaded" value="lawn-mower.controller.threaded" />
+            </map>
+        </constructor-arg>
+    </bean>
+    
     <bean   id="command-line.arguments.help"
             class="cma.xebia.lawnmower.application.cmd.argument.impl.LawnMowerHelpArgument"
             scope="singleton" >
@@ -35,7 +47,7 @@
         <constructor-arg type="java.lang.String" value="/cmd/help.txt" />
     </bean>
     
-    <bean   id="command-line.arguments"
+    <bean   id="command-line.ctl.arguments"
             class="cma.xebia.lawnmower.utils.cmd.argument.impl.SimpleArguments"
             scope="prototype" >
         <constructor-arg>
@@ -49,7 +61,18 @@
     </bean>
     
     
-    <bean   id="command-line.template"
+    <bean   id="command-line.main.arguments"
+            class="cma.xebia.lawnmower.utils.cmd.argument.impl.SimpleArguments"
+            scope="prototype" >
+        <constructor-arg>
+            <set>
+                <ref bean="command-line.arguments.select-controller"/>
+            </set>
+        </constructor-arg>
+        <constructor-arg ref="command-line.arguments.help"/>
+    </bean>
+    
+    <bean   id="command-line.ctl.template"
             class="cma.xebia.lawnmower.utils.cmd.template.impl.ResourceTemplate"
             scope="prototype" >
         <constructor-arg ref="utils.printer.resource-to-sysout"/>

@@ -16,13 +16,39 @@
     <aop:aspectj-autoproxy />
     
     
-    <bean   id="process.shearer"
-            class="cma.xebia.lawnmower.business.service.process.impl.SimpleShearer"
-            scope="prototype" >
-        <constructor-arg ref="validator.lawn.size"/>
-        <constructor-arg ref="validator.lawn-mower"/>
-        <constructor-arg ref="validator.obstacles"/>
+    <bean   id="process.shearer.simple.base"
+            abstract="true" >
+        <constructor-arg name="playgroundValidator" ref="validator.lawn.size"/>
+        <constructor-arg name="positionValidator"   ref="validator.lawn-mower"/>
+        <constructor-arg name="collisionValidator"  ref="validator.obstacles"/>
     </bean>
     
+    <bean   id="process.shearer.simple"
+            class="cma.xebia.lawnmower.business.service.process.impl.SimpleShearer"
+            parent="process.shearer.simple.base"
+            scope="prototype" >
+        <constructor-arg name="runner" >
+            <bean class="cma.xebia.lawnmower.business.service.process.impl.runner.SimpleRunner" />
+        </constructor-arg>
+    </bean>
+    
+    <bean   id="process.shearer.threaded"
+            class="cma.xebia.lawnmower.business.service.process.impl.SimpleShearer"
+            parent="process.shearer.simple.base"
+            scope="prototype" >
+        <constructor-arg name="runner" >
+            <bean class="cma.xebia.lawnmower.business.service.process.impl.runner.ThreadedRunner" />
+        </constructor-arg>
+    </bean>
+    
+    
+    <bean   id="process.shearer.broken-down"
+            class="cma.xebia.lawnmower.business.service.process.impl.SimpleShearer"
+            parent="process.shearer.simple.base"
+            scope="prototype" >
+        <constructor-arg name="runner" >
+            <bean class="cma.xebia.lawnmower.business.service.process.impl.runner.BrokenDownRunner" />
+        </constructor-arg>
+    </bean>
     
 </beans>
