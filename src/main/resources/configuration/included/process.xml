@@ -23,7 +23,7 @@
         <constructor-arg name="collisionValidator"  ref="validator.obstacles"/>
     </bean>
     
-    <bean   id="process.shearer.simple"
+    <bean   id="process.shearer.standard"
             class="cma.xebia.lawnmower.business.service.process.impl.SimpleShearer"
             parent="process.shearer.simple.base"
             scope="prototype" >

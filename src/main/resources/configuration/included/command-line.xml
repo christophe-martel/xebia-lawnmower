@@ -33,8 +33,9 @@
         <constructor-arg type="java.lang.String" value="mode" />
         <constructor-arg >
             <map>
-                <entry key="simple" value="lawn-mower.controller.simple" />
-                <entry key="threaded" value="lawn-mower.controller.threaded" />
+                <entry key="standard"   value="lawn-mower.controller.standard" />
+                <entry key="broken"     value="lawn-mower.controller.broken-down" />
+                <entry key="threaded"   value="lawn-mower.controller.threaded" />
             </map>
         </constructor-arg>
     </bean>

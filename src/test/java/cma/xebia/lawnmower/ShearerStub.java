@@ -15,9 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.controller.impl;
+package cma.xebia.lawnmower;
 
-import cma.xebia.lawnmower.SpringLoaded;
 import cma.xebia.lawnmower.business.service.Shearer;
 import cma.xebia.lawnmower.business.entity.Dimensionable;
 import cma.xebia.lawnmower.business.entity.Movable;
@@ -41,13 +40,33 @@ import lombok.extern.slf4j.Slf4j;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 @Slf4j
-public class ShearerTest extends SpringLoaded {
+public abstract class ShearerStub extends SpringLoaded {
     
+    protected DescReader reader;
     
-    public ShearerTest(String testName) {
+    public ShearerStub(String testName) {
         super(testName);
+        
     }
     
+    @Override
+    protected void setUp() throws Exception {
+        this.configureEnv();
+        super.setUp();
+        reader = controller.getReader()
+            .setDefaultResourcePath("/setup/lawnmower+obstacles.desc")
+            .setCharset("UTF-8")
+            .read();
+    }
+    
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        this.useStandardController();
+        
+    }
+    
+    protected abstract void configureEnv ();
     
     public void testNonNull () {
         assertNotNull(controller.getReader());
@@ -58,19 +77,13 @@ public class ShearerTest extends SpringLoaded {
     /**
      * Test of run method, of class Shearer.
      */
-    public void testRun() {
-        
+    public void testRunWithoutObstacle() {
         
         Shearer shearer = controller.getShearer();
         
-        DescReader r = controller.getReader()
-            .setDefaultResourcePath("/setup/lawnmower.desc")
-            .setCharset("UTF-8")
-            .read();
-        
-        Dimensionable lawn = this.getPlayground(r);
-        List<Positionable> obstacles = this.getObstacles(r);
-        List<Movable> lawnMowers = this.getMovables(r);
+        Dimensionable lawn = this.getPlayground();
+        List<Positionable> obstacles = this.getObstacles();
+        List<Movable> lawnMowers = this.getMovables();
         
         shearer
             .init()
@@ -79,6 +92,15 @@ public class ShearerTest extends SpringLoaded {
             .use(lawnMowers)
             .validate()
             .mow();
+        
+        this.checkTestRunWithObstacle(shearer, lawnMowers);
+        
+    }
+    
+    
+    protected void checkTestRunWithoutObstacle (
+            Shearer shearer,
+            List<Movable> lawnMowers) {
         
         assertEquals(false, shearer.isFail());
         
@@ -98,23 +120,17 @@ public class ShearerTest extends SpringLoaded {
         
     }
     
-    
     /**
      * Test of run method, of class Shearer.
      */
-    public void testRunWithObstacle() {
+    public void testRunWithObstacle () {
         
         
         Shearer shearer = controller.getShearer();
         
-        DescReader r = controller.getReader()
-            .setDefaultResourcePath("/setup/lawnmower+obstacles.desc")
-            .setCharset("UTF-8")
-            .read();
-        
-        Dimensionable lawn = this.getPlayground(r);
-        List<Positionable> obstacles = this.getObstacles(r);
-        List<Movable> lawnMowers = this.getMovables(r);
+        Dimensionable lawn = this.getPlayground();
+        List<Positionable> obstacles = this.getObstacles();
+        List<Movable> lawnMowers = this.getMovables();
         
         shearer
             .init()
@@ -123,6 +139,13 @@ public class ShearerTest extends SpringLoaded {
             .use(lawnMowers)
             .validate()
             .mow();
+        
+        this.checkTestRunWithObstacle(shearer, lawnMowers);
+    }
+    
+    protected void checkTestRunWithObstacle (
+            Shearer shearer,
+            List<Movable> lawnMowers) {
         
         assertEquals(false, shearer.isFail());
         
@@ -135,28 +158,34 @@ public class ShearerTest extends SpringLoaded {
         
         assertEquals(2, shearer.getMovables().size());
         assertEquals(lawnMowers.get(0), shearer.getMovables().get(0));
+        assertTrue(lawnMowers.get(0) == shearer.getMovables().get(0));
+        
         assertEquals(lawnMowers.get(1), shearer.getMovables().get(1));
+        assertTrue(lawnMowers.get(1) == shearer.getMovables().get(1));
         
         assertEquals(1, shearer.getMovables().get(0).getPosition().getX());
         assertEquals(2, shearer.getMovables().get(0).getPosition().getY());
         assertEquals(CompassPoint.N, shearer.getMovables().get(0).getPosition().getInFrontOf());
         
+        
         assertEquals(5, shearer.getMovables().get(1).getPosition().getX());
         assertEquals(1, shearer.getMovables().get(1).getPosition().getY());
         assertEquals(CompassPoint.E, shearer.getMovables().get(1).getPosition().getInFrontOf());
         
+        
     }
     
-    protected Dimensionable getPlayground (DescReader reader) {
+    protected Dimensionable getPlayground () {
+        
         return new Lawn(
-            reader.getLawn().getDimension().width,
-            reader.getLawn().getDimension().height);
+            this.reader.getLawn().getDimension().width,
+            this.reader.getLawn().getDimension().height);
     }
     
-    protected List<Positionable> getObstacles (DescReader reader) {
+    protected List<Positionable> getObstacles () {
         List<Positionable> result = new ArrayList<>();
         
-        for(PositionDesc desc : reader.getObstacles()) {
+        for(PositionDesc desc : this.reader.getObstacles()) {
             
             result.add((new Obstacle())
                 .setX(desc.getPosition().x)
@@ -170,10 +199,10 @@ public class ShearerTest extends SpringLoaded {
         
     }
     
-    protected List<Movable> getMovables (DescReader reader) {
+    protected List<Movable> getMovables () {
         List<Movable> result = new ArrayList<>();
         
-        for(MovableDesc desc : reader.getLawnMowers()) {
+        for(MovableDesc desc : this.reader.getLawnMowers()) {
             result.add(controller.getBuilder().create()
                 .program(Movement.parseMovements(desc.getMovements()))
                 .moveTo(

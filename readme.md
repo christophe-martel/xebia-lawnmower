@@ -7,6 +7,11 @@
 # Documentation
 ## Fonctionnelle
 [Mower 2](documents/mower2.pdf "libellé du sujet")
+### Version 1.2
+* ajout des obstacles
+* ajout de tondeurs cusomisable
+### Version 1.3 [planned]
+* ajout d'un tondeur multi-threaded
 
 # Installation & exécution
 * Récupération de sources `git clone https://github.com/christophe-martel/xebia-lawnmower.git`
@@ -21,9 +26,14 @@
 Cf. http://www.byatoo.com/la-rache/
 * `mvn exec:java`
 
-## Redistribuable ?
-* Création d'un jar `mvn package`
-* Exécution :`java -jar target/lawnmower-1.0-SNAPSHOT.one-jar.jar`
+## How To...
+* Préparation du package
+    * `mvn package`
+* Exécution
+    * `java -jar target/cma-xebia-lawnmower-1.2-full.jar`
+* Guide utilisateur
+    * `java -jar target/cma-xebia-lawnmower-1.2-full.jar --help`
+    
 
 # Aide
 En cas d'erreur, utiliser de la poudre verte

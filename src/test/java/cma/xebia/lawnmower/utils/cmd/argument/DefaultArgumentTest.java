@@ -17,6 +17,7 @@
 
 package cma.xebia.lawnmower.utils.cmd.argument;
 
+import java.util.ArrayList;
 import junit.framework.TestCase;
 
 /**
@@ -28,7 +29,7 @@ public class DefaultArgumentTest extends TestCase {
     public DefaultArgumentTest(String testName) {
         super(testName);
     }
-    
+
     /**
      * Test of mustStop method, of class DefaultArgument.
      */
@@ -73,6 +74,35 @@ public class DefaultArgumentTest extends TestCase {
         assertFalse(instance.isCorrespondingTo("--test=test"));
         assertTrue(instance.isCorrespondingTo("--test"));
         
+        
+    }
+
+    /**
+     * Test of getDecodedArgument method, of class DefaultArgument.
+     */
+    public void testGetDecodedArgument() {
+        
+        DefaultArgument<ArrayList> instance = new DefaultArgument<ArrayList>("test", true) {
+            @Override
+            public Argument applyOn(String argument, ArrayList lst) {
+                
+                lst.add(this.getDecodedArgument(argument));
+                
+                return this;
+            }
+        };
+        
+        ArrayList<String> contener = new ArrayList<>();
+        instance.applyOn("--test=test", contener);
+        
+        assertEquals(1, contener.size());
+        assertEquals("test", contener.get(0));
+        
+        contener = new ArrayList<>();
+        instance.applyOn("--test=test=test", contener);
+        
+        assertEquals(1, contener.size());
+        assertEquals("test=test", contener.get(0));
         
     }
     

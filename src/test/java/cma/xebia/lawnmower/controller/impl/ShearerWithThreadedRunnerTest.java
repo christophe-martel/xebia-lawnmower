@@ -15,30 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.application;
+package cma.xebia.lawnmower.controller.impl;
+
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class Constant {
+@Slf4j
+public class ShearerWithThreadedRunnerTest extends ShearerWithBrokenRunnerTest {
     
-    public static final String RES_LAWNMOWER_DESC       = "/lawnmower.desc";
-    
-    public static final String LAWNMOWER_FILE_CHARSET   = "UTF-8";
-    
-    public static final String BEAN_CONTROLLER_STANDARD = "lawn-mower.controller.standard";
-    
-    public static final String BEAN_CONTROLLER_THREADED = "lawn-mower.controller.threaded";
-    
-    public static final String BEAN_CONTROLLER_BROKEN   = "lawn-mower.controller.broken-down";
-    
-    public static final String BEAN_MAIN_ARGS           = "command-line.main.arguments";
-    
-    private Constant () {
+    @Override
+    protected void configureEnv() {
+        this.useThreadedController();
     }
     
+    
+    public ShearerWithThreadedRunnerTest(String testName) {
+        super(testName);
+    }
     
     
 }

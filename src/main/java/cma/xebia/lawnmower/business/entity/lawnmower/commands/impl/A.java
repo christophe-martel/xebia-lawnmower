@@ -19,7 +19,7 @@ package cma.xebia.lawnmower.business.entity.lawnmower.commands.impl;
 
 import cma.xebia.lawnmower.business.entity.Movable;
 import cma.xebia.lawnmower.business.entity.impl.Position;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.DefaultAction;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -28,7 +28,11 @@ import lombok.extern.slf4j.Slf4j;
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
 @Slf4j
-public class A implements Action {
+public class A extends DefaultAction {
+    
+    public A () {
+        super("A");
+    }
     
     @Override
     public Position apply(Movable movable) {
@@ -64,11 +68,6 @@ public class A implements Action {
         
         return result;
         
-    }
-    
-    @Override
-    public String toString() {
-        return "A";
     }
     
     

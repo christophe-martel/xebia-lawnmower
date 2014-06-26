@@ -29,14 +29,14 @@ import lombok.experimental.Accessors;
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-public class BuilderImpl implements LawnMowerBuilder {
+public class Builder implements LawnMowerBuilder {
     
     @Accessors(chain = true)
     private Commands commands = null;
     
     private Cloner cloner = null;
     
-    public BuilderImpl (Commands commands, Cloner cloner) {
+    public Builder (Commands commands, Cloner cloner) {
         this.commands = commands;
         this.cloner = cloner;
     }
@@ -57,12 +57,9 @@ public class BuilderImpl implements LawnMowerBuilder {
     
     @Override
     public LawnMower create (int x, int y, CompassPoint inFrontOf) {
-        Position result = new Position();
-        result
+        return this.create(new Position()
             .setX(x)
             .setY(y)
-            .setInFrontOf(inFrontOf);
-        
-        return this.create(result);
+            .setInFrontOf(inFrontOf));
     }
 }

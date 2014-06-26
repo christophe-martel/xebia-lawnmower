@@ -28,11 +28,11 @@
         <constructor-arg name="builder"     ref="lawn-mower.builder" />
     </bean>
     
-    <bean   id="lawn-mower.controller.simple"
+    <bean   id="lawn-mower.controller.standard"
             class="cma.xebia.lawnmower.controller.impl.LawnMowerController"
             parent="lawn-mower.controller.base"
             scope="prototype" >
-        <constructor-arg name="shearer" ref="process.shearer.simple" />
+        <constructor-arg name="shearer" ref="process.shearer.standard" />
     </bean>
     
     <bean   id="lawn-mower.controller.threaded"

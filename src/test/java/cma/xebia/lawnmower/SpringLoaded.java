@@ -35,23 +35,26 @@ public class SpringLoaded extends TestCase {
     
     protected LawnMowerController controller = null;
     
-    protected String selectedController = null;
+    private String selectedController = null;
     
     public SpringLoaded(String testName) {
         super(testName);
-        this.useSimpleController();
+        this.selectedController = Constant.BEAN_CONTROLLER_STANDARD;
     }
     
-    protected SpringLoaded useSimpleController () {
-        this.selectedController = Constant.BEAN_CONTROLLER_SIMPLE;
+    protected void useStandardController () {
+        this.selectedController = Constant.BEAN_CONTROLLER_STANDARD;
         
-        return this;
     }
     
-    protected SpringLoaded useThreadedController () {
+    protected void useThreadedController () {
         this.selectedController = Constant.BEAN_CONTROLLER_THREADED;
         
-        return this;
+    }
+    
+    protected void useBrokenController () {
+        this.selectedController = Constant.BEAN_CONTROLLER_BROKEN;
+        
     }
     
     @Override

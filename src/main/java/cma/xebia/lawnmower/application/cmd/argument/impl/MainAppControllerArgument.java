@@ -59,7 +59,7 @@ public class MainAppControllerArgument<T extends Main.Option>
             
         }
         
-        object.selectedController = this.shearers.get(input);
+        object.setSelectedController(this.shearers.get(input));
         
         return this;
     }

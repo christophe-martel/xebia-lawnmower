@@ -24,6 +24,7 @@ import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.experimental.Accessors;
 import lombok.Getter;
 import lombok.NonNull;
@@ -70,6 +71,31 @@ public class LawnMower
         
         return this;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 73 * hash + Objects.hashCode(this.position);
+        hash = 73 * hash + Objects.hashCode(this.movements);
+        hash = 73 * hash + Objects.hashCode(this.commands);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        final LawnMower other = (LawnMower) obj;
+        
+        return Objects.equals(this.position, other.position)
+            && Objects.equals(this.movements, other.movements)
+            && Objects.equals(this.commands, other.commands);
+    }
     
     
     
@@ -78,7 +104,5 @@ public class LawnMower
         return String.format("LawnMower {%s}",
             this.getPosition());
     }
-    
-    
     
 }

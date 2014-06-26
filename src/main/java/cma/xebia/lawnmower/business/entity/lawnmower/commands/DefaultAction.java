@@ -14,39 +14,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cma.xebia.lawnmower.business.entity.lawnmower.commands.impl;
 
-import cma.xebia.lawnmower.business.entity.constants.Movement;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
-import java.util.LinkedHashMap;
-import java.util.Map;
+package cma.xebia.lawnmower.business.entity.lawnmower.commands;
+
 import java.util.Objects;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
-
+import lombok.NonNull;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-@Slf4j
-public class DefaultCommands implements Commands {
+public abstract class DefaultAction implements Action {
     
-    @Accessors(chain = true)
-    @Getter
-    @Setter
-    private Map<Movement, Action> movements = new LinkedHashMap<>();
+    private final String name;
+    
+    protected DefaultAction (@NonNull String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public String toString() {
+        return this.name;
+    }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.movements);
+        int hash = 5;
+        hash = 17 * hash + Objects.hashCode(this.name);
         return hash;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -55,11 +52,10 @@ public class DefaultCommands implements Commands {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DefaultCommands other = (DefaultCommands) obj;
-        if (!Objects.equals(this.movements, other.movements)) {
-            return false;
-        }
-        return true;
+        
+        final DefaultAction other = (DefaultAction) obj;
+        
+        return Objects.equals(this.name, other.name);
     }
     
 }

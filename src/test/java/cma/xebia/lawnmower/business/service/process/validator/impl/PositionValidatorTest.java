@@ -22,7 +22,7 @@ import cma.xebia.lawnmower.application.Constant;
 import cma.xebia.lawnmower.application.Main;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
 import cma.xebia.lawnmower.business.entity.lawn.Lawn;
-import cma.xebia.lawnmower.business.entity.lawnmower.BuilderImpl;
+import cma.xebia.lawnmower.business.entity.lawnmower.Builder;
 
 import cma.xebia.lawnmower.business.entity.lawnmower.LawnMowerBuilder;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.impl.DefaultCommands;
