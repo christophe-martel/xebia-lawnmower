@@ -23,9 +23,13 @@ import cma.xebia.lawnmower.business.service.DefaultRunner;
 import cma.xebia.lawnmower.business.service.ShearerRunnerDelegator;
 import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import com.rits.cloning.Cloner;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,7 +53,7 @@ public class ThreadedRunner extends DefaultRunner {
         log.info("mow law {}x{} ...",
                 this.shearer.getPlayground().getDimension().width,
                 this.shearer.getPlayground().getDimension().height);
-
+        
         for (Positionable positionable : this.allObstacles) {
             log.info("with obstacle {}", positionable);
             
@@ -61,6 +65,8 @@ public class ThreadedRunner extends DefaultRunner {
         
         ShearerRunnerDelegator injectedDelegator;
         Cloner cloner = new Cloner();
+        
+        Set<Future<ThreadedRunner.Job>> futureJobs = new HashSet<>();
         
         int i = -1;
         for (Movable movable : this.shearer.getMovables()) {
@@ -74,7 +80,8 @@ public class ThreadedRunner extends DefaultRunner {
                 .use(movable)
             ;
             
-            pool.submit(new ThreadedRunner.Job(injectedDelegator));
+            futureJobs.add(
+                pool.submit(new ThreadedRunner.Job(injectedDelegator)));
             
         }
         
@@ -83,13 +90,23 @@ public class ThreadedRunner extends DefaultRunner {
         
         try {
             while (!pool.isTerminated()) {
-                log.debug("wiath for termination...");
-                    pool.awaitTermination(
-                            Constant.THREADED_AWAIT_TERMINATION_MS,
-                            TimeUnit.MILLISECONDS);
+                log.info("waiting...");
+                pool.awaitTermination(
+                        Constant.THREADED_AWAIT_TERMINATION_MS,
+                        TimeUnit.MILLISECONDS);
+                
             }
             
-        } catch (InterruptedException ex) {
+            i = -1;
+            for (Future<ThreadedRunner.Job> future : futureJobs) {
+                i++;
+                log.info("callable #{} run during {} ms",
+                    i,
+                    future.get().getConsumedTime());
+                
+            }
+            
+        } catch (InterruptedException | ExecutionException ex) {
              throw new LawnMowerException(ex);
         }
         return this;
@@ -97,7 +114,12 @@ public class ThreadedRunner extends DefaultRunner {
     
     @Slf4j
     private static class Job
-            implements Callable<Positionable> {
+            implements Callable<ThreadedRunner.Job> {
+        
+        
+        private long startTime;
+        
+        private long endTime;
         
         private final ShearerRunnerDelegator delegator;
         
@@ -106,8 +128,15 @@ public class ThreadedRunner extends DefaultRunner {
         }
         
         @Override
-        public Positionable call () throws Exception {
-            return this.delegator.run();
+        public ThreadedRunner.Job call () throws Exception {
+            this.startTime = System.currentTimeMillis();
+            this.delegator.run();
+            this.endTime = System.currentTimeMillis();
+            return this;
+        }
+        
+        long getConsumedTime () {
+            return this.endTime - this.startTime;
         }
         
     }

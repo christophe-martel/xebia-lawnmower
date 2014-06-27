@@ -123,7 +123,7 @@ public class LawnMowerController implements Controller {
             .use(lawnMowers)
             .mow();
         
-        endTime = System.currentTimeMillis();
+        this.endTime = System.currentTimeMillis();
         
         if (shearer.isFail()) {
             log.warn("Oups, an error occurs ...");

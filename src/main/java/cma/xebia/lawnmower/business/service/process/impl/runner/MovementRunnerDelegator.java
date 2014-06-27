@@ -82,7 +82,7 @@ public class MovementRunnerDelegator implements ShearerRunnerDelegator {
             
         }
         if (null == this.movable) {
-            throw new NullPointerException("shearer");
+            throw new NullPointerException("movable");
             
         }
         

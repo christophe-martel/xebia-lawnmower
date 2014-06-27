@@ -240,9 +240,6 @@ public class SimpleShearer implements Shearer {
             log.error("LawnMowerException : {}", ex);
             
         }
-        ;
-        
-        
         
         return this;
     }

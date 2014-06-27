@@ -20,7 +20,7 @@ package cma.xebia.lawnmower.business.entity.lawnmower;
 import cma.xebia.lawnmower.business.entity.Movable;
 import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
-import lombok.NonNull;
+import java.util.Objects;
 
 /**
  *
@@ -30,7 +30,7 @@ public class SynchronizedLawnMower extends LawnMower {
     
     private final Object lock = new Object();
     
-    SynchronizedLawnMower(@NonNull Commands commands) {
+    SynchronizedLawnMower(Commands commands) {
         super(commands);
     }
     
@@ -41,6 +41,32 @@ public class SynchronizedLawnMower extends LawnMower {
         }
         return this;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash
+            + Objects.hashCode(this.lock)
+            + super.hashCode();
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        final SynchronizedLawnMower other = (SynchronizedLawnMower) obj;
+        
+        return Objects.equals(this.lock, other.lock)
+                && super.equals(other);
+    }
+    
+    
     
     
     
