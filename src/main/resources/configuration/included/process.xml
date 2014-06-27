@@ -15,6 +15,13 @@
     <context:component-scan base-package="cma.xebia.lawnmower" />
     <aop:aspectj-autoproxy />
     
+    <bean   id="process.shearer.movements-runner"
+            class="cma.xebia.lawnmower.business.service.process.impl.runner.MovementRunnerDelegator"
+            scope="prototype"  >
+        <constructor-arg name="positionableValidator"   ref="validator.lawn-mower"/>
+        <constructor-arg name="movableValidator"        ref="validator.obstacles"/>
+        
+    </bean>
     
     <bean   id="process.shearer.simple.base"
             abstract="true" >
@@ -28,7 +35,9 @@
             parent="process.shearer.simple.base"
             scope="prototype" >
         <constructor-arg name="runner" >
-            <bean class="cma.xebia.lawnmower.business.service.process.impl.runner.SimpleRunner" />
+            <bean class="cma.xebia.lawnmower.business.service.process.impl.runner.SimpleRunner" >
+                <constructor-arg name="delegator" ref="process.shearer.movements-runner" />
+            </bean>
         </constructor-arg>
     </bean>
     
@@ -37,7 +46,9 @@
             parent="process.shearer.simple.base"
             scope="prototype" >
         <constructor-arg name="runner" >
-            <bean class="cma.xebia.lawnmower.business.service.process.impl.runner.ThreadedRunner" />
+            <bean class="cma.xebia.lawnmower.business.service.process.impl.runner.ThreadedRunner"  >
+                <constructor-arg name="delegator" ref="process.shearer.movements-runner" />
+            </bean>
         </constructor-arg>
     </bean>
     

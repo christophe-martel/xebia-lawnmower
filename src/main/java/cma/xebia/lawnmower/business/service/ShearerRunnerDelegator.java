@@ -15,28 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.controller.impl;
+package cma.xebia.lawnmower.business.service;
 
-
-import lombok.extern.slf4j.Slf4j;
-
+import cma.xebia.lawnmower.business.entity.Movable;
+import cma.xebia.lawnmower.business.entity.Positionable;
+import java.util.Set;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-@Slf4j
-public class ShearerWithThreadedRunnerTest extends ShearerWithStandardRunnerTest {
+public interface ShearerRunnerDelegator {
     
-    @Override
-    protected void configureEnv() {
-        this.useThreadedController();
-    }
+    public ShearerRunnerDelegator on (Shearer shearer);
     
+    public ShearerRunnerDelegator with (Set<Positionable> obstacles);
     
-    public ShearerWithThreadedRunnerTest(String testName) {
-        super(testName);
-    }
+    /**
+     * 
+     * @param movable
+     * @return 
+     */
+    public ShearerRunnerDelegator use (Movable movable);
     
+    public Positionable run ();
     
 }

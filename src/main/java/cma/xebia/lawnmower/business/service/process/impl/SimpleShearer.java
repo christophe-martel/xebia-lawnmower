@@ -19,14 +19,13 @@ package cma.xebia.lawnmower.business.service.process.impl;
 
 import cma.xebia.lawnmower.business.entity.Dimensionable;
 import cma.xebia.lawnmower.business.entity.Movable;
-import cma.xebia.lawnmower.business.entity.impl.Position;
 import cma.xebia.lawnmower.business.entity.Positionable;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import cma.xebia.lawnmower.business.service.Shearer;
 import cma.xebia.lawnmower.business.service.ShearerRunner;
 import cma.xebia.lawnmower.business.service.process.validator.DimentionableValidator;
 import cma.xebia.lawnmower.business.service.process.validator.MovableValidator;
 import cma.xebia.lawnmower.business.service.process.validator.PositionableValidator;
+import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -229,69 +228,25 @@ public class SimpleShearer implements Shearer {
         }
         this.setFail(true);
         
-        this.runner
-            .setPositionableValidator(positionValidator)
-            .setMovableValidator(collisionValidator)
-            .run(this)
+        try {
+            this.runner
+                .setPositionableValidator(positionValidator)
+                .setMovableValidator(collisionValidator)
+                .run(this)
+            ;
+            this.setFail(false);
+            
+        } catch (LawnMowerException ex) {
+            log.error("LawnMowerException : {}", ex);
+            
+        }
         ;
         
-        this.setFail(false);
+        
         
         return this;
     }
     
-    protected Shearer run (
-            Movable movable,
-            Set<Positionable> allObstacles,
-            int index) {
-        log.info("with {} #{} and movements {}",
-            movable,
-            index,
-            movable.getMovements());
-        
-        Position nextPosition;
-        
-        for (Action action: movable.getMovements()) {
-            
-            nextPosition = action.apply(movable);
-            
-            // position validation
-            if (!this.positionValidator
-                    .isValid(nextPosition, this.playground)) {
-                // Out of bound...
-                // nothing to do ...
-                log.warn("Action {}, next position {} is unreachable ...",
-                    action,
-                    nextPosition);
-                
-            } else if (!this
-                    .collisionValidator
-                    .isValid(movable, nextPosition, allObstacles)) {
-                // collision detected
-                // nothing to do ...
-                
-                log.warn("Action {}, next position {} is already taken by {}",
-                    action,
-                    nextPosition,
-                    this
-                        .collisionValidator
-                        .getAlreadyPositioned(movable, nextPosition, allObstacles));
-                
-            } else {
-                log.info("Action {}, move to {}",
-                    action,
-                    nextPosition);
-                movable.moveTo(nextPosition);
-                
-            }
-            
-            
-        }
-        
-        log.info("Lawn mower is now : {}", movable);
-        
-        return this;
-    }
     
     protected Set<Positionable> getAllObstacles () {
         Set<Positionable> result = new HashSet<>();

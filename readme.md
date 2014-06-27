@@ -9,7 +9,7 @@
 [Mower 2](documents/mower2.pdf "libellé du sujet")
 ### Version 1.2
 * ajout des obstacles
-* ajout de tondeurs cusomisable
+* ajout de tondeurs customisable
 ### Version 1.3 [planned]
 * ajout d'un tondeur multi-threaded
 

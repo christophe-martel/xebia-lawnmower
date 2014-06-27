@@ -20,6 +20,7 @@ package cma.xebia.lawnmower.business.service;
 import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.business.service.process.validator.MovableValidator;
 import cma.xebia.lawnmower.business.service.process.validator.PositionableValidator;
+import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,9 +48,8 @@ public abstract class DefaultRunner implements ShearerRunner {
     @Setter
     protected MovableValidator        movableValidator  = null;
     
-    
     @Override
-    public ShearerRunner run (@NonNull Shearer shearer) {
+    public ShearerRunner run (@NonNull Shearer shearer) throws LawnMowerException {
         
         if (null == this.positionableValidator) {
             throw new NullPointerException("positionableValidator");
@@ -83,6 +83,6 @@ public abstract class DefaultRunner implements ShearerRunner {
         return result;
     }
     
-    protected abstract DefaultRunner doRun ();
+    protected abstract DefaultRunner doRun () throws LawnMowerException;
     
 }

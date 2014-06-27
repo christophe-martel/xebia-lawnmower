@@ -56,7 +56,7 @@ public class PositionValidatorTest extends TestCase {
                 Main.class);
         
         
-        builder = ((LawnMowerBuilder) context.getBean("lawn-mower.builder"));
+        builder = ((LawnMowerBuilder) context.getBean("lawn-mower.builder.standard"));
         
         ((ConfigurableApplicationContext) context).close();
         

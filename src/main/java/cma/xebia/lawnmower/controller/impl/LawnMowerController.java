@@ -65,6 +65,10 @@ public class LawnMowerController implements Controller {
     @Getter
     private final LawnMowerBuilder builder;
     
+    private long startTime;
+    private long endTime;
+    
+    
     public LawnMowerController (
             @NonNull Arguments<LawnMowerController> arguments,
             @NonNull Template template,
@@ -110,12 +114,16 @@ public class LawnMowerController implements Controller {
         List<Movable> lawnMowers = this.computeLawnMowers();
         List<Positionable> obstacle = this.computeObstacles();
         
+        this.startTime = System.currentTimeMillis();
+        
         shearer
             .init()
             .on(lawn)
             .withObstacles(obstacle)
             .use(lawnMowers)
             .mow();
+        
+        endTime = System.currentTimeMillis();
         
         if (shearer.isFail()) {
             log.warn("Oups, an error occurs ...");
@@ -138,6 +146,9 @@ public class LawnMowerController implements Controller {
     
     @Override
     public LawnMowerController finish () {
+        
+        log.info("shearer duration process is {} ms",
+            this.endTime - this.startTime);
         
         this.template.printFooter();
         

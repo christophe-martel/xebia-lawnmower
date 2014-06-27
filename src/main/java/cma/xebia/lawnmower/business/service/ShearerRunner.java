@@ -19,6 +19,7 @@ package cma.xebia.lawnmower.business.service;
 
 import cma.xebia.lawnmower.business.service.process.validator.MovableValidator;
 import cma.xebia.lawnmower.business.service.process.validator.PositionableValidator;
+import cma.xebia.lawnmower.utils.exception.LawnMowerException;
 
 /**
  *
@@ -32,6 +33,6 @@ public interface ShearerRunner {
     public ShearerRunner setMovableValidator (
             MovableValidator movableValidator);
     
-    public ShearerRunner run (Shearer shearer);
+    public ShearerRunner run (Shearer shearer) throws LawnMowerException;
     
 }

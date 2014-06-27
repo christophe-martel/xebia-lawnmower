@@ -15,28 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.controller.impl;
+package cma.xebia.lawnmower.business.entity.lawnmower;
 
-
-import lombok.extern.slf4j.Slf4j;
-
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
+import com.rits.cloning.Cloner;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-@Slf4j
-public class ShearerWithThreadedRunnerTest extends ShearerWithStandardRunnerTest {
+public class SynchronizedBuilder extends Builder {
+
+    public SynchronizedBuilder(
+            Commands commands,
+            Cloner cloner) {
+        super(commands, cloner);
+    }
     
     @Override
-    protected void configureEnv() {
-        this.useThreadedController();
+    public LawnMower create () {
+        return new SynchronizedLawnMower(this.cloner.deepClone(this.commands));
     }
-    
-    
-    public ShearerWithThreadedRunnerTest(String testName) {
-        super(testName);
-    }
-    
     
 }

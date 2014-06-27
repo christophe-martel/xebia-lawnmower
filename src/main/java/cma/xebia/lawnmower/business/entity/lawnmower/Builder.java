@@ -17,9 +17,9 @@
 
 package cma.xebia.lawnmower.business.entity.lawnmower;
 
-import cma.xebia.lawnmower.business.entity.impl.Position;
 import cma.xebia.lawnmower.business.entity.Positionable;
 import cma.xebia.lawnmower.business.entity.constants.CompassPoint;
+import cma.xebia.lawnmower.business.entity.impl.Position;
 import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
 import com.rits.cloning.Cloner;
 import lombok.NonNull;
@@ -32,14 +32,15 @@ import lombok.experimental.Accessors;
 public class Builder implements LawnMowerBuilder {
     
     @Accessors(chain = true)
-    private Commands commands = null;
+    protected Commands commands = null;
     
-    private Cloner cloner = null;
+    protected Cloner cloner = null;
     
     public Builder (Commands commands, Cloner cloner) {
         this.commands = commands;
         this.cloner = cloner;
     }
+    
     
     @Override
     public LawnMower create () {

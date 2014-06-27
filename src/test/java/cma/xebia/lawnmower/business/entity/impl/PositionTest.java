@@ -45,7 +45,7 @@ public class PositionTest extends TestCase {
     
     
     /**
-     * Test of getPosition method, of class Position.
+     * Test of getPosition method, of class SynchronizedPosition.
      */
     public void testGetPosition() {
         

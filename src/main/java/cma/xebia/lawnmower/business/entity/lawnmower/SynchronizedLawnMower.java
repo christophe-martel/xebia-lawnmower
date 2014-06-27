@@ -15,28 +15,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cma.xebia.lawnmower.controller.impl;
+package cma.xebia.lawnmower.business.entity.lawnmower;
 
-
-import lombok.extern.slf4j.Slf4j;
-
+import cma.xebia.lawnmower.business.entity.Movable;
+import cma.xebia.lawnmower.business.entity.Positionable;
+import cma.xebia.lawnmower.business.entity.lawnmower.commands.Commands;
+import lombok.NonNull;
 
 /**
  *
  * @author Christophe Martel <mail.christophe.martel@gmail.com>
  */
-@Slf4j
-public class ShearerWithThreadedRunnerTest extends ShearerWithStandardRunnerTest {
+public class SynchronizedLawnMower extends LawnMower {
+    
+    private final Object lock = new Object();
+    
+    SynchronizedLawnMower(@NonNull Commands commands) {
+        super(commands);
+    }
     
     @Override
-    protected void configureEnv() {
-        this.useThreadedController();
+    public Movable moveTo(Positionable anotherLocation) {
+        synchronized (this.lock) {
+            super.moveTo(anotherLocation);
+        }
+        return this;
     }
     
-    
-    public ShearerWithThreadedRunnerTest(String testName) {
-        super(testName);
-    }
     
     
 }

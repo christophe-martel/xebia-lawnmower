@@ -36,6 +36,8 @@ public class Constant {
     
     public static final String BEAN_MAIN_ARGS           = "command-line.main.arguments";
     
+    public static final long THREADED_AWAIT_TERMINATION_MS = 250;
+    
     private Constant () {
     }
     

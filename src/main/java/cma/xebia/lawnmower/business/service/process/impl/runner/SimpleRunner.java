@@ -19,10 +19,8 @@ package cma.xebia.lawnmower.business.service.process.impl.runner;
 
 import cma.xebia.lawnmower.business.entity.Movable;
 import cma.xebia.lawnmower.business.entity.Positionable;
-import cma.xebia.lawnmower.business.entity.impl.Position;
-import cma.xebia.lawnmower.business.entity.lawnmower.commands.Action;
 import cma.xebia.lawnmower.business.service.DefaultRunner;
-import java.util.Set;
+import cma.xebia.lawnmower.business.service.ShearerRunnerDelegator;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -31,6 +29,13 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class SimpleRunner extends DefaultRunner {
+    
+    private final ShearerRunnerDelegator delegator;
+    
+    public SimpleRunner(
+            ShearerRunnerDelegator delegator) {
+        this.delegator = delegator;
+    }
     
     @Override
     protected DefaultRunner doRun() {
@@ -45,66 +50,20 @@ public class SimpleRunner extends DefaultRunner {
             
         }
         
+        this
+            .delegator
+            .on(this.shearer)
+            .with(this.allObstacles);
+        
         int i = -1;
         for (Movable movable : this.shearer.getMovables()) {
             i++;
-            this.runOne(movable, this.allObstacles, i);
+            this
+                .delegator
+                .use(movable)
+                .run ();
         }
         
-        
-        return this;
-    }
-    
-    
-    protected SimpleRunner runOne (
-            Movable movable,
-            Set<Positionable> allObstacles,
-            int index) {
-        log.info("with {} #{} and movements {}",
-            movable,
-            index,
-            movable.getMovements());
-        
-        Position nextPosition;
-        
-        for (Action action: movable.getMovements()) {
-            
-            nextPosition = action.apply(movable);
-            
-            // position validation
-            if (!this.positionableValidator
-                    .isValid(nextPosition, this.shearer.getPlayground())) {
-                // Out of bound...
-                // nothing to do ...
-                log.warn("Action {}, next position {} is unreachable ...",
-                    action,
-                    nextPosition);
-                
-            } else if (!this
-                    .movableValidator
-                    .isValid(movable, nextPosition, allObstacles)) {
-                // collision detected
-                // nothing to do ...
-                
-                log.warn("Action {}, next position {} is already taken by {}",
-                    action,
-                    nextPosition,
-                    this
-                        .movableValidator
-                        .getAlreadyPositioned(movable, nextPosition, allObstacles));
-                
-            } else {
-                log.info("Action {}, move to {}",
-                    action,
-                    nextPosition);
-                movable.moveTo(nextPosition);
-                
-            }
-            
-            
-        }
-        
-        log.info("Lawn mower is now : {}", movable);
         
         return this;
     }
