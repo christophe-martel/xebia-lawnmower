@@ -10,7 +10,7 @@
 ### Version 1.2
 * ajout des obstacles
 * ajout de tondeurs customisable
-### Version 1.3 [planned]
+### Version 1.3
 * ajout d'un tondeur multi-threaded
 
 # Installation & exécution
